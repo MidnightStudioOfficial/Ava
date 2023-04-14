@@ -3,21 +3,18 @@ from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
 import customtkinter as ctk
 import os
+import logging
 from PIL import Image
 
 print('Importing chatterbot')
-from chatterbot import ChatBot
+from chatterbot import ChatBot as CHATBOT
 from chatterbot.trainers import ChatterBotCorpusTrainer
 print('Importing pyttsx3')
 import pyttsx3
 import spacy
 
-nlp = spacy.load("en_core_web_sm")
 
-chatBot = ChatBot("Chatbot", tagger_language=nlp)
-#chatBot = ChatBot("Chatbot", tagger_language="en")
-trainer = ChatterBotCorpusTrainer(chatBot)
-
+logging.basicConfig(level=logging.INFO)
 
 class ChatBotGUI:
     def __init__(self, master):
@@ -33,7 +30,8 @@ class ChatBotGUI:
         self.max_w = 200 # Maximum width of the frame
         self.cur_width = self.min_w # Increasing width of the frame
         self.expanded = False # Check if it is completely exanded
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
+        
+        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Data/assets")
         self.logo_image = ctk.CTkImage(Image.open(os.path.join(image_path, "my-Ava.png")), size=(26, 26))
         self.large_test_image = ctk.CTkImage(Image.open(os.path.join(image_path, "text.png")), size=(290, 118)) #size=(500, 150)
         self.image_icon_image = ctk.CTkImage(Image.open(os.path.join(image_path, "home.png")), size=(20, 20))
@@ -146,16 +144,18 @@ class ChatBotGUI:
 
 
         # create a toolbar
-        self.toolbar = tk.Frame(master)
+        #self.toolbar = tk.Frame(master)
         #self.toolbar.pack(side="top", fill="x")
 
-        self.settings_button = tk.Button(self.toolbar, text="Settings")
-       # self.settings_button.pack(side="left")
+        #self.settings_button = tk.Button(self.toolbar, text="Settings")
+        #self.settings_button.pack(side="left")
 
-        self.exit_button = tk.Button(self.toolbar, text="Exit", command=master.quit)
+        #self.exit_button = tk.Button(self.toolbar, text="Exit", command=master.quit)
         #self.exit_button.pack(side="right")
 
-        
+        # Initialize chatbot
+        self.chatbot = ChatBot()
+        self.chatbot.train_bot() # Train the chatbot
 
         
     def expand(self):
@@ -227,7 +227,7 @@ class ChatBotGUI:
 
         # Get response from chatbot and add to chat history
         bot_response = self.chatbot.get_response(user_message)
-        self._add_to_chat_history("ChatBot: " + "bot_response")
+        self._add_to_chat_history("ChatBot: " + bot_response)
         self.engine.say(bot_response)
         self.engine.runAndWait()
 
@@ -242,10 +242,30 @@ class ChatBotGUI:
 class ChatBot:
     def __init__(self):
         # Initialize chatbot model here
+        self.nlp = spacy.load("en_core_web_sm")
+        self.chatbot_exists = None
+        if os.path.isfile("./db.sqlite3") == False:
+            logging.debug("chatbot_exists is False")
+            self.chatbot_exists = False
+        else:
+            logging.debug("chatbot_exists is True")
+            self.chatbot_exists = True
+
+        self.chatBot = CHATBOT("Chatbot", tagger_language=self.nlp)
+        #self.chatBot = ChatBot("Chatbot", tagger_language="en")
+        self.trainer = ChatterBotCorpusTrainer(self.chatBot)
+
         pass
+    
+    def train_bot(self):
+        logging.debug("Training bot")
+        if self.chatbot_exists == False:
+         self.trainer.train("./Data/training/export.json")
+         self.trainer.train("./Data/training/messages.json")
+        
 
     def get_response(self, user_message):
-       bot = chatBot.get_response(text=user_message,search_text=user_message)
+       bot = self.chatBot.get_response(text=user_message,search_text=user_message)
        print(bot.text)
        return bot.text
 
@@ -256,9 +276,6 @@ if __name__ == '__main__':
     #loading_screen.set_text('Creating Ava Chatbot and taining')
     print('Creating Ava Chatbot and taining')
     gui = ChatBotGUI(root)
-    if os.path.isfile("db.sqlite3") == False:
-     trainer.train("./training/export.json")
-     trainer.train("./training/messages.json")
     #loading_screen.set_text('DONE')
     #loading_screen.load()
     # Bind to the frame, if entered or left
