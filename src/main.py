@@ -5,6 +5,19 @@ import customtkinter as ctk
 import os
 from PIL import Image
 
+print('Importing chatterbot')
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
+print('Importing pyttsx3')
+import pyttsx3
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
+
+chatBot = ChatBot("Chatbot", tagger_language=nlp)
+#chatBot = ChatBot("Chatbot", tagger_language="en")
+trainer = ChatterBotCorpusTrainer(chatBot)
+
 
 class ChatBotGUI:
     def __init__(self, master):
@@ -114,6 +127,14 @@ class ChatBotGUI:
         
         # select default frame
         self.select_frame_by_name("home")
+        
+        self.engine = pyttsx3.init()
+        self.voices = self.engine.getProperty('voices')
+        self.engine.setProperty('voice', self.voices[2].id)  # Index 1 for female voice
+        self.engine.setProperty('rate', 150)  # Adjust rate to 150 words per minute
+        self.engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
+        self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
+
 
         # Create image bar
         # image_frame = tk.Frame(master, height=80, bg='#383838')
@@ -205,7 +226,10 @@ class ChatBotGUI:
         self._add_to_chat_history("You: " + user_message)
 
         # Get response from chatbot and add to chat history
+        bot_response = self.chatbot.get_response(user_message)
         self._add_to_chat_history("ChatBot: " + "bot_response")
+        self.engine.say(bot_response)
+        self.engine.runAndWait()
 
     def _add_to_chat_history(self, message):
         # Enable text editing and add message to chat history
@@ -221,7 +245,9 @@ class ChatBot:
         pass
 
     def get_response(self, user_message):
-       return "bot.text"
+       bot = chatBot.get_response(text=user_message,search_text=user_message)
+       print(bot.text)
+       return bot.text
 
 if __name__ == '__main__':
     #loading_screen.set_text('Creating GUI')
@@ -230,6 +256,7 @@ if __name__ == '__main__':
     #loading_screen.set_text('Creating Ava Chatbot and taining')
     print('Creating Ava Chatbot and taining')
     gui = ChatBotGUI(root)
+    trainer.train("./training/export.json")
     #loading_screen.set_text('DONE')
     #loading_screen.load()
     # Bind to the frame, if entered or left
