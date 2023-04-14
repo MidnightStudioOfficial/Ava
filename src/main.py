@@ -256,8 +256,9 @@ if __name__ == '__main__':
     #loading_screen.set_text('Creating Ava Chatbot and taining')
     print('Creating Ava Chatbot and taining')
     gui = ChatBotGUI(root)
-    trainer.train("./training/export.json")
-    trainer.train("./training/messages.json")
+    if os.path.isfile("db.sqlite3") == False:
+     trainer.train("./training/export.json")
+     trainer.train("./training/messages.json")
     #loading_screen.set_text('DONE')
     #loading_screen.load()
     # Bind to the frame, if entered or left
