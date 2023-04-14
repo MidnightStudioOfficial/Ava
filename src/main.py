@@ -20,15 +20,15 @@ class ChatBotGUI:
         self.max_w = 200 # Maximum width of the frame
         self.cur_width = self.min_w # Increasing width of the frame
         self.expanded = False # Check if it is completely exanded
-
-        self.logo_image = ctk.CTkImage(Image.open(os.path.join("my-Ava.png")), size=(26, 26))
-        self.large_test_image = ctk.CTkImage(Image.open(os.path.join("text.png")), size=(290, 118)) #size=(500, 150)
-        self.image_icon_image = ctk.CTkImage(Image.open(os.path.join( "home.png")), size=(20, 20))
+        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
+        self.logo_image = ctk.CTkImage(Image.open(os.path.join(image_path, "my-Ava.png")), size=(26, 26))
+        self.large_test_image = ctk.CTkImage(Image.open(os.path.join(image_path, "text.png")), size=(290, 118)) #size=(500, 150)
+        self.image_icon_image = ctk.CTkImage(Image.open(os.path.join(image_path, "home.png")), size=(20, 20))
         
-        self.home_image = ctk.CTkImage(light_image=Image.open(os.path.join("home.png")), dark_image=Image.open(os.path.join("home.png")), size=(20, 20))
-        self.chat_image = ctk.CTkImage(light_image=Image.open(os.path.join("chat.png")), dark_image=Image.open(os.path.join("chat.png")), size=(20, 20))
-        self.add_user_image = ctk.CTkImage(light_image=Image.open(os.path.join("settings.png")), dark_image=Image.open(os.path.join("settings.png")), size=(20, 20))
-        self.add_DNA_image = ctk.CTkImage(light_image=Image.open(os.path.join("DNA.png")), dark_image=Image.open(os.path.join("DNA.png")), size=(20, 20))
+        self.home_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "home.png")), dark_image=Image.open(os.path.join(image_path, "home.png")), size=(20, 20))
+        self.chat_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "chat.png")), dark_image=Image.open(os.path.join(image_path, "chat.png")), size=(20, 20))
+        self.add_user_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "settings.png")), dark_image=Image.open(os.path.join(image_path, "settings.png")), size=(20, 20))
+        self.add_DNA_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "DNA.png")), dark_image=Image.open(os.path.join(image_path, "DNA.png")), size=(20, 20))
         
         # create navigation frame
         self.navigation_frame = ctk.CTkFrame(master, corner_radius=0)
