@@ -13,7 +13,6 @@ print('Importing pyttsx3')
 import pyttsx3
 import spacy
 
-
 logging.basicConfig(level=logging.INFO)
 
 class ChatBotGUI:
@@ -44,7 +43,7 @@ class ChatBotGUI:
         # create navigation frame
         self.navigation_frame = ctk.CTkFrame(master, corner_radius=0)
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
-        self.navigation_frame.grid_rowconfigure(5, weight=1)
+        self.navigation_frame.grid_rowconfigure(6, weight=1)
 
         self.navigation_frame_label = ctk.CTkLabel(self.navigation_frame, text="  Ava", image=self.logo_image,
                                                              compound="left", font=ctk.CTkFont(size=15, weight="bold"))
@@ -69,6 +68,11 @@ class ChatBotGUI:
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.add_DNA_image, anchor="w", command=self.frame_DNA_button_event)
         self.frame_DNA_button.grid(row=4, column=0, sticky="ew")
+        
+        self.frame_profile_button = ctk.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Profile",
+                                                      fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                      image=self.add_DNA_image, anchor="w", command=self.frame_profile_button_event)
+        self.frame_profile_button.grid(row=5, column=0, sticky="ew")
 
         self.appearance_mode_menu = ctk.CTkOptionMenu(self.navigation_frame, values=["Light", "Dark", "System"],
                                                                 command=self.change_appearance_mode_event)
@@ -123,9 +127,13 @@ class ChatBotGUI:
         self.DNA_combobox_gender = ctk.CTkOptionMenu(self.DNA_frame, values=["Male", "Female"])
         self.DNA_combobox_gender.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
         
+        # create the profile frame
+        self.profile_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
+        
         # select default frame
         self.select_frame_by_name("home")
         
+        # Set up voice
         self.engine = pyttsx3.init()
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[2].id)  # Index 1 for female voice
@@ -134,48 +142,10 @@ class ChatBotGUI:
         self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
 
 
-        # Create image bar
-        # image_frame = tk.Frame(master, height=80, bg='#383838')
-        # image_frame.pack(side='top', fill='x')
-        # logo = tk.PhotoImage(file='chatbot_logo.png')
-        # logo_label = tk.Label(image_frame, image=logo, bg='#383838')
-        # logo_label.image = logo
-        # logo_label.pack(side='left', padx=10, pady=10)
-
-
-        # create a toolbar
-        #self.toolbar = tk.Frame(master)
-        #self.toolbar.pack(side="top", fill="x")
-
-        #self.settings_button = tk.Button(self.toolbar, text="Settings")
-        #self.settings_button.pack(side="left")
-
-        #self.exit_button = tk.Button(self.toolbar, text="Exit", command=master.quit)
-        #self.exit_button.pack(side="right")
-
         # Initialize chatbot
         self.chatbot = ChatBot()
         self.chatbot.train_bot() # Train the chatbot
-
-        
-    def expand(self):
-     global cur_width, expanded
-     self.cur_width += 10 # Increase the width by 10
-     rep = root.after(5,self.expand) # Repeat this func every 5 ms
-     self.navigation_frame.configure(width=self.cur_width) # Change the width to new increase width
-     if self.cur_width >= self.max_w: # If width is greater than maximum width 
-        self.expanded = True # Frame is expended
-        root.after_cancel(rep) # Stop repeating the func
-        #fill()
-    def contract(self):
-     global cur_width, expanded
-     self.cur_width -= 10 # Reduce the width by 10 
-     rep = root.after(5,self.contract) # Call this func every 5 ms
-     self.navigation_frame.configure(width=self.cur_width) # Change the width to new reduced width
-     if self.cur_width <= self.min_w: # If it is back to normal width
-        self.expanded = False # Frame is not expanded
-        root.after_cancel(rep) # Stop repeating the func
-        #fill()
+  
 
     def select_frame_by_name(self, name):
         # set button color for selected button
@@ -183,9 +153,10 @@ class ChatBotGUI:
         self.frame_2_button.configure(fg_color=("gray75", "gray25") if name == "frame_2" else "transparent")
         self.frame_3_button.configure(fg_color=("gray75", "gray25") if name == "frame_3" else "transparent")
         self.frame_DNA_button.configure(fg_color=("gray75", "gray25") if name == "frame_DNA" else "transparent")
+        self.frame_profile_button.configure(fg_color=("gray75", "gray25") if name == "frame_profile" else "transparent")
 
         # show selected frame
-        if name == "home":
+        if name == "home": # home
             self.home_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.home_frame.grid_forget()
@@ -197,10 +168,14 @@ class ChatBotGUI:
             self.third_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.third_frame.grid_forget()
-        if name == "frame_DNA":
+        if name == "frame_DNA": # DNA
             self.DNA_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.DNA_frame.grid_forget()
+        if name == "frame_profile": # profile
+            self.profile_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.profile_frame.grid_forget()
 
     def home_button_event(self):
         self.select_frame_by_name("home")
@@ -213,6 +188,9 @@ class ChatBotGUI:
         
     def frame_DNA_button_event(self):
         self.select_frame_by_name("frame_DNA")
+        
+    def frame_profile_button_event(self):
+        self.select_frame_by_name("frame_profile")
 
     def change_appearance_mode_event(self, new_appearance_mode):
         ctk.set_appearance_mode(new_appearance_mode)
@@ -278,7 +256,4 @@ if __name__ == '__main__':
     gui = ChatBotGUI(root)
     #loading_screen.set_text('DONE')
     #loading_screen.load()
-    # Bind to the frame, if entered or left
-    #gui.navigation_frame.bind('<Enter>',lambda e: gui.expand())
-    #gui.navigation_frame.bind('<Leave>',lambda e: gui.contract())
     root.mainloop()
