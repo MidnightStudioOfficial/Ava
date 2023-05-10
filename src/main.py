@@ -13,6 +13,8 @@ print('Importing pyttsx3')
 import pyttsx3
 import spacy
 
+import user_profile
+
 logging.basicConfig(level=logging.INFO)
 
 class ChatBotGUI:
@@ -129,6 +131,8 @@ class ChatBotGUI:
         
         # create the profile frame
         self.profile_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
+        user_profile.ProfileClass(self.profile_frame, self)
+
         
         # select default frame
         self.select_frame_by_name("home")
