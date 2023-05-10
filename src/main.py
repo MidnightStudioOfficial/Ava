@@ -42,6 +42,7 @@ class ChatBotGUI:
         self.add_user_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "settings.png")), dark_image=Image.open(os.path.join(image_path, "settings.png")), size=(20, 20))
         self.add_DNA_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "DNA.png")), dark_image=Image.open(os.path.join(image_path, "DNA.png")), size=(20, 20))
         
+        
         # create navigation frame
         self.navigation_frame = ctk.CTkFrame(master, corner_radius=0)
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
@@ -145,6 +146,13 @@ class ChatBotGUI:
         self.engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
         self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
 
+        # Delete usless stuff
+        del image_path
+        del self.large_test_image
+        del self.home_image
+        del self.chat_image
+        del self.voices
+        del self.add_user_image
 
         # Initialize chatbot
         self.chatbot = ChatBot()
@@ -244,6 +252,7 @@ class ChatBot:
         if self.chatbot_exists == False:
          self.trainer.train("./Data/training/export.json")
          self.trainer.train("./Data/training/messages.json")
+         #del self.trainer
         
 
     def get_response(self, user_message):

@@ -7,7 +7,6 @@ class ProfileClass(ctk.CTkFrame):
         
         self.canvas = ctk.CTkCanvas(parent, width=500, height=150)
         self.canvas.pack()
-        #self.canvas.place(x=0, y=0)
 
         #self.profile_icon = ctk.CTkImage()
         self.profile_label = ctk.CTkLabel(parent)
@@ -40,7 +39,16 @@ class ProfileClass(ctk.CTkFrame):
         #self.skills_frame.place(x=50, y=520)
         self.skills_frame.pack()
         self.skills_label = ctk.CTkLabel(self.skills_frame, text="Skills:", font=("Segoe UI", 14), fg_color="#333333", corner_radius=7)
-        self.skills_label.pack(side="left", padx=20)
-        self.skill1_label = ctk.CTkLabel(self.skills_frame, text="Python", font=("Segoe UI", 12), fg_color="#333333", corner_radius=7)
-        self.skill1_label.pack(side="left", padx=10)
+        self.skills_label.pack()
+        #self.skills_label = ctk.CTkLabel(self.skills_frame, text="Skills:", font=("Segoe UI", 14), fg_color="#333333", corner_radius=7)
+        #self.skills_label.pack(side="left", padx=20)
+        #self.skill1_label = ctk.CTkLabel(self.skills_frame, text="Python", font=("Segoe UI", 12), fg_color="#333333", corner_radius=7)
+        #self.skill1_label.pack(side="left", padx=10)
+        interests = ["Python programming", "Web development", "Data science"]
+        for interest in interests:
+            interest_label = ctk.CTkLabel(self.skills_frame, text="- " + interest, font=("Segoe UI", 12))
+            interest_label.pack()
+            
+    def _load_profile(self):
+        pass
         
