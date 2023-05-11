@@ -6,7 +6,7 @@ class ProfileClass(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
         
-        self.profile_data = 
+        self.profile_data = None
         
         self.canvas = ctk.CTkCanvas(parent, width=500, height=150)
         self.canvas.pack()
