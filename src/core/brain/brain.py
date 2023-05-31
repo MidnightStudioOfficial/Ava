@@ -4,6 +4,7 @@
 
 import matplotlib.pyplot as plt
 from nltk.sentiment import SentimentIntensityAnalyzer
+import random
 
 class Brain:
     def __init__(self):
@@ -11,8 +12,18 @@ class Brain:
         self.mood = 0.0
         self.mood_history = []
         
-        self.thought = ""
-        self.thoughts = []
+        self.thought = "" 
+        self.thoughts = {
+        "happy": ["I wonder what the weather is like today", "I should call my friend", "What should I have for dinner?"],
+        "sad": ["I need to finish that project", "I want to go on a vacation"]
+        }
+        self.rules = {
+        "weather": ["It might rain today", "It's going to be sunny", "I hope it doesn't snow"],
+        "friend": ["I miss talking to them", "We should catch up", "I wonder how they're doing"],
+        "dinner": ["Maybe I'll cook something", "I could order takeout", "I feel like eating something healthy"],
+        "project": ["I need to focus and get it done", "It's almost finished", "I'm making good progress"],
+        "vacation": ["I want to go somewhere warm", "I need a break from work", "It would be nice to explore a new place"]
+        }
         self.traits = []
         
         # Create an instance of the SentimentIntensityAnalyzer
@@ -61,6 +72,32 @@ class Brain:
         plt.xlabel("Time")
         plt.ylabel("Mood")
         plt.show()
+    
+    def add_thought(self, mood, thought):
+     if mood in self.thoughts:
+        self.thoughts[mood].append(thought)
+     else:
+        self.thoughts[mood] = [thought]
+
+    def add_rule(self, category, rule):
+     if category in self.rules:
+        self.rules[category].append(rule)
+     else:
+        self.rules[category] = [rule]
+        
+    def generate_thought(self, mood):
+        thought = random.choice(self.thoughts[mood])
+        if thought == self.thoughts[mood][0]:
+         return thought + ". " + random.choice(self.rules["weather"])
+        elif thought == self.thoughts[mood][1]:
+         return thought + ". " + random.choice(self.rules["friend"])
+        elif thought == self.thoughts[mood][2]:
+         return thought + ". " + random.choice(self.rules["dinner"])
+        elif thought == self.thoughts[mood][3]:
+         return thought + ". " + random.choice(self.rules["project"])
+        else:
+         return thought + ". " + random.choice(self.rules["vacation"])
+
 
 # Example usage of the Brain class
 # b = Brain()
