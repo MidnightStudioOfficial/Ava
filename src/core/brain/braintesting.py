@@ -112,3 +112,29 @@ add_rule("exercise", "I should go for a run")
 add_rule("exercise", "I could do some yoga")
 
 print(generate_thought("happy"))
+
+
+class Person:
+    def __init__(self, name, traits):
+        self.name = name
+        self.traits = traits
+        self.mood = 0.0
+
+    def update_mood(self):
+        for trait in self.traits:
+            if trait == 'happy':
+                self.mood += 0.1
+            elif trait == 'sad':
+                self.mood -= 0.1
+            elif trait == 'angry':
+                self.mood -= 0.2
+            elif trait == 'calm':
+                self.mood += 0.2
+
+p1 = Person('Alice', ['happy', 'calm'])
+p1.update_mood()
+print(p1.name + "'s mood: " + str(p1.mood))
+
+p2 = Person('Bob', ['sad', 'angry'])
+p2.update_mood()
+print(p2.name + "'s mood: " + str(p2.mood))

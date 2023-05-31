@@ -5,6 +5,9 @@
 import matplotlib.pyplot as plt
 from nltk.sentiment import SentimentIntensityAnalyzer
 import random
+import threading
+
+stop = False
 
 class Brain:
     def __init__(self):
@@ -25,6 +28,8 @@ class Brain:
         "vacation": ["I want to go somewhere warm", "I need a break from work", "It would be nice to explore a new place"]
         }
         self.traits = []
+        self.memory = {}
+        
         
         # Create an instance of the SentimentIntensityAnalyzer
         self.sentiment_analyzer = SentimentIntensityAnalyzer()
@@ -97,6 +102,21 @@ class Brain:
          return thought + ". " + random.choice(self.rules["project"])
         else:
          return thought + ". " + random.choice(self.rules["vacation"])
+     
+    def do_tick(self):
+        self.thought = self.generate_thought(self.mood_as_string())
+        
+    def run_every_3_minutes(self):
+     global stop
+     if not stop:
+        self.do_tick()
+        threading.Timer(180, self.run_every_3_minutes).start() #180
+        
+    def start(self):
+        # Start the repeating function in a separate thread
+        thread = threading.Thread(target=self.run_every_3_minutes)
+        thread.start()
+
 
 
 # Example usage of the Brain class

@@ -1,3 +1,7 @@
+# Author: MidnightStudioOfficial
+# License: MIT
+# Description: This is the main script that runs everything
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
@@ -252,8 +256,7 @@ class ChatBot:
         if self.chatbot_exists == False:
          self.trainer.train("./Data/training/export.json")
          self.trainer.train("./Data/training/messages.json")
-         #del self.trainer
-        
+         #del self.trainer     
 
     def get_response(self, user_message):
        bot = self.chatBot.get_response(text=user_message,search_text=user_message)
@@ -261,12 +264,8 @@ class ChatBot:
        return bot.text
 
 if __name__ == '__main__':
-    #loading_screen.set_text('Creating GUI')
     print('Creating GUI')
     root = ctk.CTk() #tk.Tk()
-    #loading_screen.set_text('Creating Ava Chatbot and taining')
     print('Creating Ava Chatbot and taining')
     gui = ChatBotGUI(root)
-    #loading_screen.set_text('DONE')
-    #loading_screen.load()
     root.mainloop()

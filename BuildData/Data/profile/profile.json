@@ -1,0 +1,7 @@
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "bio": "Hello my name is John Doe",
+    "gender": "male",
+    "interests": ["Python programming", "Web development", "Data science"]
+}
