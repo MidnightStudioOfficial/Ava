@@ -1,6 +1,10 @@
 # Ava
 Ava is a chatbot that makes you happy
 
+## Requirements
+
+ - Python 3.10.2
+
 ## Getting Started
 To get started with Ava, you can clone the repository to your local machine using the following command:
 
