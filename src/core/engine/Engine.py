@@ -11,7 +11,7 @@ from collections import defaultdict
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import naive_bayes #, svm, model_selection
 #from sklearn.metrics import accuracy_score
-import pickle
+
 
 class ConversationalEngine():
     
@@ -45,6 +45,7 @@ class ConversationalEngine():
             self.Naive = naive_bayes.MultinomialNB()
             self.Naive.fit(Train_X_Tfidf, df['intent_name'])
         else: 
+            import pickle
             self.Naive=pickle.load( open( modelpath, "rb" ))
     
     def getIntent(self, utterance):
@@ -78,11 +79,13 @@ class ConversationalEngine():
             if (word not in stopwords.words('english') or ignoreStopWords==False) and word.isalpha():
                 word_Final = lemmatizer.lemmatize(word, tagMap[tag[0]])
                 outputList.append(word_Final)
+        del word
         return str(outputList)
     
     def pickleModel(self, path):
         '''pickles the conversation's trained model into a .p file at the defined path.
         Path should include filename. for example: "folder\model.p"'''
+        import pickle
         pickle.dump( self.Naive, open( path, "wb" ))
 
 

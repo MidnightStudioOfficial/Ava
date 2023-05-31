@@ -58,31 +58,17 @@ class Package:
         
 
 
-# create a Package object
-my_package = Package()
-thoughts = {
-        "happy": ["I wonder what the weather is like today", "I should call my friend", "What should I have for dinner?"],
-        "sad": ["I need to finish that project", "I want to go on a vacation"]
-        }
-rules = {
-        "weather": ["It might rain today", "It's going to be sunny", "I hope it doesn't snow"],
-        "friend": ["I miss talking to them", "We should catch up", "I wonder how they're doing"],
-        "dinner": ["Maybe I'll cook something", "I could order takeout", "I feel like eating something healthy"],
-        "project": ["I need to focus and get it done", "It's almost finished", "I'm making good progress"],
-        "vacation": ["I want to go somewhere warm", "I need a break from work", "It would be nice to explore a new place"]
-        }
-my_package.add_data('key1', 'value1')
-my_package.add_data('rules', rules)
-my_package.add_data('thoughts', thoughts)
+# # create a Package object
+# my_package = Package()
+# my_package.add_data('key1', 'value1')
+# # save the Package object to a file
+# my_package.save('package.pickle')
+# my_package.remove_data('key1')
+# # load the Package object from a file
+# loaded_package = Package.load('package.pickle')
 
-# save the Package object to a file
-my_package.save('package.pickle')
-my_package.remove_data('key1')
-# load the Package object from a file
-loaded_package = Package.load('package.pickle')
-
-# access the data in the loaded object
-print(loaded_package.get_data('key1')) # prints 'value1'
+# # access the data in the loaded object
+# print(loaded_package.get_data('key1')) # prints 'value1'
 
 # pack = Package()
 

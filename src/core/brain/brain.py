@@ -91,6 +91,16 @@ class Brain:
         self.rules[category] = [rule]
         
     def generate_thought(self, mood):
+        if mood == "Very sad":
+            mood = "sad"
+        elif mood == "Very happy":
+            mood = "happy"
+        elif mood == "Happy":
+            mood = "happy"
+        elif mood == "Sad":
+            mood = "sad"
+        if mood not in self.thoughts:
+            mood = "happy"
         thought = random.choice(self.thoughts[mood])
         if thought == self.thoughts[mood][0]:
          return thought + ". " + random.choice(self.rules["weather"])
@@ -105,6 +115,7 @@ class Brain:
      
     def do_tick(self):
         self.thought = self.generate_thought(self.mood_as_string())
+        print(self.thought)
         
     def run_every_3_minutes(self):
      global stop
@@ -117,7 +128,12 @@ class Brain:
         thread = threading.Thread(target=self.run_every_3_minutes)
         thread.start()
 
-
+if __name__ == '__main__':
+    b = Brain()
+    b.start()
+    b.update_mood("I hate you so much")
+    b.update_mood("I love you so much")
+    print(b.mood_as_string())
 
 # Example usage of the Brain class
 # b = Brain()

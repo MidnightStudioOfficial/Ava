@@ -1,23 +1,28 @@
 # Author: MidnightStudioOfficial
 # License: MIT
-# Description: This is the main script that runs everything
+# Description: This is the main script that connects and runs everything
 
 import tkinter as tk
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
 import customtkinter as ctk
-import os
+from os.path import join, dirname, realpath
 import logging
 from PIL import Image
 
-print('Importing chatterbot')
-from chatterbot import ChatBot as CHATBOT
-from chatterbot.trainers import ChatterBotCorpusTrainer
+#print('Importing chatterbot')
+#from chatterbot import ChatBot as CHATBOT
+#from chatterbot.trainers import ChatterBotCorpusTrainer
 print('Importing pyttsx3')
-import pyttsx3
-import spacy
+from pyttsx3 import init as pyttsx3_init
+#import spacy
 
+print("Importing user_profile")
 import user_profile
+
+print("Importing chatbot")
+from core.chatbot.chatbot import Chatbot
+print("Importing DONE")
 
 logging.basicConfig(level=logging.INFO)
 
@@ -36,15 +41,15 @@ class ChatBotGUI:
         self.cur_width = self.min_w # Increasing width of the frame
         self.expanded = False # Check if it is completely exanded
         
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Data/assets")
-        self.logo_image = ctk.CTkImage(Image.open(os.path.join(image_path, "my-Ava.png")), size=(26, 26))
-        self.large_test_image = ctk.CTkImage(Image.open(os.path.join(image_path, "text.png")), size=(290, 118)) #size=(500, 150)
-        self.image_icon_image = ctk.CTkImage(Image.open(os.path.join(image_path, "home.png")), size=(20, 20))
+        image_path = join(dirname(realpath(__file__)), "Data/assets")
+        self.logo_image = ctk.CTkImage(Image.open(join(image_path, "my-Ava.png")), size=(26, 26))
+        self.large_test_image = ctk.CTkImage(Image.open(join(image_path, "text.png")), size=(290, 118)) #size=(500, 150)
+        self.image_icon_image = ctk.CTkImage(Image.open(join(image_path, "home.png")), size=(20, 20))
         
-        self.home_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "home.png")), dark_image=Image.open(os.path.join(image_path, "home.png")), size=(20, 20))
-        self.chat_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "chat.png")), dark_image=Image.open(os.path.join(image_path, "chat.png")), size=(20, 20))
-        self.add_user_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "settings.png")), dark_image=Image.open(os.path.join(image_path, "settings.png")), size=(20, 20))
-        self.add_DNA_image = ctk.CTkImage(light_image=Image.open(os.path.join(image_path, "DNA.png")), dark_image=Image.open(os.path.join(image_path, "DNA.png")), size=(20, 20))
+        self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
+        self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
+        self.add_user_image = ctk.CTkImage(light_image=Image.open(join(image_path, "settings.png")), dark_image=Image.open(join(image_path, "settings.png")), size=(20, 20))
+        self.add_DNA_image = ctk.CTkImage(light_image=Image.open(join(image_path, "DNA.png")), dark_image=Image.open(join(image_path, "DNA.png")), size=(20, 20))
         
         
         # create navigation frame
@@ -143,23 +148,24 @@ class ChatBotGUI:
         self.select_frame_by_name("home")
         
         # Set up voice
-        self.engine = pyttsx3.init()
+        self.engine = pyttsx3_init()
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[2].id)  # Index 1 for female voice
         self.engine.setProperty('rate', 150)  # Adjust rate to 150 words per minute
         self.engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
         self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
 
-        # Delete usless stuff
+        # Delete useless stuff
         del image_path
         del self.large_test_image
         del self.home_image
         del self.chat_image
         del self.voices
         del self.add_user_image
+        del self.logo_image
 
         # Initialize chatbot
-        self.chatbot = ChatBot()
+        self.chatbot = Chatbot()
         self.chatbot.train_bot() # Train the chatbot
   
 
@@ -176,11 +182,11 @@ class ChatBotGUI:
             self.home_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.home_frame.grid_forget()
-        if name == "frame_2":
+        if name == "frame_2": # chat
             self.second_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.second_frame.grid_forget()
-        if name == "frame_3":
+        if name == "frame_3": # settings
             self.third_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.third_frame.grid_forget()
@@ -209,7 +215,10 @@ class ChatBotGUI:
         self.select_frame_by_name("frame_profile")
 
     def change_appearance_mode_event(self, new_appearance_mode):
-        ctk.set_appearance_mode(new_appearance_mode)
+        """
+        Change the GUI appearance mode
+        """
+        ctk.set_appearance_mode(new_appearance_mode)  
         
     def send_message(self):
         # Get user input and clear input field
@@ -226,6 +235,9 @@ class ChatBotGUI:
         self.engine.runAndWait()
 
     def _add_to_chat_history(self, message):
+        """
+        Adds new text to the chat history
+        """
         # Enable text editing and add message to chat history
         self.chat_history.configure(state='normal')
         self.chat_history.insert(tk.END, message + "\n")
@@ -233,35 +245,35 @@ class ChatBotGUI:
         # Automatically scroll to the bottom of the chat history
         self.chat_history.yview(tk.END)
 
-class ChatBot:
-    def __init__(self):
-        # Initialize chatbot model here
-        self.nlp = spacy.load("en_core_web_sm")
-        self.chatbot_exists = None
-        if os.path.isfile("./db.sqlite3") == False:
-            logging.debug("chatbot_exists is False")
-            self.chatbot_exists = False
-        else:
-            logging.debug("chatbot_exists is True")
-            self.chatbot_exists = True
+# class ChatBot:
+#     def __init__(self):
+#         # Initialize chatbot model here
+#         self.nlp = spacy.load("en_core_web_sm")
+#         self.chatbot_exists = None
+#         if os.path.isfile("./db.sqlite3") == False:
+#             logging.debug("chatbot_exists is False")
+#             self.chatbot_exists = False
+#         else:
+#             logging.debug("chatbot_exists is True")
+#             self.chatbot_exists = True
 
-        self.chatBot = CHATBOT("Chatbot", tagger_language=self.nlp)
-        #self.chatBot = ChatBot("Chatbot", tagger_language="en")
-        self.trainer = ChatterBotCorpusTrainer(self.chatBot)
+#         self.chatBot = CHATBOT("Chatbot", tagger_language=self.nlp)
+#         #self.chatBot = ChatBot("Chatbot", tagger_language="en")
+#         self.trainer = ChatterBotCorpusTrainer(self.chatBot)
 
-        pass
+#         pass
     
-    def train_bot(self):
-        logging.debug("Training bot")
-        if self.chatbot_exists == False:
-         self.trainer.train("./Data/training/export.json")
-         self.trainer.train("./Data/training/messages.json")
-         #del self.trainer     
+#     def train_bot(self):
+#         logging.debug("Training bot")
+#         if self.chatbot_exists == False:
+#          self.trainer.train("./Data/training/export.json")
+#          self.trainer.train("./Data/training/messages.json")
+#          #del self.trainer     
 
-    def get_response(self, user_message):
-       bot = self.chatBot.get_response(text=user_message,search_text=user_message)
-       print(bot.text)
-       return bot.text
+#     def get_response(self, user_message):
+#        bot = self.chatBot.get_response(text=user_message,search_text=user_message)
+#        print(bot.text)
+#        return bot.text
 
 if __name__ == '__main__':
     print('Creating GUI')

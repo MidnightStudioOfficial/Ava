@@ -1,14 +1,8 @@
-from core.engine.Engine import ConversationalEngine
-from core.engine.Conversation import Conversation
+from core.chatbot.chatbot import Chatbot
 
-trainingdata='Data/training.csv'
-articulationdata='Data/articulations.csv'
+c = Chatbot()
 
-engine = ConversationalEngine(lemmatize_data=True, filepath=trainingdata, modelpath=None)
-currentConversation = Conversation(engine=engine, articulationdata=articulationdata)
-user = input("enter text")
-payload = currentConversation.interact(user, returnPayload=True)
-response = payload.get('articulation')
-print(payload.get('probability'))
-print(payload.get('probability_matrix'))
-print(response)
+user = input("ENTER:")
+print(c.get_response(user))
+print(c.get_response("play music"))
+print(c.get_response("play some music"))

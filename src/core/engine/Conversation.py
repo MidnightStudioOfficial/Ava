@@ -1,9 +1,9 @@
-from core.engine.Engine import ConversationalEngine
+#from core.engine.Engine import ConversationalEngine
 from core.engine.ArticulationMapper import ArticulationMapper
 from collections import namedtuple
 
 class Conversation():
-    def __init__(self, engine: ConversationalEngine, articulationdata: str):
+    def __init__(self, engine, articulationdata: str): #: ConversationalEngine
         '''
         arguments: 
         app -- any object type, for reference by the conversation
