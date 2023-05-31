@@ -1,4 +1,4 @@
-from Engine2 import ConversationalEngine
+from Engine import ConversationalEngine
 from Conversation import Conversation
 
 trainingdata='training.csv'
