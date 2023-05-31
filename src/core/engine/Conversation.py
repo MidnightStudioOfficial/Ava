@@ -1,5 +1,5 @@
-from Engine2 import ConversationalEngine
-from ArticulationMapper import ArticulationMapper
+from core.engine.Engine import ConversationalEngine
+from core.engine.ArticulationMapper import ArticulationMapper
 from collections import namedtuple
 
 class Conversation():

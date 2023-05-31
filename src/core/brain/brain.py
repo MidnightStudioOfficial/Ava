@@ -1,3 +1,7 @@
+# Author: MidnightStudioOfficial
+# License: MIT
+# Description: This script can sumulate a human brain
+
 import matplotlib.pyplot as plt
 from nltk.sentiment import SentimentIntensityAnalyzer
 
