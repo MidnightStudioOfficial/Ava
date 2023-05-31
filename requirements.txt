@@ -1,0 +1,4 @@
+https://github.com/AnimalStudioOfficial/ChatterBot.git
+pyttsx3
+spacy
+customtkinter
