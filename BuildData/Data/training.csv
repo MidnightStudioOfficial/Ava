@@ -1,0 +1,28 @@
+intent_name,sample_utterance
+music,can you play some music
+
+
+music,Could you please play some music
+
+
+music,"Play my favorite song, please."
+music,"play music"
+
+default,"(NOT_FOUND)"
+default,"lets chat"
+default,"How are you doing today?"
+default,"Do you have any pets?"
+default,"Do you have any plans for the weekend?"
+default,"Hey, how's it going?"
+default,"What have you been up to lately?"
+default,"What's your favorite hobby?"
+default,"What's your favorite way to unwind and relax after a long day?"
+
+
+
+default,"Have you seen any good movies or TV shows lately?"
+default,"Tell me a joke."
+default,"Tell me a fun fact about dogs."
+default,"Please correct the grammar in this sentence."
+default,"Can you help me with a math problem?"
+default,"What can you do for me?"
