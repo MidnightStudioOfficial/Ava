@@ -10,6 +10,11 @@ class Brain:
         # Initialize mood to 0.0 and create an empty list for mood history
         self.mood = 0.0
         self.mood_history = []
+        
+        self.thought = ""
+        self.thoughts = []
+        self.traits = []
+        
         # Create an instance of the SentimentIntensityAnalyzer
         self.sentiment_analyzer = SentimentIntensityAnalyzer()
 
