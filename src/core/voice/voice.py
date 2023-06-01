@@ -12,6 +12,8 @@ class Voice:
       
      def __del__(self):
          print("Destructor called, cleaning up Voice class")
+         if self.engine.isBusy == True:
+             self.engine.stop()
          del self.engine
          del self.voices
      def say(self, text) -> None:
