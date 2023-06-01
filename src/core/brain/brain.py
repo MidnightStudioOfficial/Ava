@@ -121,8 +121,10 @@ class Brain:
      global stop
      if not stop:
         self.do_tick()
-        threading.Timer(180, self.run_every_3_minutes).start() #180
-        
+        self.timer = threading.Timer(180, self.run_every_3_minutes) #180
+        self.timer.daemon = True
+        self.timer.start()
+    
     def start(self):
         # Start the repeating function in a separate thread
         thread = threading.Thread(target=self.run_every_3_minutes)

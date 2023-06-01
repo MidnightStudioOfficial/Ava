@@ -1,8 +1,22 @@
-from core.chatbot.chatbot import Chatbot
+from core.skill.skill import Skills
 
-c = Chatbot()
 
-user = input("ENTER:")
-print(c.get_response(user))
-print(c.get_response("play music"))
-print(c.get_response("play some music"))
+
+s = Skills("Data")
+
+# load skill sample data
+training_sentences = []
+training_labels = []
+labels = []
+responses = []
+    
+for intent, skill in s.skills.items():
+    for sample in skill.samples:
+        training_sentences.append(sample)
+        training_labels.append(intent)
+    if intent not in labels:
+        labels.append(intent)
+        
+print(training_sentences)
+print(training_labels)
+print(labels)
