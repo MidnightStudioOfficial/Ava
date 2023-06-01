@@ -10,9 +10,20 @@ class Voice:
          self.engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
          self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
       
+     def __del__(self):
+         print("Destructor called, cleaning up Voice class")
+         del self.engine
+         del self.voices
      def say(self, text) -> None:
         self.engine.say(text)
         self.engine.runAndWait()
      
-     def change_voice(self, new_voice):
+     def change_voice(self, new_voice: int) -> None:
         self.engine.setProperty('voice', self.voices[new_voice].id)
+    
+     def change_rate(self, new_rate):
+         """
+         Adjust rate to words per minute
+         new_rate: words per minute
+         """
+         self.engine.setProperty('rate', new_rate)  
