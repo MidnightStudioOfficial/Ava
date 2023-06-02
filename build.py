@@ -1,7 +1,7 @@
 import os
 import shutil
 
-#os.system("pyinstaller --collect-all chatterbot --distpath ./bin ./src/main.py")
+#os.system("pyinstaller --collect-all chatterbot --collect-all comtypes --distpath ./bin ./src/main.py")
 os.system("pyinstaller --distpath ./bin main.spec")
 #shutil.copy("BuildData/customtkinter", "bin/main")
 
