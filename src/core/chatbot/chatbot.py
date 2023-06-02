@@ -39,6 +39,10 @@ class ChatbotProfile:
           self.profile_data["brain"]["mood"] = brain.mood
           self.profile_data["brain"]["thought"] = brain.thought
       
+      def _set_profile_data(self):
+          brain.mood = self.profile_data["brain"]["mood"]
+          brain.thought = self.profile_data["brain"]["thought"]
+      
       def load_profile(self):
         # Open the JSON file
         try:
@@ -55,6 +59,7 @@ class ChatbotProfile:
            print("File not found")
         except json.JSONDecodeError:
            print("Invalid JSON syntax")
+        self._set_profile_data()
       
       def save_profile(self):
        self.update_profile()

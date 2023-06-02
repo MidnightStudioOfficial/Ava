@@ -9,6 +9,14 @@ import threading
 
 stop = False
 
+class Traits:
+    def __init__(self) -> None:
+       self.traits_available = {
+           "depression": {
+               "mood_score": -0.5
+           }
+       }
+
 class Brain:
     def __init__(self):
         # Initialize mood to 0.0 and create an empty list for mood history
