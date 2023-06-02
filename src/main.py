@@ -1,7 +1,6 @@
 # Author: MidnightStudioOfficial
 # License: MIT
 # Description: This is the main script that connects and runs everything
-
 import tkinter as tk
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
