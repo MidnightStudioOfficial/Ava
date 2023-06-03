@@ -1,14 +1,23 @@
+from tkinter import *
+import tkinter as tk
+from tkinter import ttk
+from tkinter.scrolledtext import ScrolledText
+import customtkinter as ctk
+from os.path import join, dirname, realpath
+import logging
+from PIL import Image
+
 chatMode = 1
 
-############ ATTACHING BOT/USER CHAT ON CHAT SCREEN ###########
-def attachTOframe(text,bot=False):
-    if bot:
-        botchat = Label(chat_frame,text=text, bg=botChatTextBg, fg=botChatText, justify=LEFT, wraplength=250, font=('Montserrat',12, 'bold'))
-        botchat.pack(anchor='w',ipadx=5,ipady=5,pady=5)
-    else:
-        userchat = Label(chat_frame, text=text, bg=userChatTextBg, fg='white', justify=RIGHT, wraplength=250, font=('Montserrat',12, 'bold'))
-        userchat.pack(anchor='e',ipadx=2,ipady=2,pady=5)
+botChatTextBg = "#007cc7"
+botChatText = "white"
+userChatTextBg = "#4da8da"
 
+chatBgColor = '#12232e'
+background = '#203647'
+textColor = 'white'
+AITaskStatusLblBG = '#203647'
+KCS_IMG = 1 #0 for light, 1 for dark
 
 ### SWITCHING BETWEEN FRAMES ###
 def raise_frame(frame):
@@ -20,7 +29,7 @@ class ChatBotGUI:
     def __init__(self, master):
         self.master = master
         master.title("ChatBot")
-        master.geometry("600x600")
+        master.geometry("600x688")
         #master.resizable(False, False)
         # set grid layout 1x2
         master.grid_rowconfigure(0, weight=1)
@@ -307,3 +316,11 @@ class ChatBotGUI:
         self.chat_frame.configure(state='disabled')
         # Automatically scroll to the bottom of the chat history
         self.chat_frame.yview(tk.END)
+        
+
+if __name__ == '__main__':
+    print('Creating GUI')
+    root = ctk.CTk()
+    print('Creating Ava Chatbot and taining')
+    gui = ChatBotGUI(root)
+    root.mainloop()
