@@ -41,9 +41,10 @@ class ChatBotGUI:
         self.expanded = False # Check if it is completely exanded
         
         image_path = join(dirname(realpath(__file__)), "Data/assets")
-        self.logo_image = ctk.CTkImage(Image.open(join(image_path, "my-Ava.png")), size=(26, 26))
-        self.large_test_image = ctk.CTkImage(Image.open(join(image_path, "text.png")), size=(290, 118)) #size=(500, 150)
+        self.logo_image = ctk.CTkImage(Image.open(join(image_path, "ava.jfif")), size=(26, 26))
+        self.large_test_image = ctk.CTkImage(Image.open(join(image_path, "Welcome.png")), size=(290, 118)) #size=(500, 150)
         self.image_icon_image = ctk.CTkImage(Image.open(join(image_path, "home.png")), size=(20, 20))
+        self.image_weather_icon_image = ctk.CTkImage(Image.open(join(image_path, "weather.png")), size=(20, 20))
         
         self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
         self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
@@ -96,9 +97,11 @@ class ChatBotGUI:
         self.home_frame_large_image_label = ctk.CTkLabel(self.home_frame, text="", image=self.large_test_image)
         self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
 
-        self.home_frame_button_1 = ctk.CTkButton(self.home_frame, text="", image=self.image_icon_image)
-        self.home_frame_button_1.grid(row=1, column=0, padx=20, pady=10)
-        self.home_frame_button_2 = ctk.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="right")
+        self.home_frame_label_1 = ctk.CTkLabel(self.home_frame, text="Welcome back!", font=ctk.CTkFont(family='Lucida Console', size=15, weight="bold")) # Welcome text
+        self.home_frame_label_1.grid(row=1, column=0, padx=20, pady=10)
+        #self.home_frame_button_1 = ctk.CTkButton(self.home_frame, text="", image=self.image_icon_image)
+        #self.home_frame_button_1.grid(row=1, column=0, padx=20, pady=10)
+        self.home_frame_button_2 = ctk.CTkButton(self.home_frame, text="Get the Weather", image=self.image_weather_icon_image, compound="right")
         self.home_frame_button_2.grid(row=2, column=0, padx=20, pady=10)
         self.home_frame_button_3 = ctk.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="top")
         self.home_frame_button_3.grid(row=3, column=0, padx=20, pady=10)
@@ -107,13 +110,6 @@ class ChatBotGUI:
 
         # create second frame
         self.second_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
-        #w_width, w_height = 400, 650
-        #s_width, s_height = master.winfo_screenwidth(), master.winfo_screenheight()
-        #x, y = (s_width/2)-(w_width/2), (s_height/2)-(w_height/2)
-        #master.geometry('%dx%d+%d+%d' % (w_width,w_height,x,y-30)) #center location of the screen
-       # root.configure(bg=background)
-        # root.resizable(width=False, height=False)
-        #self.second_frame.pack_propagate(0)
 
         self.profile_data = None
         self.root1 = ctk.CTkFrame(self.second_frame, bg_color=chatBgColor)
@@ -123,34 +119,27 @@ class ChatBotGUI:
         for f in (self.root1, self.root2, self.root3):
             f.grid(row=0, column=0, sticky='news')    
         
-        #self.canvas = ctk.CTkCanvas(parent, width=500, height=150)
-        #self.canvas.pack()
 
-        #self.profile_icon = ctk.CTkImage()
         self.chat_frame = ctk.CTkTextbox(self.root1, width=380,height=551,fg_color=chatBgColor)
-        #self.profile_label.pack()
         self.chat_frame.pack(padx=10)
-        #chat_frame.grid(padx=10)
         #self.chat_frame.pack_propagate(0)
+        
         self.bottomFrame1 = ctk.CTkFrame(self.root1, height=100,fg_color="transparent", bg_color='#dfdfdf') #, bg_color='#dfdfdf'
         self.bottomFrame1.pack(fill=X, side=BOTTOM)
-        #bottomFrame1.place(relx=0.5, rely=0.85, relwidth=0.7, relheight=0.1, anchor='n')
         self.VoiceModeFrame = ctk.CTkFrame(self.bottomFrame1,fg_color="transparent")
         self.VoiceModeFrame.pack(fill=BOTH)
         self.TextModeFrame = ctk.CTkFrame(self.bottomFrame1,fg_color="transparent") #, bg_color='#dfdfdf'
         self.TextModeFrame.pack(fill=BOTH)
-
-        #self.VoiceModeFrame.pack_forget()
+        
         self.TextModeFrame.pack_forget()
 
-        self.cblLightImg = PhotoImage(file = "Data/images/centralButton.png") #ctk.CTkImage(Image.open(join(join(dirname(realpath(__file__)), "Data/images"), "centralButton.png")))
+        self.cblLightImg = PhotoImage(file = "Data/images/centralButton.png")
         self.cblDarkImg = PhotoImage(file = "Data/images/centralButton1.png")
         self.cblimage=self.cblDarkImg
-        self.cbl = ctk.CTkLabel(self.VoiceModeFrame, image=self.cblimage, fg_color="transparent") #, fg_color='white', bg_color='#dfdfdf'
+        self.cbl = ctk.CTkLabel(self.VoiceModeFrame, image=self.cblimage, fg_color="transparent")
         self.cbl.pack(pady=17)
-        self.AITaskStatusLbl = ctk.CTkLabel(self.VoiceModeFrame, text='    Offline', font=('montserrat', 16), fg_color="#203647") #, bg_color=AITaskStatusLblBG, fg_color='white'
-        self.AITaskStatusLbl.place(x=165,y=32) #x=140 x=165
-        
+        self.AITaskStatusLbl = ctk.CTkLabel(self.VoiceModeFrame, text='    Offline', font=('montserrat', 16), fg_color="#203647")
+        self.AITaskStatusLbl.place(x=165,y=32)
         
         #Keyboard Button
         self.kbphLight = PhotoImage(file = "Data/images/keyboard.png")
@@ -171,15 +160,13 @@ class ChatBotGUI:
         #Text Field
         self.TextFieldImg = PhotoImage(file='Data/images/textField.png')
         self.UserFieldLBL = ctk.CTkLabel(self.TextModeFrame,text='', image=self.TextFieldImg,fg_color="transparent") #, bg_color='#dfdfdf', text_color='white'
-        #self.UserFieldLBL = ctk.CTkEntry(self.TextModeFrame, text_color='white', bg_color='#dfdfdf', font=('Montserrat', 16))
         self.UserFieldLBL.pack(pady=17, side=LEFT, padx=10)
         self.UserField = ctk.CTkEntry(self.TextModeFrame, text_color='white', bg_color='#203647', font=('Montserrat', 16),width=304) #width=22
         self.UserField.place(x=16, y=30) #x=20
         self.UserField.insert(0, "Ask me anything...")
         self.UserField.bind('<Return>', lambda event: self.send_message())
         raise_frame(self.root1)
-        #ProfileClass(self.second_frame, self)
-
+        
         # Create chat history display
         #self.chat_history = ctk.CTkTextbox(self.second_frame, state='disabled', wrap='word', font=('Arial', 12)) #ScrolledText
         #self.chat_history.place(relx=0.5, rely=0.2, relwidth=0.95, relheight=0.6, anchor='n')
