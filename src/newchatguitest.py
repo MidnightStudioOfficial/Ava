@@ -317,10 +317,10 @@ class ChatBotGUI:
         self.UserFieldLBL = ctk.CTkLabel(self.TextModeFrame,text='', image=self.TextFieldImg,fg_color="transparent") #, bg_color='#dfdfdf', text_color='white'
         #self.UserFieldLBL = ctk.CTkEntry(self.TextModeFrame, text_color='white', bg_color='#dfdfdf', font=('Montserrat', 16))
         self.UserFieldLBL.pack(pady=17, side=LEFT, padx=10)
-        self.UserField = ctk.CTkEntry(self.TextModeFrame, text_color='white', bg_color='#203647', font=('Montserrat', 16),width=312) #width=22
-        self.UserField.place(x=20, y=30)
+        self.UserField = ctk.CTkEntry(self.TextModeFrame, text_color='white', bg_color='#203647', font=('Montserrat', 16),width=304) #width=22
+        self.UserField.place(x=16, y=30) #x=20
         self.UserField.insert(0, "Ask me anything...")
-        #UserField.bind('<Return>', keyboardInput)
+        self.UserField.bind('<Return>', lambda event: self.send_message())
         raise_frame(self.root1)
         #ProfileClass(self.second_frame, self)
 
@@ -441,8 +441,8 @@ class ChatBotGUI:
         
     def send_message(self):
         # Get user input and clear input field
-        user_message = self.user_input.get()
-        self.user_input.delete(0, tk.END)
+        user_message = self.UserField.get()
+        self.UserField.delete(0, tk.END)
 
         # Add user message to chat history
         self._add_to_chat_history("You: " + user_message)
@@ -455,11 +455,11 @@ class ChatBotGUI:
         Adds new text to the chat history
         """
         # Enable text editing and add message to chat history
-        self.chat_history.configure(state='normal')
-        self.chat_history.insert(tk.END, message + "\n")
-        self.chat_history.configure(state='disabled')
+        self.chat_frame.configure(state='normal')
+        self.chat_frame.insert(tk.END, message + "\n")
+        self.chat_frame.configure(state='disabled')
         # Automatically scroll to the bottom of the chat history
-        self.chat_history.yview(tk.END)
+        self.chat_frame.yview(tk.END)
 
 
 
