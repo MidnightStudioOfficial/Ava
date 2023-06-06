@@ -7,6 +7,25 @@ from os.path import join, dirname, realpath
 import logging
 from PIL import Image
 
+DEBUG_CHATBOT = None
+DEBUG_GUI = None
+PEODUCTION = None
+
+print("Importing user_profile")
+import user_profile
+
+if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
+    
+ print('Importing pyttsx3')
+ from pyttsx3 import init as pyttsx3_init
+
+ print("Importing chatbot")
+ from core.chatbot.chatbot import Chatbot
+
+print("Importing DONE")
+
+logging.basicConfig(level=logging.INFO)
+
 chatMode = 1
 
 botChatTextBg = "#007cc7"
@@ -22,8 +41,6 @@ KCS_IMG = 1 #0 for light, 1 for dark
 ### SWITCHING BETWEEN FRAMES ###
 def raise_frame(frame):
     frame.tkraise()
-
-
 
 class ChatBotGUI:
     def __init__(self, master):
@@ -205,15 +222,28 @@ class ChatBotGUI:
         # select default frame
         self.select_frame_by_name("home")
         
+        
+        # Set up voice
+        self.engine = pyttsx3_init()
+        self.voices = self.engine.getProperty('voices')
+        self.engine.setProperty('voice', self.voices[2].id)  # Index 1 for female voice
+        self.engine.setProperty('rate', 150)  # Adjust rate to 150 words per minute
+        self.engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
+        self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
 
 
         # Delete useless stuff
         del image_path
+        del self.voices
         del self.large_test_image
         del self.home_image
         del self.chat_image
         del self.add_user_image
         del self.logo_image
+        
+        # Initialize chatbot
+        self.chatbot = Chatbot()
+        self.chatbot.train_bot() # Train the chatbot
 
   
 
@@ -293,7 +323,10 @@ class ChatBotGUI:
         self._add_to_chat_history("You: " + user_message)
 
         # Get response from chatbot and add to chat history
+        bot_response = self.chatbot.get_response(user_message)
         self._add_to_chat_history("ChatBot: ")
+        self.engine.say(bot_response)
+        self.engine.runAndWait()
 
     def _add_to_chat_history(self, message):
         """
