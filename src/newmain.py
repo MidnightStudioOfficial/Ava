@@ -45,6 +45,8 @@ class ChatBotGUI:
         self.large_test_image = ctk.CTkImage(Image.open(join(image_path, "Welcome.png")), size=(290, 118)) #size=(500, 150)
         self.image_icon_image = ctk.CTkImage(Image.open(join(image_path, "home.png")), size=(20, 20))
         self.image_weather_icon_image = ctk.CTkImage(Image.open(join(image_path, "weather.png")), size=(20, 20))
+        self.image_news_icon_image = ctk.CTkImage(Image.open(join(image_path, "news.png")), size=(20, 20))
+        self.image_fire_icon_image = ctk.CTkImage(Image.open(join(image_path, "fire.png")), size=(20, 20))
         
         self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
         self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
@@ -103,9 +105,9 @@ class ChatBotGUI:
         #self.home_frame_button_1.grid(row=1, column=0, padx=20, pady=10)
         self.home_frame_button_2 = ctk.CTkButton(self.home_frame, text="Get the Weather", image=self.image_weather_icon_image, compound="right")
         self.home_frame_button_2.grid(row=2, column=0, padx=20, pady=10)
-        self.home_frame_button_3 = ctk.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="top")
+        self.home_frame_button_3 = ctk.CTkButton(self.home_frame, text="Read the News", image=self.image_news_icon_image, compound="right")
         self.home_frame_button_3.grid(row=3, column=0, padx=20, pady=10)
-        self.home_frame_button_4 = ctk.CTkButton(self.home_frame, text="CTkButton", image=self.image_icon_image, compound="bottom", anchor="w")
+        self.home_frame_button_4 = ctk.CTkButton(self.home_frame, text="Get Cozy and Chat", image=self.image_fire_icon_image, compound="right", anchor="w")
         self.home_frame_button_4.grid(row=4, column=0, padx=20, pady=10)
 
         # create second frame
