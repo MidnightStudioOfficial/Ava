@@ -7,7 +7,7 @@ from os.path import join, dirname, realpath
 import logging
 from PIL import Image
 
-DEBUG_CHATBOT = False #None
+DEBUG_CHATBOT = None #None
 DEBUG_GUI = None
 PEODUCTION = None
 
