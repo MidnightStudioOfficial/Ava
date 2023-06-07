@@ -9,6 +9,7 @@ class Debug:
     
     def update_debug_info_DEBUG(self):
         self.debug_info["gc"] = gc.get_count()
+        self.debug_info["version"] = "V1.0"
     
     def get_debug_info(self):
         return self.debug_info
@@ -18,7 +19,14 @@ class DebugGUI(ctk.CTkToplevel):
         super().__init__(*args, **kwargs)
         self.debug = Debug()
         self.layout = {
-            "gc": "test"
+            "gc": {
+                "value": "test",
+                "type": "memory"
+            },
+            "version": {
+                "value": "test",
+                "type": "other"
+            }
         }
 
         self.frame = ctk.CTkFrame(master=self)
@@ -34,10 +42,7 @@ class DebugGUI(ctk.CTkToplevel):
         self.entry = ctk.CTkEntry(master=self.frame, placeholder_text="search", width=200)
         self.entry.grid(row=0, column=1, pady=10, sticky="e")
         
-        self.about_button = ctk.CTkButton(master=self.frame, text="i", hover=False, width=30)
-        self.about_button.grid(row=0, column=2, padx=10, pady=10, sticky="e")
-        
-        self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All","pip", "manual"])
+        self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All","memory", "other"], command=self.filter_list)
         self.option_type.set("All")
         self.option_type.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
@@ -56,8 +61,27 @@ class DebugGUI(ctk.CTkToplevel):
             i.pack_forget()
     def update_debug_info(self, key, value):
         self.clear_list()
-        self.layout[key] = value
+        self.layout[key]["value"] = value
         self.create_list()
+    def filter_list(self, type_):
+        if type_=="All":
+            for i in self.item_frame.values():
+                i.pack(expand=True, fill="x", padx=5, pady=5)
+            return    
+        elif type_=="memory":
+            self.clear_list()
+            for i in self.layout.keys():
+                if self.layout[i]["type"]=="memory":
+                    self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
+            return
+        elif type_=="other":
+            self.clear_list()
+            for i in self.layout.keys():
+                if self.layout[i]["type"]=="other":
+                    self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
+            return
+            
+        self.clear_list()
     def add_item(self, name, value):
         """ add new package to the list """
         self.item_frame[name] = ctk.CTkFrame(self.scrollable_frame)
@@ -84,7 +108,7 @@ class DebugGUI(ctk.CTkToplevel):
         
     def create_list(self):
         for key in self.layout:
-            value = self.layout[key]
+            value = self.layout[key]["value"]
             self.add_item(str(key), str(value))
             
     def display_debug_info(self):
@@ -94,9 +118,10 @@ class DebugGUI(ctk.CTkToplevel):
             for key in new_info:
                 value = new_info[key]
                 self.update_debug_info(str(key), str(value))
+                self.filter_list(self.option_type.get())
                 
             #print(self.debug.get_debug_info())
-            time.sleep(1) #1
+            time.sleep(3) #1
 
 class App(ctk.CTk):
     def __init__(self, *args, **kwargs):
