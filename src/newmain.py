@@ -6,10 +6,15 @@ import customtkinter as ctk
 from os.path import join, dirname, realpath
 import logging
 from PIL import Image
+from threading import Thread
+from multiprocessing import Process
 
 DEBUG_CHATBOT = None #None
 DEBUG_GUI = None
 PEODUCTION = None
+
+#from core.voice.mic import SpeechRecognizer
+#recognizer = SpeechRecognizer()
 
 print("Importing user_profile")
 import user_profile
@@ -229,7 +234,7 @@ class ChatBotGUI:
         self.UserField = ctk.CTkEntry(self.TextModeFrame, text_color='white', bg_color='#203647', font=('Montserrat', 16),width=304) #width=22
         self.UserField.place(x=16, y=30) #x=20
         self.UserField.insert(0, "Ask me anything...")
-        self.UserField.bind('<Return>', lambda event: self.send_message())
+        self.UserField.bind('<Return>', lambda event: self.send_message(None))
         raise_frame(self.root1)
         
         # Create chat history display
@@ -288,6 +293,10 @@ class ChatBotGUI:
         del self.add_user_image
         del self.logo_image
         
+        
+        self.recognize_thread = None
+        self.stoped_lisening = False
+        
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
          # Initialize chatbot
          self.chatbot = Chatbot()
@@ -327,7 +336,41 @@ class ChatBotGUI:
 
     def debug_click(self):
         DebugGUI(self.master)
-    
+    def record(self, clearChat=True, iconDisplay=True):
+        import speech_recognition as sr
+        print('\nListening...')
+        self.AITaskStatusLbl.configure(text="Listening...")
+        r = sr.Recognizer()
+        r.dynamic_energy_threshold = False
+        r.energy_threshold = 4000
+        with sr.Microphone() as source:
+            r.adjust_for_ambient_noise(source)
+            audio = r.listen(source)
+            said = ""
+            try:
+               # AITaskStatusLbl['text'] = 'Processing...'
+                self.AITaskStatusLbl.configure(text="Processing...")
+                said = r.recognize_google(audio)
+                print(f"\nUser said: {said}")
+                #if iconDisplay: Label(chat_frame, image=userIcon, bg=chatBgColor).pack(anchor='e',pady=0)
+                #attachTOframe(said)
+            except Exception as e:
+                print(e)
+                # speak("I didn't get it, Say that again please...")
+                #if "connection failed" in str(e):
+                    #speak("Your System is Offline...", True, True)
+                return 'None'
+        return said.lower()
+    def voiceMedium(self):
+        while True:
+          if chatMode == 0:
+              print("chatmode")
+              break
+          query = self.record()
+          if query == 'None': continue
+          self.send_message(query)
+
+        
     def changeChatMode(self):
         global chatMode
         if chatMode == 1:
@@ -344,6 +387,8 @@ class ChatBotGUI:
 
             # Set the chat mode to 0 (text mode)
             chatMode = 0
+            if type(self.recognize_thread) == type(Thread):
+                self.recognize_thread.join()
         else:
             # If the current chat mode is not 1 (text mode)
             # Set the volume to full (commented out)
@@ -353,17 +398,25 @@ class ChatBotGUI:
             self.TextModeFrame.pack_forget()
             self.VoiceModeFrame.pack(fill=BOTH)
 
+
             # Set focus to the root window (commented out)
             # self.root.focus()
 
             # Set the chat mode to 1 (voice mode)
             chatMode = 1
+            try:
+                # pass
+                if type(self.recognize_thread) != type(Thread):
+                 self.recognize_thread = Thread(target=self.voiceMedium, daemon=True).start()
+            except:
+                pass
 
     def home_button_event(self):
         self.select_frame_by_name("home")
 
     def frame_2_button_event(self):
         self.select_frame_by_name("frame_2")
+    
 
     def frame_3_button_event(self):
         self.select_frame_by_name("frame_3")
@@ -380,7 +433,7 @@ class ChatBotGUI:
         """
         ctk.set_appearance_mode(new_appearance_mode)  
         
-    def send_message(self):
+    def send_message(self, text: None):
         """
         Sends a message from the user to the chatbot and displays the bot's response.
 
@@ -389,12 +442,15 @@ class ChatBotGUI:
         It also uses a text-to-speech engine to speak the bot response.
         """
         # Get user input and clear input field
-        user_message = self.UserField.get()
-        self.UserField.delete(0, tk.END)
+        if text == None:
+         user_message = self.UserField.get()
+         self.UserField.delete(0, tk.END)
+        else:
+            user_message = text
 
         # Add user message to chat history
         self._add_to_chat_history("You: " + user_message)
-
+        self.AITaskStatusLbl.configure(text="    Working")
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
             # Get response from chatbot and add to chat history
             bot_response = self.chatbot.get_response(user_message)
@@ -403,6 +459,8 @@ class ChatBotGUI:
             # Use text-to-speech engine to speak the bot response
             self.engine.say(bot_response)
             self.engine.runAndWait()
+            self.AITaskStatusLbl.configure(text="    Offline")
+            
 
 
     def _add_to_chat_history(self, message):
