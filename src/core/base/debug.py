@@ -60,8 +60,8 @@ class DebugGUI(ctk.CTkToplevel):
         for i in self.item_frame.values():
             i.pack_forget()
     def update_debug_info(self, key, value):
-        self.clear_list()
         self.layout[key]["value"] = value
+        self.clear_list()
         self.create_list()
     def filter_list(self, type_):
         if type_=="All":
