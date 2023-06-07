@@ -7,8 +7,8 @@ from os.path import isfile
 import logging
 import json
 print('Importing chatterbot')
-from chatterbot import ChatBot as CHATBOT
-from chatterbot.trainers import ChatterBotCorpusTrainer
+from chatterbot2 import ChatBot as CHATBOT
+from chatterbot2.trainers import ChatterBotCorpusTrainer
 print('Importing spacy (This may take a while!)')
 from spacy import load
 print("Importing DONE")
