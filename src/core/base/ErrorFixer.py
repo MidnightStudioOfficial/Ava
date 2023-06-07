@@ -5,5 +5,5 @@ class ErrorFixer():
     def __init__(self) -> None:
         pass
     
-    def fix_missing_file(self):
+    def fix_missing_file(self, file_name: str):
         pass

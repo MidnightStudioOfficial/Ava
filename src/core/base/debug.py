@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import tkinter as tk
 import threading
 import gc
 import time

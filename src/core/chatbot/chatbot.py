@@ -74,10 +74,14 @@ class ChatbotProfile:
 
 class Chatbot:
     def __init__(self) -> None:
+        # Initialize the conversational engine and conversation
         self.engine = ConversationalEngine(lemmatize_data=True, filepath=trainingdata, modelpath=None)
         self.currentConversation = Conversation(engine=self.engine, articulationdata=articulationdata)
-        # Initialize chatbot model here
+
+        # Load the NLP model
         self.nlp = load("en_core_web_sm")
+
+        # Check if the chatbot database exists
         self.chatbot_exists = None
         if isfile("./db.sqlite3") == False:
             logging.debug("chatbot_exists is False")
@@ -86,32 +90,32 @@ class Chatbot:
             logging.debug("chatbot_exists is True")
             self.chatbot_exists = True
 
+        # Initialize the chatbot and trainer
         self.chatBot = CHATBOT("Chatbot", tagger_language=self.nlp)
-        #self.chatBot = ChatBot("Chatbot", tagger_language="en")
         self.trainer = ChatterBotCorpusTrainer(self.chatBot)
 
     def train_bot(self) -> None:
+        # Train the chatbot if it doesn't already exist
         logging.debug("Training bot")
         if self.chatbot_exists == False:
-         self.trainer.train("./Data/training/export.json")
-         self.trainer.train("./Data/training/messages.json")
-         #del self.trainer     
-    
+            self.trainer.train("./Data/training/export.json")
+            self.trainer.train("./Data/training/messages.json")
+
     def get_skill(self, input):
+        # Check if the input is a skill
         if input != "(NOT_FOUND)":
             return True
         else:
             return False
-    
+
     def get_response(self, input):
+        # Get a response from the conversational engine or chatbot
         payload = self.currentConversation.interact(input, returnPayload=True)
         response = payload.get('articulation')
         is_skill = self.get_skill(response)
         print(payload.get('probability_matrix'))
         if is_skill == False:
-            bot = self.chatBot.get_response(text=input,search_text=input)
+            bot = self.chatBot.get_response(text=input, search_text=input)
             print(bot.text)
             return bot.text
         return response
-        
-        

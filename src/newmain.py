@@ -7,12 +7,15 @@ from os.path import join, dirname, realpath
 import logging
 from PIL import Image
 
-DEBUG_CHATBOT = None
+DEBUG_CHATBOT = False #None
 DEBUG_GUI = None
 PEODUCTION = None
 
 print("Importing user_profile")
 import user_profile
+
+print("Importing Debug")
+from core.base.debug import DebugGUI
 
 if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
     
@@ -44,11 +47,17 @@ def raise_frame(frame):
 
 class ChatBotGUI:
     def __init__(self, master):
+        # Initialize the ChatBotGUI object
         self.master = master
+
+        # Set the title and geometry of the master window
         master.title("ChatBot")
         master.geometry("600x688")
-        #master.resizable(False, False)
-        # set grid layout 1x2
+
+        # Prevent the master window from being resized (commented out)
+        # master.resizable(False, False)
+
+        # Set the grid layout to 1 row and 2 columns
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(1, weight=1)
         
@@ -56,14 +65,18 @@ class ChatBotGUI:
         self.max_w = 200 # Maximum width of the frame
         self.cur_width = self.min_w # Increasing width of the frame
         self.expanded = False # Check if it is completely exanded
-        
+
+        # Set the path to the image assets
         image_path = join(dirname(realpath(__file__)), "Data/assets")
+
+        # Create CTkImage objects for various images
         self.logo_image = ctk.CTkImage(Image.open(join(image_path, "ava.jfif")), size=(26, 26))
-        self.large_test_image = ctk.CTkImage(Image.open(join(image_path, "Welcome.png")), size=(290, 118)) #size=(500, 150)
+        self.large_test_image = ctk.CTkImage(Image.open(join(image_path, "Welcome.png")), size=(290, 118))
         self.image_icon_image = ctk.CTkImage(Image.open(join(image_path, "home.png")), size=(20, 20))
         self.image_weather_icon_image = ctk.CTkImage(Image.open(join(image_path, "weather.png")), size=(20, 20))
         self.image_news_icon_image = ctk.CTkImage(Image.open(join(image_path, "news.png")), size=(20, 20))
         self.image_fire_icon_image = ctk.CTkImage(Image.open(join(image_path, "fire.png")), size=(20, 20))
+
         
         self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
         self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
@@ -72,14 +85,17 @@ class ChatBotGUI:
         
         
         # create navigation frame
-        self.navigation_frame = ctk.CTkFrame(master, corner_radius=0)
+        self.navigation_frame = ctk.CTkFrame(master, corner_radius=7) #corner_radius=0
+        # Place the navigation frame in the grid layout at row 0 and column 0
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
         self.navigation_frame.grid_rowconfigure(6, weight=1)
 
+        # Create a CTkLabel object for the navigation frame label with text "Ava", an image, and font size 15
         self.navigation_frame_label = ctk.CTkLabel(self.navigation_frame, text="  Ava", image=self.logo_image,
                                                              compound="left", font=ctk.CTkFont(size=15, weight="bold"))
         self.navigation_frame_label.grid(row=0, column=0, padx=20, pady=20)
 
+        # Create CTkButton objects for the home, chat, settings, DNA, and profile buttons
         self.home_button = ctk.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Home",
                                                    fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                    image=self.home_image, anchor="w", command=self.home_button_event)
@@ -105,14 +121,19 @@ class ChatBotGUI:
                                                       image=self.add_DNA_image, anchor="w", command=self.frame_profile_button_event)
         self.frame_profile_button.grid(row=5, column=0, sticky="ew")
 
+        # Create an option menu for selecting the appearance mode
         self.appearance_mode_menu = ctk.CTkOptionMenu(self.navigation_frame, values=["Light", "Dark", "System"],
-                                                                command=self.change_appearance_mode_event)
+                                                    command=self.change_appearance_mode_event)
+
+        # Place the appearance mode menu in the grid layout at row 6 and column 0 with padding
         self.appearance_mode_menu.grid(row=6, column=0, padx=20, pady=20, sticky="s")
+
         
         # create home frame
         self.home_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         self.home_frame.grid_columnconfigure(0, weight=1)
-
+        
+        # create welcome image
         self.home_frame_large_image_label = ctk.CTkLabel(self.home_frame, text="", image=self.large_test_image)
         self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
 
@@ -127,6 +148,9 @@ class ChatBotGUI:
         self.home_frame_button_4 = ctk.CTkButton(self.home_frame, text="Get Cozy and Chat", image=self.image_fire_icon_image, compound="right", anchor="w")
         self.home_frame_button_4.grid(row=4, column=0, padx=20, pady=10)
 
+        version_button = ctk.CTkButton(master, text="V1.0", width=96, command=self.debug_click)
+        version_button.grid(sticky="se", column=1)
+        
         # create second frame
         self.second_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
 
@@ -137,28 +161,50 @@ class ChatBotGUI:
 
         for f in (self.root1, self.root2, self.root3):
             f.grid(row=0, column=0, sticky='news')    
-        
 
         self.chat_frame = ctk.CTkTextbox(self.root1, width=380,height=551,fg_color=chatBgColor)
         self.chat_frame.pack(padx=10)
         #self.chat_frame.pack_propagate(0)
         
-        self.bottomFrame1 = ctk.CTkFrame(self.root1, height=100,fg_color="transparent", bg_color='#dfdfdf') #, bg_color='#dfdfdf'
-        self.bottomFrame1.pack(fill=X, side=BOTTOM)
-        self.VoiceModeFrame = ctk.CTkFrame(self.bottomFrame1,fg_color="transparent")
-        self.VoiceModeFrame.pack(fill=BOTH)
-        self.TextModeFrame = ctk.CTkFrame(self.bottomFrame1,fg_color="transparent") #, bg_color='#dfdfdf'
-        self.TextModeFrame.pack(fill=BOTH)
-        
-        self.TextModeFrame.pack_forget()
+        # Create a new CTkFrame object with height 100, transparent foreground color and '#dfdfdf' background color
+        self.bottomFrame1 = ctk.CTkFrame(self.root1, height=100, fg_color="transparent", bg_color='#dfdfdf')
 
-        self.cblLightImg = PhotoImage(file = "Data/images/centralButton.png")
-        self.cblDarkImg = PhotoImage(file = "Data/images/centralButton1.png")
-        self.cblimage=self.cblDarkImg
+        # Pack the bottomFrame1 to fill the X direction and be placed at the bottom of its parent widget
+        self.bottomFrame1.pack(fill=X, side=BOTTOM)
+
+        # Create a new CTkFrame object with transparent foreground color
+        self.VoiceModeFrame = ctk.CTkFrame(self.bottomFrame1, fg_color="transparent")
+
+        # Pack the VoiceModeFrame to fill both X and Y directions
+        self.VoiceModeFrame.pack(fill=BOTH)
+
+        # Create a new CTkFrame object with transparent foreground color
+        self.TextModeFrame = ctk.CTkFrame(self.bottomFrame1, fg_color="transparent")
+
+        # Pack the TextModeFrame to fill both X and Y directions
+        self.TextModeFrame.pack(fill=BOTH)
+
+        self.TextModeFrame.pack_forget()
+        
+        # Create PhotoImage objects for the light and dark central button images
+        self.cblLightImg = PhotoImage(file="Data/images/centralButton.png")
+        self.cblDarkImg = PhotoImage(file="Data/images/centralButton1.png")
+
+        # Set the current central button image to the dark image
+        self.cblimage = self.cblDarkImg
+
+        # Create a CTkLabel object with the central button image and transparent foreground color
         self.cbl = ctk.CTkLabel(self.VoiceModeFrame, image=self.cblimage, fg_color="transparent")
+
+        # Pack the central button label with a vertical padding of 17 pixels
         self.cbl.pack(pady=17)
+
+        # Create a CTkLabel object with the text 'Offline', font size 16 and foreground color '#203647'
         self.AITaskStatusLbl = ctk.CTkLabel(self.VoiceModeFrame, text='    Offline', font=('montserrat', 16), fg_color="#203647")
-        self.AITaskStatusLbl.place(x=165,y=32)
+
+        # Place the AI task status label at position (165, 32) in its parent widget
+        self.AITaskStatusLbl.place(x=165, y=32)
+
         
         #Keyboard Button
         self.kbphLight = PhotoImage(file = "Data/images/keyboard.png")
@@ -223,28 +269,29 @@ class ChatBotGUI:
         # select default frame
         self.select_frame_by_name("home")
         
-        
-        # Set up voice
-        self.engine = pyttsx3_init()
-        self.voices = self.engine.getProperty('voices')
-        self.engine.setProperty('voice', self.voices[2].id)  # Index 1 for female voice
-        self.engine.setProperty('rate', 150)  # Adjust rate to 150 words per minute
-        self.engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
-        self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
+        if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
+         # Set up voice
+         self.engine = pyttsx3_init()
+         self.voices = self.engine.getProperty('voices')
+         self.engine.setProperty('voice', self.voices[2].id)  # Index 1 for female voice
+         self.engine.setProperty('rate', 150)  # Adjust rate to 150 words per minute
+         self.engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
+         self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
+         del self.voices
 
 
         # Delete useless stuff
         del image_path
-        del self.voices
         del self.large_test_image
         del self.home_image
         del self.chat_image
         del self.add_user_image
         del self.logo_image
         
-        # Initialize chatbot
-        self.chatbot = Chatbot()
-        self.chatbot.train_bot() # Train the chatbot
+        if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
+         # Initialize chatbot
+         self.chatbot = Chatbot()
+         self.chatbot.train_bot() # Train the chatbot
 
   
 
@@ -278,22 +325,40 @@ class ChatBotGUI:
         else:
             self.profile_frame.grid_forget()
 
-
+    def debug_click(self):
+        DebugGUI(self.master)
     
     def changeChatMode(self):
         global chatMode
-        if chatMode==1:
+        if chatMode == 1:
+            # If the current chat mode is 1 (voice mode)
+            # Mute the volume (commented out)
             # appControl.volumeControl('mute')
+
+            # Hide the VoiceModeFrame and show the TextModeFrame
             self.VoiceModeFrame.pack_forget()
             self.TextModeFrame.pack(fill=BOTH)
+
+            # Set focus to the UserField
             self.UserField.focus()
-            chatMode=0
+
+            # Set the chat mode to 0 (text mode)
+            chatMode = 0
         else:
+            # If the current chat mode is not 1 (text mode)
+            # Set the volume to full (commented out)
             # appControl.volumeControl('full')
+
+            # Hide the TextModeFrame and show the VoiceModeFrame
             self.TextModeFrame.pack_forget()
             self.VoiceModeFrame.pack(fill=BOTH)
-            #self.root.focus()
-            chatMode=1
+
+            # Set focus to the root window (commented out)
+            # self.root.focus()
+
+            # Set the chat mode to 1 (voice mode)
+            chatMode = 1
+
     def home_button_event(self):
         self.select_frame_by_name("home")
 
@@ -316,6 +381,13 @@ class ChatBotGUI:
         ctk.set_appearance_mode(new_appearance_mode)  
         
     def send_message(self):
+        """
+        Sends a message from the user to the chatbot and displays the bot's response.
+
+        This method gets the user input from the UserField, clears the input field, and adds the user message to the chat history.
+        If DEBUG_CHATBOT is None or True, the method gets a response from the chatbot and adds it to the chat history.
+        It also uses a text-to-speech engine to speak the bot response.
+        """
         # Get user input and clear input field
         user_message = self.UserField.get()
         self.UserField.delete(0, tk.END)
@@ -323,11 +395,15 @@ class ChatBotGUI:
         # Add user message to chat history
         self._add_to_chat_history("You: " + user_message)
 
-        # Get response from chatbot and add to chat history
-        bot_response = self.chatbot.get_response(user_message)
-        self._add_to_chat_history("ChatBot: ")
-        self.engine.say(bot_response)
-        self.engine.runAndWait()
+        if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
+            # Get response from chatbot and add to chat history
+            bot_response = self.chatbot.get_response(user_message)
+            self._add_to_chat_history("ChatBot: " + str(bot_response))
+
+            # Use text-to-speech engine to speak the bot response
+            self.engine.say(bot_response)
+            self.engine.runAndWait()
+
 
     def _add_to_chat_history(self, message):
         """
@@ -337,8 +413,10 @@ class ChatBotGUI:
         self.chat_frame.configure(state='normal')
         self.chat_frame.insert(tk.END, message + "\n")
         self.chat_frame.configure(state='disabled')
+
         # Automatically scroll to the bottom of the chat history
         self.chat_frame.yview(tk.END)
+
         
 
 if __name__ == '__main__':
