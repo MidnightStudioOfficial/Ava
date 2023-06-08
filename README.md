@@ -1,6 +1,6 @@
 # Ava
 Ava is a chatbot that makes you happy!
-Help Me Inprove:
+Help Me Inprove by filling out a form:
 https://forms.office.com/r/Ar1heNra7i
 
 ## Requirements
