@@ -14,6 +14,6 @@ then install the python packages:
     pip install -r requirements.txt
 
 ## Contributing
-If you would like to contribute to the Ava project, please feel free to submit a pull request or open an issue on the GitHub repository.
+If you would like to contribute to the Ava project, please feel free to submit a pull request or open an issue on the GitHub repository. The Ava project is an open source initiative that welcomes contributions from the community. Whether you want to fix a bug, add a feature, or improve the documentation, you can use the GitHub platform to collaborate with the developers. To get started, you can fork the repository, make your changes, and then create a pull request to propose your modifications. Alternatively, you can open an issue to report a problem or suggest an enhancement. Thank you for your interest and support!
 ## License
 The Ava project is licensed under the MIT License. See the LICENSE file for more information.
