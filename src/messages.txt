@@ -28,3 +28,5 @@ I feel like crying
 Oh...well, you can cry if you need to, %{name}. Just know that I'm here for you, okay?
 I ate something healthy today!
 Whoo! That's awesome!
+I enjoy talking with you
+Really? Well, that's nice of you to say. Thanks.
