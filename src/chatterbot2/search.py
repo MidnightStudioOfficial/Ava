@@ -68,7 +68,7 @@ class IndexedTextSearch:
         best_confidence_so_far = 0
 
         self.chatbot.logger.info('Processing search results')
-
+        
         # Find the closest matching known statement
         for statement in statement_list:
             confidence = self.compare_statements(input_statement, statement)
