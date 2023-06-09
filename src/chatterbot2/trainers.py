@@ -1,7 +1,7 @@
 import os
 import sys
 import csv
-import time
+from time import time
 from dateutil import parser as date_parser
 from chatterbot.conversation import Statement
 from chatterbot.tagging import PosLemmaTagger
@@ -308,7 +308,7 @@ class UbuntuCorpusTrainer(Trainer):
 
         file_groups = tuple(chunks(file_list, 10000))
 
-        start_time = time.time()
+        start_time = time()
 
         for tsv_files in file_groups:
 
@@ -344,4 +344,4 @@ class UbuntuCorpusTrainer(Trainer):
 
             self.chatbot.storage.create_many(statements_from_file)
 
-        print('Training took', time.time() - start_time, 'seconds.')
+        print('Training took', time() - start_time, 'seconds.')

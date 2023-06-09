@@ -1,4 +1,4 @@
-import string
+from string import punctuation as string_punctuation
 from chatterbot import languages
 
 
@@ -21,7 +21,7 @@ class PosLemmaTagger(object):
 
         self.language = language or languages.ENG
 
-        self.punctuation_table = str.maketrans(dict.fromkeys(string.punctuation))
+        self.punctuation_table = str.maketrans(dict.fromkeys(string_punctuation))
 
         self.nlp = spacy.load("en_core_web_sm")
 

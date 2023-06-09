@@ -9,12 +9,18 @@ import json
 print('Importing chatterbot')
 from chatterbot2 import ChatBot as CHATBOT
 from chatterbot2.trainers import ChatterBotCorpusTrainer
-print('Importing spacy (This may take a while!)')
-from spacy import load
+#print('Importing spacy (This may take a while!)')
+#from spacy import load
 print("Importing DONE")
 
-trainingdata='Data/training.csv'
-articulationdata='Data/articulations.csv'
+Debug = True
+
+if Debug != True:
+ trainingdata='Data/training.csv'
+ articulationdata='Data/articulations.csv'
+else:
+ trainingdata='Data/training_dev.csv'
+ articulationdata='Data/articulations_dev.csv'
 
 logging.basicConfig(level=logging.INFO)
 
@@ -79,7 +85,7 @@ class Chatbot:
         self.currentConversation = Conversation(engine=self.engine, articulationdata=articulationdata)
 
         # Load the NLP model
-        self.nlp = load("en_core_web_sm")
+        #self.nlp = load("en_core_web_sm")
 
         # Check if the chatbot database exists
         self.chatbot_exists = None
@@ -91,7 +97,7 @@ class Chatbot:
             self.chatbot_exists = True
 
         # Initialize the chatbot and trainer
-        self.chatBot = CHATBOT("Chatbot", tagger_language=self.nlp)
+        self.chatBot = CHATBOT("Chatbot") #, tagger_language=self.nlp
         self.trainer = ChatterBotCorpusTrainer(self.chatBot)
 
     def train_bot(self) -> None:
