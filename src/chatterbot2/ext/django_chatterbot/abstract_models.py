@@ -1,5 +1,5 @@
-from chatterbot.conversation import StatementMixin
-from chatterbot import constants
+from chatterbot2.conversation import StatementMixin
+from chatterbot2 import constants
 from django.db import models
 from django.utils import timezone
 from django.conf import settings

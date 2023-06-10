@@ -1,4 +1,4 @@
-from chatterbot.storage import StorageAdapter
+from chatterbot2.storage import StorageAdapter
 
 
 class SQLStorageAdapter(StorageAdapter):
@@ -19,7 +19,7 @@ class SQLStorageAdapter(StorageAdapter):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        from sqlalchemy import create_engine
+        from sqlalchemy import create_engine, inspect
         from sqlalchemy.orm import sessionmaker
 
         self.database_uri = kwargs.get('database_uri', False)
@@ -32,7 +32,7 @@ class SQLStorageAdapter(StorageAdapter):
         if not self.database_uri:
             self.database_uri = 'sqlite:///db.sqlite3'
 
-        self.engine = create_engine(self.database_uri, convert_unicode=True)
+        self.engine = create_engine(self.database_uri) #, convert_unicode=True
 
         if self.database_uri.startswith('sqlite://'):
             from sqlalchemy.engine import Engine
@@ -43,7 +43,8 @@ class SQLStorageAdapter(StorageAdapter):
                 dbapi_connection.execute('PRAGMA journal_mode=WAL')
                 dbapi_connection.execute('PRAGMA synchronous=NORMAL')
 
-        if not self.engine.dialect.has_table(self.engine, 'Statement'):
+        inspector = inspect(self.engine)
+        if not inspector.has_table('Statement'):
             self.create_database()
 
         self.Session = sessionmaker(bind=self.engine, expire_on_commit=True)
@@ -52,18 +53,18 @@ class SQLStorageAdapter(StorageAdapter):
         """
         Return the statement model.
         """
-        from chatterbot.ext.sqlalchemy_app.models import Statement
+        from chatterbot2.ext.sqlalchemy_app.models import Statement
         return Statement
 
     def get_tag_model(self):
         """
         Return the conversation model.
         """
-        from chatterbot.ext.sqlalchemy_app.models import Tag
+        from chatterbot2.ext.sqlalchemy_app.models import Tag
         return Tag
 
     def model_to_object(self, statement):
-        from chatterbot.conversation import Statement as StatementObject
+        from chatterbot2.conversation import Statement as StatementObject
 
         return StatementObject(**statement.serialize())
 
@@ -357,7 +358,7 @@ class SQLStorageAdapter(StorageAdapter):
         """
         Populate the database with the tables.
         """
-        from chatterbot.ext.sqlalchemy_app.models import Base
+        from chatterbot2.ext.sqlalchemy_app.models import Base
         Base.metadata.create_all(self.engine)
 
     def _session_finish(self, session, statement_text=None):

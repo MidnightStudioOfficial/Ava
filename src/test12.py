@@ -33,10 +33,10 @@ def check_accuracy(chatbot_responses, expected_responses):
     incorrect = 0
     for i in range(len(chatbot_responses)):
         if chatbot_responses[i] == expected_responses[i]:
-            print(str(chatbot_responses)+" is correct")
+            print(str(chatbot_responses[i])+" is correct")
             correct += 1
         else:
-            print(str(chatbot_responses)+" is wrong")
+            print(str(chatbot_responses[i])+" is wrong")
             incorrect += 1
     accuracy = correct / len(chatbot_responses)
     
@@ -47,8 +47,8 @@ def check_accuracy(chatbot_responses, expected_responses):
     
     return accuracy
 
-c = ["play music"]
-e = ["Ok I will play some music"]
+c = ["play music", "get the weather"]
+e = ["Ok I will play some music", "Ok, Geting the weather"]
 print(check_accuracy(c, e))
 
 while True:

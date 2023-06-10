@@ -1,5 +1,5 @@
 from string import punctuation as string_punctuation
-from chatterbot import languages
+from chatterbot2 import languages
 
 
 class LowercaseTagger(object):

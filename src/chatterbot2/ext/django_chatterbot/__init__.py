@@ -1,3 +1,3 @@
 default_app_config = (
-    'chatterbot.ext.django_chatterbot.apps.DjangoChatterBotConfig'
+    'chatterbot2.ext.django_chatterbot.apps.DjangoChatterBotConfig'
 )

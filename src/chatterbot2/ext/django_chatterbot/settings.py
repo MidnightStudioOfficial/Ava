@@ -2,7 +2,7 @@
 Default ChatterBot settings for Django.
 """
 from django.conf import settings
-from chatterbot import constants
+from chatterbot2 import constants
 
 
 CHATTERBOT_SETTINGS = getattr(settings, 'CHATTERBOT', {})

@@ -1,4 +1,5 @@
-https://github.com/AnimalStudioOfficial/ChatterBot.git
+mathparse
+pyyaml
 pyttsx3
 spacy
 customtkinter

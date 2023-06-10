@@ -1,7 +1,7 @@
 from datetime import datetime
-from chatterbot.logic import LogicAdapter
-from chatterbot.conversation import Statement
-from chatterbot.exceptions import OptionalDependencyImportError
+from chatterbot2.logic import LogicAdapter
+from chatterbot2.conversation import Statement
+from chatterbot2.exceptions import OptionalDependencyImportError
 
 
 class TimeLogicAdapter(LogicAdapter):

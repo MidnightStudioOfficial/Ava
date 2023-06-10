@@ -1,13 +1,12 @@
 from tkinter import *
 import tkinter as tk
-from tkinter import ttk
-from tkinter.scrolledtext import ScrolledText
+#from tkinter import ttk
+#from tkinter.scrolledtext import ScrolledText
 import customtkinter as ctk
 from os.path import join, dirname, realpath
 import logging
 from PIL import Image
 from threading import Thread
-from multiprocessing import Process
 
 DEBUG_CHATBOT = None #None
 DEBUG_GUI = None

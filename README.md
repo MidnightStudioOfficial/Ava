@@ -3,7 +3,7 @@ Meet Ava, the chatbot designed to bring a smile to your face! Help us improve Av
 
 ## Requirements
 
- - Python 3.10.2
+ - Python 3.11.4
 
 ## Getting Started
 To get started with Ava, you can clone the repository to your local machine using the following command:

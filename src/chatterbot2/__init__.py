@@ -1,7 +1,7 @@
 """
 ChatterBot is a machine learning, conversational dialog engine.
 """
-from .chatterbot import ChatBot
+from .chatterbot2 import ChatBot
 
 
 __all__ = (

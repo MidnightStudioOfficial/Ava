@@ -42,6 +42,7 @@ for i in range(total):
     print('Bot response:', bot_response)
     print()
 
+
 # Calculate and print the accuracy and number of new responses learned
 accuracy = num_correct / total
 print('Accuracy:', accuracy)

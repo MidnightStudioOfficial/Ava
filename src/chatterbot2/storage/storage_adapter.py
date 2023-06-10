@@ -1,6 +1,6 @@
 import logging
-from chatterbot import languages
-from chatterbot.tagging import PosLemmaTagger
+from chatterbot2 import languages
+from chatterbot2.tagging import PosLemmaTagger
 
 
 class StorageAdapter(object):
@@ -48,7 +48,7 @@ class StorageAdapter(object):
         return get_model_method()
 
     def get_statement_object(self):
-        from chatterbot.conversation import Statement
+        from chatterbot2.conversation import Statement
 
         StatementModel = self.get_model('statement')
 

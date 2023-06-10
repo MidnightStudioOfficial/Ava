@@ -13,7 +13,7 @@ from chatterbot2.trainers import ChatterBotCorpusTrainer
 #from spacy import load
 print("Importing DONE")
 
-Debug = True
+Debug = False
 
 if Debug != True:
  trainingdata='Data/training.csv'
