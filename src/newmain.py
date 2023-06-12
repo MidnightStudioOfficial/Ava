@@ -18,6 +18,9 @@ PEODUCTION = None
 print("Importing user_profile")
 import user_profile
 
+print("Importing skills_page")
+from core.ui.skills.skills_page import SkillGUI
+
 print("Importing Debug")
 from core.base.debug import DebugGUI
 
@@ -92,7 +95,7 @@ class ChatBotGUI:
         self.navigation_frame = ctk.CTkFrame(master, corner_radius=7) #corner_radius=0
         # Place the navigation frame in the grid layout at row 0 and column 0
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
-        self.navigation_frame.grid_rowconfigure(6, weight=1)
+        self.navigation_frame.grid_rowconfigure(7, weight=1)
 
         # Create a CTkLabel object for the navigation frame label with text "Ava", an image, and font size 15
         self.navigation_frame_label = ctk.CTkLabel(self.navigation_frame, text="  Ava", image=self.logo_image,
@@ -124,13 +127,18 @@ class ChatBotGUI:
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.add_DNA_image, anchor="w", command=self.frame_profile_button_event)
         self.frame_profile_button.grid(row=5, column=0, sticky="ew")
-
+        
+        self.frame_skills_button = ctk.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Skills",
+                                                      fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                      image=self.add_DNA_image, anchor="w", command=self.frame_skills_button_event)
+        self.frame_skills_button.grid(row=6, column=0, sticky="ew")
+        
         # Create an option menu for selecting the appearance mode
         self.appearance_mode_menu = ctk.CTkOptionMenu(self.navigation_frame, values=["Light", "Dark", "System"],
                                                     command=self.change_appearance_mode_event)
 
         # Place the appearance mode menu in the grid layout at row 6 and column 0 with padding
-        self.appearance_mode_menu.grid(row=6, column=0, padx=20, pady=20, sticky="s")
+        self.appearance_mode_menu.grid(row=7, column=0, padx=20, pady=20, sticky="s")
 
         
         # create home frame
@@ -270,6 +278,10 @@ class ChatBotGUI:
         self.profile_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         user_profile.ProfileClass(self.profile_frame, self)
         
+        # create the skills frame
+        self.skills_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
+        SkillGUI(self.skills_frame)
+        
         # select default frame
         self.select_frame_by_name("home")
         
@@ -310,6 +322,7 @@ class ChatBotGUI:
         self.frame_3_button.configure(fg_color=("gray75", "gray25") if name == "frame_3" else "transparent")
         self.frame_DNA_button.configure(fg_color=("gray75", "gray25") if name == "frame_DNA" else "transparent")
         self.frame_profile_button.configure(fg_color=("gray75", "gray25") if name == "frame_profile" else "transparent")
+        self.frame_skills_button.configure(fg_color=("gray75", "gray25") if name == "frame_skills" else "transparent")
 
         # show selected frame
         if name == "home": # home
@@ -332,9 +345,14 @@ class ChatBotGUI:
             self.profile_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.profile_frame.grid_forget()
+        if name == "frame_skills": # skills
+            self.skills_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.skills_frame.grid_forget()
 
     def debug_click(self):
         DebugGUI(self.master)
+        
     def record(self, clearChat=True, iconDisplay=True):
         import speech_recognition as sr
         print('\nListening...')
@@ -347,12 +365,9 @@ class ChatBotGUI:
             audio = r.listen(source)
             said = ""
             try:
-               # AITaskStatusLbl['text'] = 'Processing...'
                 self.AITaskStatusLbl.configure(text="Processing...")
                 said = r.recognize_google(audio)
                 print(f"\nUser said: {said}")
-                #if iconDisplay: Label(chat_frame, image=userIcon, bg=chatBgColor).pack(anchor='e',pady=0)
-                #attachTOframe(said)
             except Exception as e:
                 print(e)
                 # speak("I didn't get it, Say that again please...")
@@ -412,19 +427,64 @@ class ChatBotGUI:
 
     def home_button_event(self):
         self.select_frame_by_name("home")
+        # #self.skill_gui = None
+        # try:
+        #  #del self.skill_gui
+        #  self.skill_gui = None
+        # except:
+        #     pass
 
     def frame_2_button_event(self):
         self.select_frame_by_name("frame_2")
+        # #self.skill_gui = None
+        # try:
+        #  #del self.skill_gui
+        #  self.skill_gui = None
+        # except:
+        #     pass
     
-
     def frame_3_button_event(self):
         self.select_frame_by_name("frame_3")
+        # #self.skill_gui = None
+        # try:
+        #  #del self.skill_gui
+        #  self.skill_gui = None
+        # except:
+        #     pass
         
     def frame_DNA_button_event(self):
-        self.select_frame_by_name("frame_DNA")
+         self.select_frame_by_name("frame_DNA")
+        # #self.skill_gui = None
+        # try:
+        #  #del self.skill_gui
+        #  self.skill_gui = None
+        # except:
+        #     pass
         
     def frame_profile_button_event(self):
-        self.select_frame_by_name("frame_profile")
+         self.select_frame_by_name("frame_profile")
+        # #self.skill_gui = None
+        # try:
+        #  #del self.skill_gui
+        #  self.skill_gui = None
+        # except:
+        #     pass
+    
+    def frame_skills_button_event(self):
+        # #if self.skill_gui == None
+        # try:
+        #  #del self.skill_gui
+        #  self.skill_gui = None
+        # except:
+        #     pass
+        # #self.skill_gui = SkillGUI(self.skills_frame)
+        # if self.skill_gui is None or not self.skill_gui.winfo_exists():
+        #     self.skill_gui = SkillGUI(self.skills_frame) # create window if its None or destroyed
+        # else:
+        #     pass
+        #     #self.toplevel_window.focus()  # if window exists focus it
+        self.select_frame_by_name("frame_skills")
+
 
     def change_appearance_mode_event(self, new_appearance_mode):
         """

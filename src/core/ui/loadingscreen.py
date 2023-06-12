@@ -30,6 +30,10 @@ class SplashScreen(CTkToplevel):
     def set_progress(self, value):
         self.progressbar.step()
         self.update()
+    def set_progress2(self, value):
+        for i in range(value):
+            self.progressbar.step()
+        self.update()
         
 if __name__ == '__main__':
     # Example usage

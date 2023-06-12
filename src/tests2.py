@@ -4,6 +4,7 @@ from tqdm import tqdm
 
 testmodules = [
     'tests.testChatbot',
+    'test.chatterbot_preprocessors'
     # 'tests.testOtherModule',
     # add more test modules here
 ]
