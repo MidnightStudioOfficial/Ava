@@ -20,3 +20,4 @@ for intent, skill in s.skills.items():
 print(training_sentences)
 print(training_labels)
 print(labels)
+print(responses)

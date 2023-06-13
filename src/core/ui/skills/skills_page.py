@@ -2,10 +2,18 @@ import customtkinter as ctk
 import tkinter as tk
 import threading
 import time
+from core.skill.skill import Skills
 
 class skill:
     def __init__(self) -> None:
         self.debug_info = {}
+        self.skills = Skills("Data")
+        # load skill sample data
+        self.training_sentences = []
+        self.training_labels = []
+        self.labels = []
+        self.responses = []
+        
     
     def update_debug_info_DEBUG(self):
         self.debug_info["Music"] = "TEST"
@@ -13,6 +21,15 @@ class skill:
     
     def get_debug_info(self):
         return self.debug_info
+    
+    def get_skills(self):
+        for intent, skill in self.skills.skills.items():
+            for sample in skill.samples:
+                self.training_sentences.append(sample)
+                self.training_labels.append(intent)
+            if intent not in self.labels:
+                self.labels.append(intent)
+        return self.training_sentences, self.training_labels
 
 class SkillGUI(ctk.CTkFrame):
     def __init__(self, parent) -> None:
@@ -60,6 +77,11 @@ class SkillGUI(ctk.CTkFrame):
         
         # Initialize the item frame dictionary
         self.item_frame = {}
+        sentences, labels = self.skill.get_skills()
+        
+        for s in sentences:
+            print(labels[sentences.index(s)])
+            #self.layout[""]
         
         # Create the list of items
         self.create_list()

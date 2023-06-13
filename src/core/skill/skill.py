@@ -1,4 +1,3 @@
-
 from core.skill.base_skill import BaseSkill
 from pathlib import Path
 from glob import glob
