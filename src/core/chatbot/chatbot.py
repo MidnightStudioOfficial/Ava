@@ -9,8 +9,6 @@ import json
 print('Importing chatterbot')
 from chatterbot2 import ChatBot as CHATBOT
 from chatterbot2.trainers import ChatterBotCorpusTrainer
-#print('Importing spacy (This may take a while!)')
-#from spacy import load
 print("Importing DONE")
 
 Debug = False

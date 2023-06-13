@@ -12,14 +12,14 @@ DEBUG_CHATBOT = None #None
 DEBUG_GUI = None
 PEODUCTION = None
 
-#from core.voice.mic import SpeechRecognizer
-#recognizer = SpeechRecognizer()
-
 print("Importing user_profile")
 import user_profile
 
 print("Importing skills_page")
 from core.ui.skills.skills_page import SkillGUI
+
+print("Importing loadingscreen")
+from core.ui.loadingscreen2 import SplashScreen
 
 print("Importing Debug")
 from core.base.debug import DebugGUI
@@ -46,14 +46,14 @@ chatBgColor = '#12232e'
 background = '#203647'
 textColor = 'white'
 AITaskStatusLblBG = '#203647'
-KCS_IMG = 1 #0 for light, 1 for dark
+KCS_IMG = 1 # 0 for light, 1 for dark
 
 ### SWITCHING BETWEEN FRAMES ###
 def raise_frame(frame):
     frame.tkraise()
 
 class ChatBotGUI:
-    def __init__(self, master):
+    def __init__(self, master, splash_screen):
         # Initialize the ChatBotGUI object
         self.master = master
 
@@ -77,6 +77,7 @@ class ChatBotGUI:
         image_path = join(dirname(realpath(__file__)), "Data/assets")
 
         # Create CTkImage objects for various images
+        splash_screen.set_text("Loading Images")
         self.logo_image = ctk.CTkImage(Image.open(join(image_path, "ava.jfif")), size=(26, 26))
         self.large_test_image = ctk.CTkImage(Image.open(join(image_path, "Welcome.png")), size=(290, 118))
         self.image_icon_image = ctk.CTkImage(Image.open(join(image_path, "home.png")), size=(20, 20))
@@ -92,7 +93,8 @@ class ChatBotGUI:
         
         
         # create navigation frame
-        self.navigation_frame = ctk.CTkFrame(master, corner_radius=7) #corner_radius=0
+        splash_screen.set_text("Creating gui")
+        self.navigation_frame = ctk.CTkFrame(master, corner_radius=7) # corner_radius=0
         # Place the navigation frame in the grid layout at row 0 and column 0
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
         self.navigation_frame.grid_rowconfigure(7, weight=1)
@@ -166,15 +168,17 @@ class ChatBotGUI:
         # create second frame
         self.second_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
 
-        self.profile_data = None
+        # Create three frames with different background colors
         self.root1 = ctk.CTkFrame(self.second_frame, bg_color=chatBgColor)
         self.root2 = ctk.CTkFrame(self.second_frame, bg_color=background)
         self.root3 = ctk.CTkFrame(self.second_frame, bg_color=background)
 
+        # Grid all frames to the same cell in the grid layout
+        # This will cause the frames to overlap each other
         for f in (self.root1, self.root2, self.root3):
-            f.grid(row=0, column=0, sticky='news')    
+            f.grid(row=0, column=0, sticky='news')
 
-        self.chat_frame = ctk.CTkTextbox(self.root1, width=380,height=551,fg_color=chatBgColor)
+        self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
         self.chat_frame.pack(padx=10)
         #self.chat_frame.pack_propagate(0)
         
@@ -218,25 +222,39 @@ class ChatBotGUI:
         self.AITaskStatusLbl.place(x=165, y=32)
 
         
-        #Keyboard Button
-        self.kbphLight = PhotoImage(file = "Data/images/keyboard.png")
-        self.kbphLight = self.kbphLight.subsample(2,2)
-        self.kbphDark = PhotoImage(file = "Data/images/keyboard1.png")
-        self.kbphDark = self.kbphDark.subsample(2,2)
-        if KCS_IMG==1: self.kbphimage=self.kbphDark
-        else: self.kbphimage=self.kbphLight
-        self.kbBtn = ctk.CTkButton(self.VoiceModeFrame,text='',image=self.kbphimage,height=30,width=30, command=self.changeChatMode,fg_color="transparent") #, bg_color='#dfdfdf'
+        # Keyboard Button
+        self.kbphLight = PhotoImage(file="Data/images/keyboard.png")
+        self.kbphLight = self.kbphLight.subsample(2, 2)
+
+        self.kbphDark = PhotoImage(file="Data/images/keyboard1.png")
+        self.kbphDark = self.kbphDark.subsample(2, 2)
+
+        if KCS_IMG == 1:
+            self.kbphimage = self.kbphDark
+        else:
+            self.kbphimage = self.kbphLight
+
+        self.kbBtn = ctk.CTkButton(
+            self.VoiceModeFrame,
+            text='',
+            image=self.kbphimage,
+            height=30,
+            width=30,
+            command=self.changeChatMode,
+            fg_color="transparent"
+        )
         self.kbBtn.place(x=25, y=30)
 
-        #Mic
+
+        # Mic
         self.micImg = PhotoImage(file = "Data/images/mic.png")
-        self.micImg = self.micImg.subsample(2,2)
+        self.micImg = self.micImg.subsample(2, 2)
         self.micBtn = ctk.CTkButton(self.TextModeFrame,text='',image=self.micImg,height=30,width=30,fg_color="transparent", command=self.changeChatMode) #, bg_color='#dfdfdf'
-        self.micBtn.place(relx=1.0, y=30,x=-20, anchor="ne")    
+        self.micBtn.place(relx=1.0, y=30, x=-20, anchor="ne")    
         
-        #Text Field
+        # Text Field
         self.TextFieldImg = PhotoImage(file='Data/images/textField.png')
-        self.UserFieldLBL = ctk.CTkLabel(self.TextModeFrame,text='', image=self.TextFieldImg,fg_color="transparent") #, bg_color='#dfdfdf', text_color='white'
+        self.UserFieldLBL = ctk.CTkLabel(self.TextModeFrame,text='', image=self.TextFieldImg, fg_color="transparent") #, bg_color='#dfdfdf', text_color='white'
         self.UserFieldLBL.pack(pady=17, side=LEFT, padx=10)
         self.UserField = ctk.CTkEntry(self.TextModeFrame, text_color='white', bg_color='#203647', font=('Montserrat', 16),width=304) #width=22
         self.UserField.place(x=16, y=30) #x=20
@@ -287,6 +305,7 @@ class ChatBotGUI:
         
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
          # Set up voice
+         splash_screen.set_text("Set up voice")
          self.engine = pyttsx3_init()
          self.voices = self.engine.getProperty('voices')
          self.engine.setProperty('voice', self.voices[2].id)  # Index 1 for female voice
@@ -295,15 +314,14 @@ class ChatBotGUI:
          self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
          del self.voices
 
-
         # Delete useless stuff
+        splash_screen.set_text("Deleting useless stuff")
         del image_path
         del self.large_test_image
         del self.home_image
         del self.chat_image
         del self.add_user_image
         del self.logo_image
-        
         
         self.recognize_thread = None
         self.stoped_lisening = False
@@ -325,27 +343,27 @@ class ChatBotGUI:
         self.frame_skills_button.configure(fg_color=("gray75", "gray25") if name == "frame_skills" else "transparent")
 
         # show selected frame
-        if name == "home": # home
+        if name == "home":  # home
             self.home_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.home_frame.grid_forget()
-        if name == "frame_2": # chat
+        if name == "frame_2":  # chat
             self.second_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.second_frame.grid_forget()
-        if name == "frame_3": # settings
+        if name == "frame_3":  # settings
             self.third_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.third_frame.grid_forget()
-        if name == "frame_DNA": # DNA
+        if name == "frame_DNA":  # DNA
             self.DNA_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.DNA_frame.grid_forget()
-        if name == "frame_profile": # profile
+        if name == "frame_profile":  # profile
             self.profile_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.profile_frame.grid_forget()
-        if name == "frame_skills": # skills
+        if name == "frame_skills":  # skills
             self.skills_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.skills_frame.grid_forget()
@@ -370,9 +388,6 @@ class ChatBotGUI:
                 print(f"\nUser said: {said}")
             except Exception as e:
                 print(e)
-                # speak("I didn't get it, Say that again please...")
-                #if "connection failed" in str(e):
-                    #speak("Your System is Offline...", True, True)
                 return 'None'
         return said.lower()
     def voiceMedium(self):
@@ -384,7 +399,6 @@ class ChatBotGUI:
           if query == 'None': continue
           self.send_message(query)
 
-        
     def changeChatMode(self):
         global chatMode
         if chatMode == 1:
@@ -482,6 +496,7 @@ class ChatBotGUI:
         #     self.skill_gui = SkillGUI(self.skills_frame) # create window if its None or destroyed
         # else:
         #     pass
+        
         #     #self.toplevel_window.focus()  # if window exists focus it
         self.select_frame_by_name("frame_skills")
 
@@ -534,11 +549,17 @@ class ChatBotGUI:
         # Automatically scroll to the bottom of the chat history
         self.chat_frame.yview(tk.END)
 
-        
 
 if __name__ == '__main__':
     print('Creating GUI')
     root = ctk.CTk()
+    splash_screen = SplashScreen(root)
+    splash_screen.overrideredirect(True)
+    splash_screen.set_text("Creating Ava Chatbot and taining")
+    splash_screen.set_progress(50)
     print('Creating Ava Chatbot and taining')
-    gui = ChatBotGUI(root)
+    gui = ChatBotGUI(root, splash_screen)
+    splash_screen.set_text("Done")
+    splash_screen.set_progress(100)
+    splash_screen.destroy()
     root.mainloop()

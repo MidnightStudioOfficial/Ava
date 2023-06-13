@@ -81,13 +81,13 @@ class ConversationalEngine():
         # Use the trained Naive Bayes classifier to predict the intent of the input utterance and calculate its probabilities.
         predictions_NB = self.Naive.predict(vectored_transformed)
         score = self.Naive.predict_proba(vectored_transformed)
-        probability_matrix = sorted(zip(self.Naive.classes_, score[0]), key= lambda x: x[1], reverse=True)
+        probability_matrix = sorted(zip(self.Naive.classes_, score[0]), key=lambda x: x[1], reverse=True)
         
         # Return the predicted intent and associated probabilities.
         return {
-            'intent' : predictions_NB[0],
-            'probability' : sorted(score[0], reverse=True)[0],
-            'probability_matrix' : probability_matrix
+            'intent': predictions_NB[0],
+            'probability': sorted(score[0], reverse=True)[0],
+            'probability_matrix': probability_matrix
         }
         
     # This method lemmatizes a given input string using NLTK's WordNetLemmatizer.
@@ -119,7 +119,7 @@ class ConversationalEngine():
         '''pickles the conversation's trained model into a .p file at the defined path.
         Path should include filename. for example: "folder\model.p"'''
         import pickle
-        pickle.dump( self.Naive, open( path, "wb" ))
+        pickle.dump(self.Naive, open( path, "wb"))
 
 
 
