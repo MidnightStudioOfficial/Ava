@@ -179,7 +179,7 @@ class ChatBotGUI:
         for f in (self.root1, self.root2, self.root3):
             f.grid(row=0, column=0, sticky='news')
 
-        self.chat_frame = ctk.CTkScrollableFrame(self.root1, width=380, height=551, fg_color=chatBgColor)
+        self.chat_frame = ctk.CTkFrame(self.root1, width=380, height=551, fg_color=chatBgColor) #ctk.CTkScrollableFrame
         self.chat_frame.pack(padx=10)
         self.chat_frame.pack_propagate(0)
         
@@ -553,7 +553,8 @@ class ChatBotGUI:
                 wraplength=250,
                 font=('Montserrat', 12, 'bold'),
                 bg_color=botChatTextBg,
-                corner_radius=7
+                corner_radius=7,
+                anchor="s"
             )
             chat.grid(row=self.get_next_row(), column=0, sticky='w', padx=5, pady=5)
         else:
