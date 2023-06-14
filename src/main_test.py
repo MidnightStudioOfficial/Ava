@@ -309,11 +309,30 @@ class ChatBotGUI:
 
         # create third frame
         self.third_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
+        self.settings_frame_large_label = ctk.CTkLabel(self.third_frame, text="Settings", font=ctk.CTkFont(family='Lucida Console', size=15, weight="bold"))
+        self.settings_frame_large_label.grid(row=0, column=0, padx=20, pady=10)
+        self.settings_frame_large_label.pack(anchor=tk.CENTER)
+        self.frame_1 = ctk.CTkFrame(self.third_frame)
+        self.frame_1.pack(pady=20, padx=10, fill="x", expand=True)
+        self.label_frame_1 = ctk.CTkLabel(self.frame_1, text="Chat", font=ctk.CTkFont(family='Lucida Console', size=15, weight="bold"))
+        self.label_frame_1.pack(ipady=4)
+        self.frame_2 = ctk.CTkFrame(self.third_frame)
+        self.frame_2.pack(pady=20, padx=10, fill="x", expand=True)
+        self.label_frame_2_label = ctk.CTkLabel(self.frame_2, text="Theme", font=ctk.CTkFont(family='Lucida Console', size=15, weight="bold"))
+        self.label_frame_2_label.pack(ipady=4)
+        self.frame_3 = ctk.CTkFrame(self.third_frame)
+        self.frame_3.pack(pady=20, padx=10, fill="x", expand=True)
+        self.label_frame_3 = ctk.CTkLabel(self.frame_3, text="Other", font=ctk.CTkFont(family='Lucida Console', size=15, weight="bold"))
+        self.label_frame_3.pack(ipady=4)
         self.chat_bubble_switch_var = ctk.StringVar(value="off")
 
-        self.chat_bubble_enable = ctk.CTkSwitch(self.third_frame, text="New chat bubble", command=self.chat_bubble_enable_event,
+        self.chat_bubble_enable = ctk.CTkSwitch(self.frame_1, text="New chat bubble", command=self.chat_bubble_enable_event,
                                  variable=self.chat_bubble_switch_var, onvalue="on", offvalue="off")
-        self.chat_bubble_enable.pack()
+        self.chat_bubble_enable.pack() #ipady=10
+        self.segemented_button_var = ctk.StringVar(value="blue")
+        self.segemented_button = ctk.CTkSegmentedButton(self.frame_2, values=["blue", "green", "dark-blue"],
+                                                     variable=self.segemented_button_var)
+        self.segemented_button.pack()
         
         # create the DNA frame
         self.DNA_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
