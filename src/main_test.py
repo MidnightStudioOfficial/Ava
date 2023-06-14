@@ -5,7 +5,7 @@ import tkinter as tk
 import customtkinter as ctk
 from os.path import join, dirname, realpath
 import logging
-from PIL import Image
+from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
 
 DEBUG_CHATBOT = None #None
@@ -91,6 +91,8 @@ class ChatBotGUI:
         self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
         self.add_user_image = ctk.CTkImage(light_image=Image.open(join(image_path, "settings.png")), dark_image=Image.open(join(image_path, "settings.png")), size=(20, 20))
         self.add_DNA_image = ctk.CTkImage(light_image=Image.open(join(image_path, "DNA.png")), dark_image=Image.open(join(image_path, "DNA.png")), size=(20, 20))
+        self.add_profile_image = ctk.CTkImage(Image.open(join(image_path, "profile.png")))
+        self.add_skills_image = ctk.CTkImage(Image.open(join(image_path, "box.png")))
         
         
         # create navigation frame
@@ -128,12 +130,12 @@ class ChatBotGUI:
         
         self.frame_profile_button = ctk.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Profile",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                      image=self.add_DNA_image, anchor="w", command=self.frame_profile_button_event)
+                                                      image=self.add_profile_image, anchor="w", command=self.frame_profile_button_event)
         self.frame_profile_button.grid(row=5, column=0, sticky="ew")
         
         self.frame_skills_button = ctk.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Skills",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                      image=self.add_DNA_image, anchor="w", command=self.frame_skills_button_event)
+                                                      image=self.add_skills_image, anchor="w", command=self.frame_skills_button_event)
         self.frame_skills_button.grid(row=6, column=0, sticky="ew")
         
         # Create an option menu for selecting the appearance mode
@@ -268,6 +270,26 @@ class ChatBotGUI:
         self.UserField.place(x=16, y=30) #x=20
         self.UserField.insert(0, "Ask me anything...")
         self.UserField.bind('<Return>', lambda event: self.send_message(None))
+        
+        # Load and resize the image
+        image = Image.open("Data/assets/ava.jfif")
+        image = image.resize((30, 30))  # Adjust the size as needed
+
+        # Create a circular mask for the button
+        mask = Image.new("L", (30, 30), 0)
+        draw = ImageDraw.Draw(mask)
+        draw.ellipse((0, 0, 30, 30), fill=255)
+
+        # Apply the circular mask to the image
+        image.putalpha(mask)
+
+        # Create a PhotoImage from the modified image
+        photo = ImageTk.PhotoImage(image)
+
+        
+        self.botBtn = ctk.CTkButton(self.VoiceModeFrame, image=photo, height=30,width=30,border_width=0,text="",fg_color="transparent", corner_radius=400)
+        self.botBtn.place(relx=1.0, y=30,x=-20, anchor="ne")	
+        
         raise_frame(self.root1)
         
         # Create chat history display
