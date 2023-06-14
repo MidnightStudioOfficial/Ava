@@ -166,7 +166,10 @@ class ChatBotGUI:
         version_button = ctk.CTkButton(master, text="V1.0", width=96, command=self.debug_click)
         version_button.grid(sticky="se", column=1)
         
+        self.current_chat_bubble = False
+        
         # create second frame
+        splash_screen.set_text("Creating chat page")
         self.second_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
 
         # Create three frames with different background colors
@@ -178,11 +181,15 @@ class ChatBotGUI:
         # This will cause the frames to overlap each other
         for f in (self.root1, self.root2, self.root3):
             f.grid(row=0, column=0, sticky='news')
-
-        self.chat_frame = ctk.CTkFrame(self.root1, width=380, height=551, fg_color=chatBgColor) #ctk.CTkScrollableFrame
-        self.chat_frame.pack(padx=10)
-        self.chat_frame.pack_propagate(0)
         
+        if self.current_chat_bubble == False:
+           self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
+        else:
+            self.chat_frame = ctk.CTkFrame(self.root1, width=380, height=551, fg_color=chatBgColor) #ctk.CTkScrollableFrame
+            self.chat_frame.pack_propagate(0)
+        self.chat_frame.pack(padx=10)
+        #ctk.CTkTextbox
+
         # Create a new CTkFrame object with height 100, transparent foreground color and '#dfdfdf' background color
         self.bottomFrame1 = ctk.CTkFrame(self.root1, height=100, fg_color="transparent", bg_color='#dfdfdf')
 
@@ -280,6 +287,11 @@ class ChatBotGUI:
 
         # create third frame
         self.third_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
+        self.chat_bubble_switch_var = ctk.StringVar(value="off")
+
+        self.chat_bubble_enable = ctk.CTkSwitch(self.third_frame, text="New chat bubble", command=self.chat_bubble_enable_event,
+                                 variable=self.chat_bubble_switch_var, onvalue="on", offvalue="off")
+        self.chat_bubble_enable.pack()
         
         # create the DNA frame
         self.DNA_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
@@ -294,10 +306,12 @@ class ChatBotGUI:
         self.DNA_combobox_gender.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
         
         # create the profile frame
+        splash_screen.set_text("Creating profile page")
         self.profile_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         user_profile.ProfileClass(self.profile_frame, self)
         
         # create the skills frame
+        splash_screen.set_text("Creating skills page")
         self.skills_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         SkillGUI(self.skills_frame)
         
@@ -326,9 +340,11 @@ class ChatBotGUI:
         
         self.recognize_thread = None
         self.stoped_lisening = False
+        self.message_count = 0
         
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
          # Initialize chatbot
+         splash_screen.set_text("Training the chatbot")
          self.chatbot = Chatbot()
          self.chatbot.train_bot() # Train the chatbot
 
@@ -371,6 +387,22 @@ class ChatBotGUI:
 
     def debug_click(self):
         DebugGUI(self.master)
+    
+    def chat_bubble_enable_event(self):
+        print(self.chat_bubble_switch_var.get())
+        print(self.current_chat_bubble)
+        value = self.chat_bubble_switch_var.get()
+        if value == "on":
+            self.current_chat_bubble = True
+            self.chat_frame.destroy()
+            self.chat_frame = ctk.CTkFrame(self.root1, width=380, height=551, fg_color=chatBgColor) #ctk.CTkScrollableFrame
+            self.chat_frame.pack(padx=10)
+            self.chat_frame.pack_propagate(0)
+        else:
+            self.current_chat_bubble = False
+            self.chat_frame.destroy()
+            self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
+            self.chat_frame.pack(padx=10)
         
     def record(self, clearChat=True, iconDisplay=True):
         import speech_recognition as sr
@@ -543,8 +575,15 @@ class ChatBotGUI:
      row = self._row_index
      self._row_index += 1
      return row
+    def clearChatScreen(self):
+        for wid in self.chat_frame.winfo_children():
+            wid.destroy()
         
     def attach_to_frame(self, text, bot=False):
+        if self.message_count == 8:
+            self.clearChatScreen()
+            self.message_count = 0
+            
         if bot:
             chat = ctk.CTkLabel(
                 self.chat_frame,
@@ -556,7 +595,8 @@ class ChatBotGUI:
                 corner_radius=7,
                 anchor="s"
             )
-            chat.grid(row=self.get_next_row(), column=0, sticky='w', padx=5, pady=5)
+            chat.pack(anchor='w', padx=5, pady=5) #(row=self.get_next_row(), column=0, sticky='w', padx=5, pady=5
+            self.message_count += 1
         else:
             frame_width = self.chat_frame.winfo_width()
             wraplength = frame_width - 20  # Adjust wraplength dynamically based on chat_frame width and padding
@@ -580,7 +620,8 @@ class ChatBotGUI:
                 wraplength = text_width
             
             chat.configure(wraplength=wraplength)
-            chat.grid(row=self.get_next_row(), column=1, sticky='e', padx=2, pady=2)
+            chat.pack(anchor='e', padx=2, pady=2) #row=self.get_next_row(), column=1, sticky='e', padx=2, pady=2
+            self.message_count += 1
 
 
 
@@ -588,18 +629,20 @@ class ChatBotGUI:
         """
         Adds new text to the chat history
         """
-        if bot is True:
-            ctk.CTkLabel(self.chat_frame, image=self.logo_image, text="").grid(sticky='nw',pady=0,row=0) #, bg=chatBgColor
-        else:
+        if self.current_chat_bubble == True:
+         if bot is True:
+            ctk.CTkLabel(self.chat_frame, image=self.logo_image, text="").pack(anchor='w',pady=0) #, bg=chatBgColor
+         else:
             ctk.CTkLabel(self.chat_frame, text="").pack(anchor='e',pady=0) #, image=userIcon
-        self.attach_to_frame(message, bot)
-        # Enable text editing and add message to chat history
-        #self.chat_frame.configure(state='normal')
-        #self.chat_frame.insert(tk.END, message + "\n")
-        #self.chat_frame.configure(state='disabled')
+         self.attach_to_frame(message, bot)
+        elif self.current_chat_bubble == False:
+            # Enable text editing and add message to chat history
+            self.chat_frame.configure(state='normal')
+            self.chat_frame.insert(tk.END, message + "\n")
+            self.chat_frame.configure(state='disabled')
 
-        # Automatically scroll to the bottom of the chat history
-        #self.chat_frame.yview(tk.END)
+            # Automatically scroll to the bottom of the chat history
+            self.chat_frame.yview(tk.END)
 
 
 if __name__ == '__main__':
