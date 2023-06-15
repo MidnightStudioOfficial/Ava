@@ -3,6 +3,8 @@ import threading
 import wave
 import multiprocessing
 
+#ffmpeg -i song.mp3 -acodec pcm_u8 -ar 22050 song.wav'
+
 class AudioPlayer:
     def __init__(self, filename):
         self.filename = filename
@@ -17,6 +19,10 @@ class AudioPlayer:
         self.playing = True
         self.thread = multiprocessing.Process(target=self._play_audio)
         self.thread.start()
+    
+    def set_file(self, new_filename):
+        self.filename = new_filename
+    
 
     def _play_audio(self):
         chunk = 1024
@@ -49,7 +55,6 @@ class AudioPlayer:
         self.thread.join()
 
 
-# Usage example
 # # Usage example
 # player = AudioPlayer("audio.wav")
 # player.play()
