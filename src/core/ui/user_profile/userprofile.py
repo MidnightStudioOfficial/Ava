@@ -7,9 +7,7 @@ class ProfileClass(ctk.CTkFrame):
         super().__init__(parent)
         
         self.profile_data = None
-        
-
-        
+                
         # Load and resize the image
         image = Image.open("Data/assets/ava.jfif")
         image = image.resize((50, 50))  # Adjust the size as needed
@@ -30,9 +28,8 @@ class ProfileClass(ctk.CTkFrame):
         self.canvas.pack()
 
         self.profile_label = ctk.CTkLabel(self.canvas, image=photo, text="")
-        self.profile_label.pack(pady=(0, 78),side="top") #padx=30, pady=60 
-        # Configure the canvas to center its contents horizontally
-        
+        self.profile_label.pack(pady=(0, 78), side="top") #padx=30, pady=60 
+   
         
         #self.profile_label.place(x=30, y=170)
         
