@@ -13,7 +13,7 @@ DEBUG_GUI = None
 PEODUCTION = None
 
 print("Importing user_profile")
-import user_profile
+from core.ui.user_profile.userprofile import ProfileClass
 
 print("Importing skills_page")
 from core.ui.skills.skills_page import SkillGUI
@@ -351,7 +351,7 @@ class ChatBotGUI:
         # create the profile frame
         splash_screen.set_text("Creating profile page")
         self.profile_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
-        user_profile.ProfileClass(self.profile_frame, self)
+        ProfileClass(self.profile_frame) #self.profile_frame, self
         
         # create the skills frame
         splash_screen.set_text("Creating skills page")

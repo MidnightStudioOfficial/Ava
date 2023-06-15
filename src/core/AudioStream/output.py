@@ -21,6 +21,9 @@ class AudioPlayer:
         self.thread.start()
     
     def set_file(self, new_filename):
+        if self.playing:
+            print("Audio is already playing. Cant set new filename")
+            return
         self.filename = new_filename
     
 
