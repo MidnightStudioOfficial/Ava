@@ -346,6 +346,8 @@ class ChatBotGUI:
         self.DNA_combobox_gender = ctk.CTkOptionMenu(self.DNA_frame, values=["Male", "Female"])
         self.DNA_combobox_gender.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
         
+        
+        
         # create the profile frame
         splash_screen.set_text("Creating profile page")
         self.profile_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")

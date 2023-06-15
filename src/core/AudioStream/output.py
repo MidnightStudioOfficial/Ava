@@ -1,7 +1,7 @@
 import pyaudio
 import threading
 import wave
-
+import multiprocessing
 
 class AudioPlayer:
     def __init__(self, filename):
@@ -15,7 +15,7 @@ class AudioPlayer:
             return
 
         self.playing = True
-        self.thread = threading.Thread(target=self._play_audio)
+        self.thread = multiprocessing.Process(target=self._play_audio)
         self.thread.start()
 
     def _play_audio(self):
@@ -50,10 +50,11 @@ class AudioPlayer:
 
 
 # Usage example
-player = AudioPlayer("audio.wav")
-player.play()
+# # Usage example
+# player = AudioPlayer("audio.wav")
+# player.play()
 
-# Do some other work while audio is playing
+# # Do some other work while audio is playing
 
-# Stop audio playback
-player.stop()
+# # Stop audio playback
+# player.stop()
