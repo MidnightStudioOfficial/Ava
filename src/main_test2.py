@@ -1,3 +1,8 @@
+"""
+  Author: MidnightStudioOfficial
+  License: MIT
+  Description: This is the main script that loads and connects everything
+"""
 from tkinter import *
 import tkinter as tk
 import customtkinter as ctk
