@@ -1,7 +1,5 @@
 from tkinter import *
 import tkinter as tk
-#from tkinter import ttk
-#from tkinter.scrolledtext import ScrolledText
 import customtkinter as ctk
 from os.path import join, dirname, realpath
 import logging
@@ -52,7 +50,6 @@ KCS_IMG = 1 # 0 for light, 1 for dark
 def raise_frame(frame):
     frame.tkraise()
 
-  
 class ChatBotGUI:
     def __init__(self, master, splash_screen):
         # Initialize the ChatBotGUI object
@@ -78,7 +75,9 @@ class ChatBotGUI:
         image_path = join(dirname(realpath(__file__)), "Data/assets")
 
         # Create CTkImage objects for various images
-        splash_screen.set_text("Loading Images")
+        splash_screen.set_text("Loading Images")  # Set text for splash screen indicating image loading
+
+        # Dictionary containing image data
         image_data = {
             "logo_image": {"name": "ava.jfif", "size": (26, 26)},
             "large_test_image": {"name": "Welcome.png", "size": (290, 118)},
@@ -88,9 +87,11 @@ class ChatBotGUI:
             "image_fire_icon_image": {"name": "fire.png", "size": (20, 20)}
         }
 
+        # Load and assign images to attributes using image data
         for attribute, data in image_data.items():
-            image = Image.open(join(image_path, data["name"]))
-            setattr(self, attribute, ctk.CTkImage(image, size=data["size"]))
+            image = Image.open(join(image_path, data["name"]))  # Open the image file
+            setattr(self, attribute, ctk.CTkImage(image, size=data["size"]))  # Assign the image to an attribute with specified size
+
 
         
         self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
@@ -103,10 +104,13 @@ class ChatBotGUI:
         
         # create navigation frame
         splash_screen.set_text("Creating gui")
+
+        # Create a navigation frame
         self.navigation_frame = ctk.CTkFrame(master, corner_radius=7)
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
         self.navigation_frame.grid_rowconfigure(7, weight=1)
 
+        # Define navigation buttons and their properties
         navigation_buttons = [
             {"attribute": "home_button", "text": "Home", "image": self.home_image, "command": self.home_button_event},
             {"attribute": "frame_2_button", "text": "Chat", "image": self.chat_image, "command": self.frame_2_button_event},
@@ -116,10 +120,12 @@ class ChatBotGUI:
             {"attribute": "frame_skills_button", "text": "Skills", "image": self.add_skills_image, "command": self.frame_skills_button_event}
         ]
 
+        # Create the navigation frame label
         self.navigation_frame_label = ctk.CTkLabel(self.navigation_frame, text="  Ava", image=self.logo_image,
                                                 compound="left", font=ctk.CTkFont(size=15, weight="bold"))
         self.navigation_frame_label.grid(row=0, column=0, padx=20, pady=20)
 
+        # Create navigation buttons and assign attributes to self
         for index, nav_button in enumerate(navigation_buttons, start=1):
             button = ctk.CTkButton(
                 self.navigation_frame,
@@ -136,10 +142,12 @@ class ChatBotGUI:
             )
             setattr(self, nav_button["attribute"], button)
             button.grid(row=index, column=0, sticky="ew")
-                
-        self.appearance_mode_menu = ctk.CTkOptionMenu(self.navigation_frame, values=["Light", "Dark", "System"],
+
+        # Create an appearance mode menu
+        self.appearance_mode_menu = ctk.CTkOptionMenu(self.navigation_frame, values=["Dark", "Light", "System"],
                                                     command=self.change_appearance_mode_event)
         self.appearance_mode_menu.grid(row=7, column=0, padx=20, pady=20, sticky="s")
+
         
         # create home frame
         self.home_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
@@ -150,7 +158,6 @@ class ChatBotGUI:
         self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
         widgets = [
             (ctk.CTkLabel(self.home_frame, text="Welcome back!", font=ctk.CTkFont(family='Lucida Console', size=15, weight="bold")), 1),
-            #(ctk.CTkButton(self.home_frame, text="", image=self.image_icon_image), 1),
             (ctk.CTkButton(self.home_frame, text="Get the Weather", image=self.image_weather_icon_image, compound="right"), 2),
             (ctk.CTkButton(self.home_frame, text="Read the News", image=self.image_news_icon_image, compound="right"), 3),
             (ctk.CTkButton(self.home_frame, text="Get Cozy and Chat", image=self.image_fire_icon_image, compound="right", anchor="w"), 4)
@@ -184,7 +191,6 @@ class ChatBotGUI:
             self.chat_frame = ctk.CTkFrame(self.root1, width=380, height=551, fg_color=chatBgColor) #ctk.CTkScrollableFrame
             self.chat_frame.pack_propagate(0)
         self.chat_frame.pack(padx=10)
-        #ctk.CTkTextbox
 
         # Create a new CTkFrame object with height 100, transparent foreground color and '#dfdfdf' background color
         self.bottomFrame1 = ctk.CTkFrame(self.root1, height=100, fg_color="transparent", bg_color='#dfdfdf')
@@ -225,19 +231,22 @@ class ChatBotGUI:
         # Place the AI task status label at position (165, 32) in its parent widget
         self.AITaskStatusLbl.place(x=165, y=32)
 
-        
         # Keyboard Button
+        # Load and resize the light keyboard image
         self.kbphLight = PhotoImage(file="Data/images/keyboard.png")
         self.kbphLight = self.kbphLight.subsample(2, 2)
 
+        # Load and resize the dark keyboard image
         self.kbphDark = PhotoImage(file="Data/images/keyboard1.png")
         self.kbphDark = self.kbphDark.subsample(2, 2)
 
+        # Choose the appropriate keyboard image based on the KCS_IMG value
         if KCS_IMG == 1:
             self.kbphimage = self.kbphDark
         else:
             self.kbphimage = self.kbphLight
 
+        # Create a Tkinter button with the keyboard image
         self.kbBtn = ctk.CTkButton(
             self.VoiceModeFrame,
             text='',
@@ -249,20 +258,38 @@ class ChatBotGUI:
         )
         self.kbBtn.place(x=25, y=30)
 
-
         # Mic
         self.micImg = PhotoImage(file = "Data/images/mic.png")
         self.micImg = self.micImg.subsample(2, 2)
-        self.micBtn = ctk.CTkButton(self.TextModeFrame,text='',image=self.micImg,height=30,width=30,fg_color="transparent", command=self.changeChatMode) #, bg_color='#dfdfdf'
+        self.micBtn = ctk.CTkButton(self.TextModeFrame, text='', image=self.micImg, height=30,
+                                    width=30, fg_color="transparent", command=self.changeChatMode)  # , bg_color='#dfdfdf'
         self.micBtn.place(relx=1.0, y=30, x=-20, anchor="ne")    
         
         # Text Field
+        # Load the text field image
         self.TextFieldImg = PhotoImage(file='Data/images/textField.png')
-        self.UserFieldLBL = ctk.CTkLabel(self.TextModeFrame,text='', image=self.TextFieldImg, fg_color="transparent") #, bg_color='#dfdfdf', text_color='white'
+
+        # Create a label for the user field with the text field image
+        self.UserFieldLBL = ctk.CTkLabel(
+            self.TextModeFrame,
+            text='',
+            image=self.TextFieldImg,
+            fg_color="transparent"
+        )
         self.UserFieldLBL.pack(pady=17, side=LEFT, padx=10)
-        self.UserField = ctk.CTkEntry(self.TextModeFrame, text_color='white', bg_color='#203647', font=('Montserrat', 16),width=304) #width=22
-        self.UserField.place(x=16, y=30) #x=20
+
+        # Create the user field entry widget
+        self.UserField = ctk.CTkEntry(
+            self.TextModeFrame,
+            text_color='white',
+            bg_color='#203647',
+            font=('Montserrat', 16),
+            width=304
+        )
+        self.UserField.place(x=16, y=30)
         self.UserField.insert(0, "Ask me anything...")
+
+        # Bind the 'Return' key event to the send_message method
         self.UserField.bind('<Return>', lambda event: self.send_message(None))
         
         # Load and resize the image
@@ -280,9 +307,9 @@ class ChatBotGUI:
         # Create a PhotoImage from the modified image
         photo = ImageTk.PhotoImage(image)
 
-        
-        self.botBtn = ctk.CTkButton(self.VoiceModeFrame, image=photo, height=30,width=30,border_width=0,text="",fg_color="transparent", corner_radius=400)
-        self.botBtn.place(relx=1.0, y=30,x=-20, anchor="ne")	
+        self.botBtn = ctk.CTkButton(self.VoiceModeFrame, image=photo, height=30,
+                                    width=30, border_width=0, text="", fg_color="transparent", corner_radius=400)
+        self.botBtn.place(relx=1.0, y=30, x=-20, anchor="ne")
         
         raise_frame(self.root1)
         
@@ -353,7 +380,7 @@ class ChatBotGUI:
         # create the profile frame
         splash_screen.set_text("Creating profile page")
         self.profile_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
-        ProfileClass(self.profile_frame) #self.profile_frame, self
+        ProfileClass(self.profile_frame)
         
         # create the skills frame
         splash_screen.set_text("Creating skills page")
@@ -436,25 +463,47 @@ class ChatBotGUI:
             self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
             self.chat_frame.pack(padx=10)
         
-    def record(self, clearChat=True, iconDisplay=True):
+    def record(self, clear_chat=True, icon_display=True):
+        """
+        Records audio from the microphone and converts it to text using Google Speech Recognition.
+
+        Args:
+            clear_chat (bool): Flag indicating whether to clear the chat display. Defaults to True.
+            icon_display (bool): Flag indicating whether to display an icon. Defaults to True.
+
+        Returns:
+            str: The recognized speech as lowercase text, or 'None' if an error occurred during speech recognition.
+        """
         import speech_recognition as sr
+        
+        # Display status message
         print('\nListening...')
         self.AITaskStatusLbl.configure(text="Listening...")
-        r = sr.Recognizer()
-        r.dynamic_energy_threshold = False
-        r.energy_threshold = 4000
+
+        recognizer = sr.Recognizer()
+        recognizer.dynamic_energy_threshold = False
+        recognizer.energy_threshold = 4000
+
         with sr.Microphone() as source:
-            r.adjust_for_ambient_noise(source)
-            audio = r.listen(source)
+            # Adjust for ambient noise
+            recognizer.adjust_for_ambient_noise(source)
+            audio = recognizer.listen(source)
             said = ""
+
             try:
                 self.AITaskStatusLbl.configure(text="Processing...")
-                said = r.recognize_google(audio)
+                # Convert audio to text using Google Speech Recognition
+                said = recognizer.recognize_google(audio)
                 print(f"\nUser said: {said}")
-            except Exception as e:
-                print(e)
+            except sr.UnknownValueError:
+                print("Speech recognition could not understand audio")
                 return 'None'
+            except sr.RequestError as e:
+                print(f"Could not request results from Google Speech Recognition service: {e}")
+                return 'None'
+
         return said.lower()
+
     def voiceMedium(self):
         while True:
           if chatMode == 0:
@@ -569,11 +618,19 @@ class ChatBotGUI:
             wid.destroy()
         
     def attach_to_frame(self, text, bot=False):
+        """
+        Attaches a chat message to the chat frame.
+
+        Args:
+            text (str): The text content of the message.
+            bot (bool, optional): Indicates if the message is from the bot. Defaults to False.
+        """
         if self.message_count == 8:
             self.clearChatScreen()
             self.message_count = 0
-            
+
         if bot:
+            # Create a chat label for bot message
             chat = ctk.CTkLabel(
                 self.chat_frame,
                 text=text,
@@ -584,14 +641,16 @@ class ChatBotGUI:
                 corner_radius=7,
                 anchor="s"
             )
-            chat.pack(anchor='w', padx=5, pady=5) #(row=self.get_next_row(), column=0, sticky='w', padx=5, pady=5
+            chat.pack(anchor='w', padx=5, pady=5)
             self.message_count += 1
         else:
+            # Calculate the wraplength based on available space
             frame_width = self.chat_frame.winfo_width()
             wraplength = frame_width - 20  # Adjust wraplength dynamically based on chat_frame width and padding
             if wraplength < 100:
                 wraplength = frame_width  # Set wraplength to frame width if it becomes too small
 
+            # Create a chat label for user message
             chat = ctk.CTkLabel(
                 self.chat_frame,
                 text=text,
@@ -601,18 +660,16 @@ class ChatBotGUI:
                 fg_color=botChatTextBg,
                 corner_radius=7,
             )
-            
+
             # Update the wraplength if the text exceeds the available width
             chat.update_idletasks()
             text_width = chat.winfo_width()
             if text_width > wraplength:
                 wraplength = text_width
-            
+
             chat.configure(wraplength=wraplength)
-            chat.pack(anchor='e', padx=2, pady=2) #row=self.get_next_row(), column=1, sticky='e', padx=2, pady=2
+            chat.pack(anchor='e', padx=2, pady=2)
             self.message_count += 1
-
-
 
     def _add_to_chat_history(self, message, bot=False):
         """
@@ -633,17 +690,32 @@ class ChatBotGUI:
             # Automatically scroll to the bottom of the chat history
             self.chat_frame.yview(tk.END)
 
-
 if __name__ == '__main__':
+    """
+    Main entry point of the program.
+    """
     print('Creating GUI')
+
+    # Create the root window
     root = ctk.CTk()
+
+    # Create and configure the splash screen
     splash_screen = SplashScreen(root)
     splash_screen.overrideredirect(True)
-    splash_screen.set_text("Creating Ava Chatbot and taining")
+    splash_screen.set_text("Creating Ava Chatbot and training")
     splash_screen.set_progress(50)
-    print('Creating Ava Chatbot and taining')
+
+    print('Creating Ava Chatbot and training')
+
+    # Create the ChatBotGUI object
     gui = ChatBotGUI(root, splash_screen)
+
+    # Update the splash screen
     splash_screen.set_text("Done")
     splash_screen.set_progress(100)
+
+    # Destroy the splash screen
     splash_screen.destroy()
+
+    # Start the main event loop
     root.mainloop()
