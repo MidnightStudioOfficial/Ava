@@ -3,7 +3,7 @@ import threading
 import wave
 import multiprocessing
 
-#ffmpeg -i song.mp3 -acodec pcm_u8 -ar 22050 song.wav'
+#ffmpeg -i song.mp3 -acodec pcm_u8 -ar 22050 song.wav
 
 class AudioPlayer:
     def __init__(self, filename):
@@ -25,6 +25,9 @@ class AudioPlayer:
             print("Audio is already playing. Cant set new filename")
             return
         self.filename = new_filename
+    
+    def process_audio(self):
+        pass
     
 
     def _play_audio(self):
