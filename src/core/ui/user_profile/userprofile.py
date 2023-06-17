@@ -120,7 +120,6 @@ class ProfileClass(ctk.CTkFrame):
             print("File not found")
         except json.JSONDecodeError:
             print("Invalid JSON syntax")
-
     def _set_profile(self):
         # Set interests
         interests = self.profile_data["interests"]
@@ -129,21 +128,25 @@ class ProfileClass(ctk.CTkFrame):
                 self.skills_frame, text="- " + interest, font=("Segoe UI", 12)
             )
             interest_label.pack()
+            
         # Set first name
         self.first_name_label.configure(text=self.profile_data["first_name"])
+        
         # Set last name
         self.last_name_label.configure(text=self.profile_data["last_name"])
+        
         # Set Badges/Achievements
-        badge_1 = self.profile_data["achievements_1"]
-        badge_2 = self.profile_data["achievements_2"]
-        badge_3 = self.profile_data["achievements_3"]
-        if badge_1 == True: 
-            self.badge_images.append(self.achievements[1])
-        if badge_2 == True: 
-            self.badge_images.append(self.achievements[2])
-        if badge_3 == True: 
-            self.badge_images.append(self.achievements[3])
-        for i, badge_path in enumerate(self.badge_images):
+        badges_to_check = [
+            self.profile_data["achievements_1"],
+            self.profile_data["achievements_2"],
+            self.profile_data["achievements_3"],
+        ]
+        
+        for i, badge_to_check in enumerate(badges_to_check, start=1):
+            if badge_to_check:
+                self.badge_images.append(self.achievements[i])
+        
+        for badge_path in self.badge_images:
             badge = Image.open(badge_path)
             badge = badge.resize((30, 30), Image.ANTIALIAS)
             badge = ImageTk.PhotoImage(badge)
@@ -151,5 +154,5 @@ class ProfileClass(ctk.CTkFrame):
             badge_label = ctk.CTkLabel(self.badges_frame, image=badge, text="")
             badge_label.pack(padx=5)
             del badge
-        
+
         
