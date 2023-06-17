@@ -55,7 +55,6 @@ class ProfileClass(ctk.CTkFrame):
         )
         self.title_label.pack(pady=(20, 10))
 
-        # self.info_badges_frame = ctk.CTkFrame(parent, width=400, height=300)
 
         self.info_frame = ctk.CTkFrame(parent, width=400, height=300)
         self.info_frame.pack(padx=10, pady=10, expand=True, fill="both")
