@@ -10,8 +10,8 @@ splash_screen = SplashScreen(root)
 splash_screen.set_text("Initializing...")
 #splash_screen.set_progress(25)
 
-import random
-import time
+#import random
+#import time
 #while True:
 #    splash_screen.set_text(str(random.randint(1, 50)))
 #    splash_screen.set_progress(random.randint(1, 100))
