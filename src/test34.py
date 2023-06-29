@@ -6,7 +6,7 @@ def fade_out(window, alpha=1.0):
 
     if alpha > 0:
         # Call the fade_out function again after a delay
-        window.after(100, fade_out, window, alpha)
+        window.after(67, fade_out, window, alpha)
     else:
         window.destroy()  # Close the window when the fade-out is complete
 
