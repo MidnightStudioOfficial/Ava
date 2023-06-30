@@ -101,6 +101,7 @@ class ChatBotGUI:
             "image_icon_image": {"name": "home.png", "size": (20, 20)},
             "image_weather_icon_image": {"name": "weather.png", "size": (20, 20)},
             "image_news_icon_image": {"name": "news.png", "size": (20, 20)},
+            "image_bell_icon_image": {"name": "bell.png", "size": (20, 20)},
             "image_fire_icon_image": {"name": "fire.png", "size": (20, 20)}
         }
 
@@ -114,6 +115,7 @@ class ChatBotGUI:
         self.add_user_image = ctk.CTkImage(light_image=Image.open(join(image_path, "settings.png")), dark_image=Image.open(join(image_path, "settings.png")), size=(20, 20))
         self.add_DNA_image = ctk.CTkImage(light_image=Image.open(join(image_path, "DNA.png")), dark_image=Image.open(join(image_path, "DNA.png")), size=(20, 20))
         self.add_profile_image = ctk.CTkImage(Image.open(join(image_path, "profile.png")))
+        self.add_profile_image2 = ctk.CTkImage(Image.open(join(image_path, "profile.png")),size=(40,40))
         self.add_skills_image = ctk.CTkImage(Image.open(join(image_path, "box.png")))
         
         # create navigation frame
@@ -133,11 +135,13 @@ class ChatBotGUI:
             {"attribute": "frame_profile_button", "text": "Profile", "image": self.add_profile_image, "command": self.frame_profile_button_event},
             {"attribute": "frame_skills_button", "text": "Skills", "image": self.add_skills_image, "command": self.frame_skills_button_event}
         ]
+        
 
         # Create the navigation frame label
         self.navigation_frame_label = ctk.CTkLabel(self.navigation_frame, text="  Ava", image=self.logo_image,
                                                 compound="left", font=ctk.CTkFont(size=15, weight="bold"))
         self.navigation_frame_label.grid(row=0, column=0, padx=20, pady=20)
+        
 
         # Create navigation buttons and assign attributes to self
         for index, nav_button in enumerate(navigation_buttons, start=1):
@@ -165,8 +169,17 @@ class ChatBotGUI:
         # create home frame
         splash_screen.set_text("Creating home frame")
         self.home_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
+        self.home_frame.grid(row=0, column=0, sticky="w")
         self.home_frame.grid_columnconfigure(0, weight=1)
         
+        
+        self.profile_button = ctk.CTkButton(self.home_frame, text="", image=self.add_profile_image2, fg_color="transparent", corner_radius=0,width=40, height=40, border_width=0,border_spacing=0,compound="left")
+        self.profile_button.grid(row=0, column=0, sticky="nw")  # Adding some padding for aesthetics, padx=5, pady=5
+        
+        self.mail_button = ctk.CTkButton(self.home_frame, text="", image=self.image_bell_icon_image, fg_color="transparent")
+        self.mail_button.grid(row=0, column=0, sticky="ne", padx=5, pady=5)  # Adding some padding for aesthetics
+        self.mail_button.configure(width=30, height=30)
+
         # create welcome image
         self.home_frame_large_image_label = ctk.CTkLabel(self.home_frame, text="", image=self.large_test_image)
         self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
