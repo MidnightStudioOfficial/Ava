@@ -142,7 +142,6 @@ class ChatBotGUI:
                                                 compound="left", font=ctk.CTkFont(size=15, weight="bold"))
         self.navigation_frame_label.grid(row=0, column=0, padx=20, pady=20)
         
-
         # Create navigation buttons and assign attributes to self
         for index, nav_button in enumerate(navigation_buttons, start=1):
             button = ctk.CTkButton(
@@ -172,9 +171,10 @@ class ChatBotGUI:
         self.home_frame.grid(row=0, column=0, sticky="w")
         self.home_frame.grid_columnconfigure(0, weight=1)
         
-        
-        self.profile_button = ctk.CTkButton(self.home_frame, text="", image=self.add_profile_image2, fg_color="transparent", corner_radius=0,width=40, height=40, border_width=0,border_spacing=0,compound="left")
-        self.profile_button.grid(row=0, column=0, sticky="nw")  # Adding some padding for aesthetics, padx=5, pady=5
+        self.profile_button = ctk.CTkButton(self.home_frame, text="", image=self.add_profile_image2, fg_color="transparent", corner_radius=0, width=40, height=40, border_width=0, border_spacing=0, compound="left")
+        self.profile_button.grid(row=0, column=0, sticky="nw")
+        CTkScrollableDropdown(self.profile_button, values=global_vars.STYLES_LIST, height=270, resize=False, button_height=30,
+                      scrollbar=False, width=100)
         
         self.mail_button = ctk.CTkButton(self.home_frame, text="", image=self.image_bell_icon_image, fg_color="transparent")
         self.mail_button.grid(row=0, column=0, sticky="ne", padx=5, pady=5)  # Adding some padding for aesthetics

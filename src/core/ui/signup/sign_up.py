@@ -20,6 +20,7 @@ class SignUpApp(customtkinter.CTkToplevel):
         ]
         self.current_page = 0
         self.entries = []
+        self.signup_info = {}
 
         self.create_page()
 
@@ -46,6 +47,7 @@ class SignUpApp(customtkinter.CTkToplevel):
             create_button.place(x=170, y=300)
 
     def next_page(self):
+        self.save_info()
         self.current_page += 1
         for entry in self.entries:
             entry.destroy()
@@ -54,18 +56,23 @@ class SignUpApp(customtkinter.CTkToplevel):
 
     def previous_page(self):
         if self.current_page > 0:
+            self.save_info()
             self.current_page -= 1
             for entry in self.entries:
                 entry.destroy()
             self.entries = []
             self.create_page()
 
+    def save_info(self):
+        page = self.pages[self.current_page]
+        for i, input_label in enumerate(page['inputs']):
+            value = self.entries[i].get()
+            self.signup_info[input_label] = value
+
     def create_profile(self):
-        # Process the sign-up information here
+        self.save_info()
+        # Process the sign-up information from self.signup_info dictionary here
+        print(self.signup_info)
+
         self.destroy()  # Destroy current window and create new one
-        w = customtkinter.CTk()
-        w.geometry("1280x720")
-        w.title('Welcome')
-        l1 = customtkinter.CTkLabel(master=w, text="Home Page", font=('Century Gothic', 60))
-        l1.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-        w.mainloop()
+        
