@@ -19,6 +19,18 @@ from core.ui.skills.skills_page import SkillGUI
 print("Importing Debug")
 from core.base.debug import DebugGUI
 
+print("Importing CTkScrollableDropdown")
+from core.ui.widgets.CTkScrollableDropdown.ctk_scrollable_dropdown import CTkScrollableDropdown
+
+print("Importing CTkToolTip")
+from core.ui.widgets.CTkToolTip.ctk_tooltip import CTkToolTip
+
+print("Importing win_style")
+from core.ui.utils.win_style import *
+
+print("Importing global_vars")
+import core.base.global_vars as global_vars
+
 if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
     
  print('Importing pyttsx3')
@@ -96,14 +108,13 @@ class ChatBotGUI:
         for attribute, data in image_data.items():
             image = Image.open(join(image_path, data["name"]))  # Open the image file
             setattr(self, attribute, ctk.CTkImage(image, size=data["size"]))  # Assign the image to an attribute with specified size
-        
+              
         self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
         self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
         self.add_user_image = ctk.CTkImage(light_image=Image.open(join(image_path, "settings.png")), dark_image=Image.open(join(image_path, "settings.png")), size=(20, 20))
         self.add_DNA_image = ctk.CTkImage(light_image=Image.open(join(image_path, "DNA.png")), dark_image=Image.open(join(image_path, "DNA.png")), size=(20, 20))
         self.add_profile_image = ctk.CTkImage(Image.open(join(image_path, "profile.png")))
         self.add_skills_image = ctk.CTkImage(Image.open(join(image_path, "box.png")))
-        
         
         # create navigation frame
         splash_screen.set_text("Creating gui")
@@ -151,8 +162,8 @@ class ChatBotGUI:
                                                     command=self.change_appearance_mode_event)
         self.appearance_mode_menu.grid(row=7, column=0, padx=20, pady=20, sticky="s")
 
-        
         # create home frame
+        splash_screen.set_text("Creating home frame")
         self.home_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         self.home_frame.grid_columnconfigure(0, weight=1)
         
@@ -332,6 +343,7 @@ class ChatBotGUI:
         #self.user_input.bind('<Return>', lambda event: self.send_message())
 
         # create third frame
+        splash_screen.set_text("Creating settings page")
         self.third_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         # Create a list of frame names and label texts
         frames = [
@@ -367,6 +379,14 @@ class ChatBotGUI:
         self.segemented_button.pack()
         self.reset_train_button = ctk.CTkButton(self.frame_1, border_width=0, text="Reset training data")
         self.reset_train_button.pack()
+        self.entry = ctk.CTkEntry(self.frame_3, width=240, placeholder_text="Window Style")
+        self.entry.pack(fill="x", padx=10, pady=10)
+        
+        self.style_dropdown = CTkScrollableDropdown(self.entry, values=global_vars.STYLES_LIST, command=self.style_dropdown_click,
+                            autocomplete=True) # Using autocomplete
+        self.style_dropdown_tooltip = CTkToolTip(self.entry, delay=0.7, message=str(global_vars.TOOLTIP_MESSAGES["style_dropdown"]))
+        self.entry.insert(0, 'Window Style')
+
         
         # create the DNA frame
         self.DNA_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
@@ -446,9 +466,12 @@ class ChatBotGUI:
             else:
                 frame.grid_forget()
 
-
     def debug_click(self):
         DebugGUI(self.master)
+        
+    def style_dropdown_click(self, event):
+        self.entry.insert(1, event)
+        apply_style(self.master, event)
     
     def chat_bubble_enable_event(self):
         print(self.chat_bubble_switch_var.get())
