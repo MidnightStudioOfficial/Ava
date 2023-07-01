@@ -12,7 +12,9 @@ VOICE_DEFAULT_SETTINGS = {
     'pitch': 110
 }
 TOOLTIP_MESSAGES = {
-    "style_dropdown": "Customize your UI window with awesome built-in windows 11 header styles and themes. This is only for windows 11 (some themes may not work with windows 10)."
+    "style_dropdown": "Customize your UI window with awesome built-in windows 11 header styles and themes. This is only for windows 11 (some themes may not work with windows 10).",
+    "mail_button": "Notifications",
+    "profile_button": "Your Profile"
 }
 STYLES_LIST = ["dark", "mica", "aero", "transparent", "acrylic", "win7",
           "inverse", "popup", "native", "optimised", "light"]

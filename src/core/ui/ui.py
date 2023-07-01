@@ -53,11 +53,12 @@ chatBgColor = '#12232e'
 background = '#203647'
 textColor = 'white'
 AITaskStatusLblBG = '#203647'
-KCS_IMG = 1 # 0 for light, 1 for dark
+KCS_IMG = 1  # 0 for light, 1 for dark
 
 ### SWITCHING BETWEEN FRAMES ###
 def raise_frame(frame):
     frame.tkraise()
+
 
 class ChatBotGUI:
     def __init__(self, master, splash_screen, image_path):
@@ -136,7 +137,6 @@ class ChatBotGUI:
             {"attribute": "frame_skills_button", "text": "Skills", "image": self.add_skills_image, "command": self.frame_skills_button_event}
         ]
         
-
         # Create the navigation frame label
         self.navigation_frame_label = ctk.CTkLabel(self.navigation_frame, text="  Ava", image=self.logo_image,
                                                 compound="left", font=ctk.CTkFont(size=15, weight="bold"))
@@ -174,11 +174,13 @@ class ChatBotGUI:
         self.profile_button = ctk.CTkButton(self.home_frame, text="", image=self.add_profile_image2, fg_color="transparent", corner_radius=0, width=40, height=40, border_width=0, border_spacing=0, compound="left")
         self.profile_button.grid(row=0, column=0, sticky="nw")
         CTkScrollableDropdown(self.profile_button, values=global_vars.STYLES_LIST, height=270, resize=False, button_height=30,
-                      scrollbar=False, width=100)
+                      scrollbar=True, width=100)
+        self.profile_button_tooltip = CTkToolTip(self.profile_button, delay=0.8, message=str(global_vars.TOOLTIP_MESSAGES["profile_button"]))
         
         self.mail_button = ctk.CTkButton(self.home_frame, text="", image=self.image_bell_icon_image, fg_color="transparent")
         self.mail_button.grid(row=0, column=0, sticky="ne", padx=5, pady=5)  # Adding some padding for aesthetics
         self.mail_button.configure(width=30, height=30)
+        self.mail_button_tooltip = CTkToolTip(self.mail_button, delay=0.8, message=str(global_vars.TOOLTIP_MESSAGES["mail_button"]))
 
         # create welcome image
         self.home_frame_large_image_label = ctk.CTkLabel(self.home_frame, text="", image=self.large_test_image)
@@ -372,8 +374,9 @@ class ChatBotGUI:
 
         # Create frames and labels using loops
         for frame_name, label_text in frames:
+            splash_screen.set_text("Creating " + str(frame_name))
             frame = ctk.CTkFrame(self.third_frame)
-            frame.pack(pady=20, padx=10, fill="x", expand=True)
+            frame.pack(pady=20, padx=10, fill='x', expand=True)
 
             label = ctk.CTkLabel(frame, text=label_text, font=ctk.CTkFont(family='Lucida Console', size=15, weight="bold"))
             label.pack(ipady=4)
@@ -393,14 +396,17 @@ class ChatBotGUI:
         self.reset_train_button = ctk.CTkButton(self.frame_1, border_width=0, text="Reset training data")
         self.reset_train_button.pack()
         self.entry = ctk.CTkEntry(self.frame_3, width=240, placeholder_text="Window Style")
-        self.entry.pack(fill="x", padx=10, pady=10)
+        self.entry.pack(fill='x', padx=10, pady=10)
         
         self.style_dropdown = CTkScrollableDropdown(self.entry, values=global_vars.STYLES_LIST, command=self.style_dropdown_click,
                             autocomplete=True) # Using autocomplete
         self.style_dropdown_tooltip = CTkToolTip(self.entry, delay=0.7, message=str(global_vars.TOOLTIP_MESSAGES["style_dropdown"]))
         self.entry.insert(0, 'Window Style')
-
-        
+        label = ctk.CTkLabel(self.frame_1, text="Chat Bubble Corner Radius", font=ctk.CTkFont(family='Sans Serif', size=13, weight="bold"))
+        label.pack(ipady=2)
+        self.slider_1 = ctk.CTkSlider(master=self.frame_1, from_=0, to=100)
+        self.slider_1.pack(padx=10)#pady=10, 
+ 
         # create the DNA frame
         self.DNA_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         
@@ -453,10 +459,8 @@ class ChatBotGUI:
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
          # Initialize chatbot
          splash_screen.set_text("Training the chatbot")
-         self.chatbot = Chatbot()
+         self.chatbot = Chatbot(splash_screen)
          self.chatbot.train_bot() # Train the chatbot
-
-  
 
     def select_frame_by_name(self, name):
         frames = {
@@ -610,7 +614,6 @@ class ChatBotGUI:
     def frame_skills_button_event(self):
         self.select_frame_by_name("frame_skills")
 
-
     def change_appearance_mode_event(self, new_appearance_mode):
         """
         Change the GUI appearance mode
@@ -716,9 +719,9 @@ class ChatBotGUI:
         """
         if self.current_chat_bubble == True:
          if bot is True:
-            ctk.CTkLabel(self.chat_frame, image=self.logo_image, text="").pack(anchor='w',pady=0) #, bg=chatBgColor
+            ctk.CTkLabel(self.chat_frame, image=self.logo_image, text="").pack(anchor='w', pady=0) #, bg=chatBgColor
          else:
-            ctk.CTkLabel(self.chat_frame, text="").pack(anchor='e',pady=0) #, image=userIcon
+            ctk.CTkLabel(self.chat_frame, text="").pack(anchor='e', pady=0) #, image=userIcon
          self.attach_to_frame(message, bot)
         elif self.current_chat_bubble == False:
             # Enable text editing and add message to chat history

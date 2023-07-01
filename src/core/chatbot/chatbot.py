@@ -77,8 +77,9 @@ class ChatbotProfile:
            print("Invalid JSON syntax")
 
 class Chatbot:
-    def __init__(self) -> None:
+    def __init__(self, splash_screen) -> None:
         # Initialize the conversational engine and conversation
+        splash_screen.set_text("Initializing the conversational engine and conversation")
         self.engine = ConversationalEngine(lemmatize_data=True, filepath=trainingdata, modelpath=None)
         self.currentConversation = Conversation(engine=self.engine, articulationdata=articulationdata)
 
@@ -95,6 +96,7 @@ class Chatbot:
             self.chatbot_exists = True
 
         # Initialize the chatbot and trainer
+        splash_screen.set_text("Initializing the chatbot and trainer")
         self.chatBot = CHATBOT("Chatbot") #, tagger_language=self.nlp
         self.trainer = ChatterBotCorpusTrainer(self.chatBot)
 
