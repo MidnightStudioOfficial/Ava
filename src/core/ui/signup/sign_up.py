@@ -14,8 +14,8 @@ class SignUpApp(customtkinter.CTkToplevel):
         self.l1.pack()
 
         self.pages = [
-            {'label': 'Create your Account', 'inputs': ['Username', 'Age']},
-            {'label': 'Additional Information', 'inputs': ['Email', 'Phone']},
+            {'label': 'Create your Profile', 'inputs': ['Username', 'Age']},
+            {'label': 'Additional Information', 'inputs': ['Gender', 'Bio']},
             {'label': 'Confirmation', 'inputs': []}
         ]
         self.current_page = 0
