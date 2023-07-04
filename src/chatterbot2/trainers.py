@@ -166,6 +166,7 @@ class ChatterBotCorpusTrainer(Trainer):
                     previous_statement_search_text = statement_search_text
 
                     statements_to_create.append(statement)
+                    #statements_to_create.extend(statement)
 
             if statements_to_create:
                 self.chatbot.storage.create_many(statements_to_create)

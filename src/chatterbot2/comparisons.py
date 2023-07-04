@@ -127,7 +127,7 @@ class JaccardSimilarity(Comparator):
             )
             raise OptionalDependencyImportError(message)
 
-        self.nlp = spacy.load(self.language.ISO_639_1)
+        self.nlp = spacy.load("en_core_web_sm")
 
     def compare(self, statement_a, statement_b):
         """
@@ -151,3 +151,34 @@ class JaccardSimilarity(Comparator):
         ratio = numerator / denominator
 
         return ratio
+    
+class avrig(Comparator):
+    """
+    Compare two statements based on the Levenshtein distance
+    of each statement's text.
+
+    For example, there is a 65% similarity between the statements
+    "where is the post office?" and "looking for the post office"
+    based on the Levenshtein distance algorithm.
+    """
+
+    def compare(self, statement_a, statement_b):
+        """
+        Compare the two input statements.
+
+        :return: The percent of similarity between the text of the statements.
+        :rtype: float
+        """
+
+        # Return 0 if either statement has a falsy text value
+        if not statement_a.text or not statement_b.text:
+            return 0
+        from chatterbot2 import languages
+        s1 = JaccardSimilarity(language="en_core_web_sm")
+        s1_r = s1.compare(statement_a,statement_b)
+        s2 = LevenshteinDistance(language="en_core_web_sm")
+        s2_r = s2.compare(statement_a,statement_b)
+        percent = (s1_r + s2_r) / 2
+
+        return percent
+
