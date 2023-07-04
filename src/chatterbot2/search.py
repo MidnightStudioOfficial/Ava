@@ -11,16 +11,34 @@ class IndexedTextSearch:
     name = 'indexed_text_search'
 
     def __init__(self, chatbot, **kwargs):
-        from chatterbot2.comparisons import LevenshteinDistance #, avrig
+        from chatterbot2 import constants
 
         self.chatbot = chatbot
         
-        
+        if constants.default_comparison_function == 1:
+            from chatterbot2.comparisons import LevenshteinDistance
+            statement_comparison_function = kwargs.get(
+              'statement_comparison_function',
+              LevenshteinDistance
+            )
+            print("LevenshteinDistance")
+        elif constants.default_comparison_function == 2:
+            from chatterbot2.comparisons import TopicAndCosineSimilarity
+            statement_comparison_function = kwargs.get(
+              'statement_comparison_function',
+              TopicAndCosineSimilarity
+            )
+            print("TopicAndCosineSimilarity")
+        elif constants.default_comparison_function == 3:
+            from chatterbot2.comparisons import CosineSimilarity
+            statement_comparison_function = kwargs.get(
+              'statement_comparison_function',
+              CosineSimilarity
+            )
+            print("CosineSimilarity")
 
-        statement_comparison_function = kwargs.get(
-            'statement_comparison_function',
-            LevenshteinDistance
-        )
+
+
 
         self.compare_statements = statement_comparison_function(
             language=self.chatbot.storage.tagger.language
@@ -99,14 +117,34 @@ class TextSearch:
     name = 'text_search'
 
     def __init__(self, chatbot, **kwargs):
-        from chatterbot2.comparisons import LevenshteinDistance #, avrig
 
         self.chatbot = chatbot
 
-        statement_comparison_function = kwargs.get(
-            'statement_comparison_function',
-            LevenshteinDistance
-        )
+        from chatterbot2 import constants
+
+        self.chatbot = chatbot
+        
+        if constants.default_comparison_function == 1:
+            from chatterbot2.comparisons import LevenshteinDistance
+            statement_comparison_function = kwargs.get(
+              'statement_comparison_function',
+              LevenshteinDistance
+            )
+            print("LevenshteinDistance")
+        elif constants.default_comparison_function == 2:
+            from chatterbot2.comparisons import TopicAndCosineSimilarity
+            statement_comparison_function = kwargs.get(
+              'statement_comparison_function',
+              TopicAndCosineSimilarity
+            )
+            print("TopicAndCosineSimilarity")
+        elif constants.default_comparison_function == 3:
+            from chatterbot2.comparisons import CosineSimilarity
+            statement_comparison_function = kwargs.get(
+              'statement_comparison_function',
+              CosineSimilarity
+            )
+            print("CosineSimilarity")
 
         self.compare_statements = statement_comparison_function(
             language=self.chatbot.storage.tagger.language

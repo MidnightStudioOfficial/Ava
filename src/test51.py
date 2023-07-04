@@ -76,7 +76,7 @@ class TopicAndCosineSimilarity(Comparator):
         vectorizer = TfidfVectorizer()
         tfidf_matrix = vectorizer.fit_transform(corpus)
 
-        lda = LatentDirichletAllocation(n_components=5, random_state=42)
+        lda = LatentDirichletAllocation(n_components=15, random_state=42, max_iter=100, n_jobs=3)
         topic_matrix = lda.fit_transform(tfidf_matrix)
 
         topic_similarities = cosine_similarity(topic_matrix[0].reshape(1, -1), topic_matrix[1].reshape(1, -1))
@@ -158,6 +158,51 @@ class TopicModeling(Comparator):
 
         return percent
     
+
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
+from math import sqrt
+
+class TopicAndCosineSimilarity2(Comparator):
+    def compare(self, statement_a, statement_b):
+        if not statement_a or not statement_b:
+            return 0
+
+        statement_a_text = str(statement_a)
+        statement_b_text = str(statement_b)
+
+        corpus = [statement_a_text, statement_b_text]
+
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(corpus)
+
+        lda = LatentDirichletAllocation(n_components=15, random_state=42, max_iter=100, n_jobs=3)
+        topic_matrix = lda.fit_transform(tfidf_matrix)
+
+        topic_similarities = cosine_similarity(topic_matrix[0].reshape(1, -1), topic_matrix[1].reshape(1, -1))
+        topic_similarity_percent = topic_similarities[0][0] * 100#, 2)round(
+
+        cosine_similarities = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])
+        cosine_similarity_percent = cosine_similarities[0][0] * 100#, 2)round(
+
+        # Combine the similarity scores using different methods
+
+        # Weighted Average
+        weighted_average_similarity_percent = (0.3 * topic_similarity_percent) + (0.7 * cosine_similarity_percent)
+        average_similarity_percent = (topic_similarity_percent + cosine_similarity_percent) / 2
+
+        # Geometric Mean
+        geometric_mean_similarity_percent = sqrt(topic_similarity_percent * cosine_similarity_percent)
+
+        # Add more methods here if desired
+
+        return {
+            'weighted_average': weighted_average_similarity_percent,
+            'geometric_mean': geometric_mean_similarity_percent,
+            'average': average_similarity_percent
+        }
+
 class avrig(Comparator):
     """
     Compare two statements based on the Levenshtein distance
@@ -190,13 +235,18 @@ class avrig(Comparator):
 
         return percent
 
-c1 = "That is nice to hear."
-c2 = "That is not nice to hear."
+
+# c1 = "That is nice to hear I am glad you are."
+# c2 = "That is good to hear I am happy you are."
+c1 = "That is nice to hear I am glad you are."
+c2 = "That is good to hear and I am happy that you are."
 
 g1 = TopicModeling()
 print("TopicModeling:"+str(g1.compare(c1, c2)))
 g2 = TopicAndCosineSimilarity()
 print("TopicAndCosineSimilarity:"+str(g2.compare(c1, c2)))
+g6 = TopicAndCosineSimilarity2()
+print("TopicAndCosineSimilarity2:"+str(g6.compare(c1, c2)))
 g3 = CosineSimilarity()
 print("CosineSimilarity:"+str(g3.compare(c1, c2)))
 g5 = LevenshteinDistance()

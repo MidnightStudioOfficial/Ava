@@ -152,6 +152,55 @@ class JaccardSimilarity(Comparator):
 
         return ratio
     
+from sklearn.metrics.pairwise import cosine_similarity
+from difflib import SequenceMatcher
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
+class TopicAndCosineSimilarity(Comparator):
+
+    def compare(self, statement_a, statement_b):
+        if not statement_a.text or not statement_b.text:
+            return 0
+
+        statement_a_text = str(statement_a.text)
+        statement_b_text = str(statement_b.text)
+
+        corpus = [statement_a_text, statement_b_text]
+
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(corpus)
+
+        lda = LatentDirichletAllocation(n_components=15, random_state=42, max_iter=100, n_jobs=4) #n_components=5
+        topic_matrix = lda.fit_transform(tfidf_matrix)
+
+        topic_similarities = cosine_similarity(topic_matrix[0].reshape(1, -1), topic_matrix[1].reshape(1, -1))
+        topic_similarity_percent = topic_similarities[0][0] * 100 #, 2)round(
+
+        cosine_similarities = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])
+        cosine_similarity_percent = cosine_similarities[0][0] * 100 #, 2)round(
+
+        # Combine the similarity scores using a weighted average or any other method
+        # For example, you can assign higher weightage to topic similarity
+        combined_similarity_percent = (0.4 * topic_similarity_percent) + (0.7 * cosine_similarity_percent)
+
+        return combined_similarity_percent
+class CosineSimilarity(Comparator):
+    def compare(self, statement_a, statement_b):
+        if not statement_a.text or not statement_b.text:
+            return 0
+
+        statement_a_text = str(statement_a.text)
+        statement_b_text = str(statement_b.text)
+
+        corpus = [statement_a_text, statement_b_text]
+
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(corpus)
+
+        cosine_similarities = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])
+        percent = round(cosine_similarities[0][0] * 100, 2)
+
+        return percent
 class avrig(Comparator):
     """
     Compare two statements based on the Levenshtein distance

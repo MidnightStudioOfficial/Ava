@@ -3,5 +3,8 @@
     "last_name": "Doe",
     "bio": "Hello my name is John Doe",
     "gender": "male",
-    "interests": ["Python programming", "Web development", "Data science"]
+    "interests": ["Python programming", "Web development", "Data science"],
+    "achievements_1": true,
+    "achievements_2": true,
+    "achievements_3": true
 }

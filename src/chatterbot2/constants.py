@@ -26,3 +26,17 @@ PERSONA_MAX_LENGTH = 50
 TAG_NAME_MAX_LENGTH = 50
 
 DEFAULT_DJANGO_APP_NAME = 'django_chatterbot'
+
+global default_comparison_function
+default_comparison_function_list = {
+    1: {
+        "name": "LevenshteinDistance"
+    },
+    2: {
+        "name": "TopicAndCosineSimilarity"
+    },
+    3: {
+        "name": "CosineSimilarity"
+    }
+}
+default_comparison_function = 3
