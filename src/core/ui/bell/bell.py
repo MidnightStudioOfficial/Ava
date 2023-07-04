@@ -4,27 +4,33 @@ import threading
 import time
 import difflib
 
-class bell:
+class Bell:
     def __init__(self) -> None:
+        self.notifications = None
+    
+    def save_notifications(self):
+        pass
+    
+    def load_notifications(self):
         pass
         
 class BellGUI(ctk.CTkToplevel):
     def __init__(self, parent) -> None:
         super().__init__(parent)
-        self.bell = bell()
+        self.bell = Bell()
         # Define the layout of the GUI
         self.layout = {
             "TEST": {
                 "value": "test",
                 "type": "other",
                 "details": "This is a test item.",
-                "tags": ["TEST", "test"]
+                "tags": ["test"]
             },
             "TEST2": {
                 "value": "test2",
                 "type": "memory",
                 "details": "This is a test2 item.",
-                "tags": ["TEST2", "test2"]
+                "tags": ["test2"]
             }
         }
 
