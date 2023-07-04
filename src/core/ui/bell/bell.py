@@ -209,12 +209,20 @@ class BellGUI(ctk.CTkToplevel):
                                     command=lambda item_name=name: self.delete_item(item_name))
         delete_button.grid(row=0, column=3, padx=5)
 
-        
     def create_list(self):
         for key, notification in self.layout.items():
             value = notification["value"]
             self.add_notification(str(key), str(value))
-            
+    
+    def new_notification(self, name, data):
+        self.layout[str(name)] = data
+        self.clear_list()
+        self.create_list()
+    
+    def remove_notification(self, name):
+        del self.layout[name]
+        self.destroy_item_frame(name)    
+        
     def edit_item(self, item_name):
         """Callback function to edit the item's value"""
         # You can implement the editing functionality here
