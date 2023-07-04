@@ -55,6 +55,7 @@ def read_corpus(file_name):
 
     with io.open(file_name, encoding='utf-8') as data_file:
         return yaml.safe_load(data_file)
+    
 def load_corpus(*data_file_paths):
     """
     Return the data contained within a specified corpus.
