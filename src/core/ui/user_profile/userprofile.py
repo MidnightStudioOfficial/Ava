@@ -51,7 +51,7 @@ class ProfileClass(ctk.CTkFrame):
         self.last_name_label.pack(side="left", padx=10)
 
         self.title_label = ctk.CTkLabel(
-            parent, text="Software Developer", font=("Segoe UI", 14), fg_color="#333333"
+            parent, text="Software Developer", font=("Segoe UI", 14), corner_radius=7, fg_color="#333333"
         )
         self.title_label.pack(pady=(20, 10))
 
