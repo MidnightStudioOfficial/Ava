@@ -449,11 +449,11 @@ class ChatBotGUI:
         self.more_buttons = [
             {"attribute": "more_weather_button", "text": "Weather", "image": self.image_weather_icon_image, "command": self.home_button_event, "tooltip": "View weather"},
             {"attribute": "more_news_button", "text": "News", "image": self.image_news_icon_image, "command": self.frame_2_button_event, "tooltip": "Read news"},
-            {"attribute": "more_frame_3_button", "text": "Meditation", "image": self.add_skills_image, "command": self.frame_3_button_event, "tooltip": "Start meditation"},
-            {"attribute": "more_frame_DNA_button", "text": "Reminder", "image": self.add_skills_image, "command": self.frame_DNA_button_event, "tooltip": "Set a reminder or todo"},
-            {"attribute": "more_frame_profile_button", "text": "Music", "image": self.add_skills_image, "command": self.frame_profile_button_event, "tooltip": "Listen to music"},
-            {"attribute": "more_frame_skills_button", "text": "Workout", "image": self.add_skills_image, "command": self.frame_skills_button_event, "tooltip": "Start workout"},
-            {"attribute": "more_frame_more_button", "text": "Productivity", "image": self.add_skills_image, "command": self.frame_more_button_event, "tooltip": "Boost productivity"}
+            {"attribute": "more_meditation_button", "text": "Meditation", "image": self.add_skills_image, "command": self.frame_3_button_event, "tooltip": "Start meditation"},
+            {"attribute": "more_reminder_button", "text": "Reminder", "image": self.add_skills_image, "command": self.frame_DNA_button_event, "tooltip": "Set a reminder or todo"},
+            {"attribute": "more_music_button", "text": "Music", "image": self.add_skills_image, "command": self.frame_profile_button_event, "tooltip": "Listen to music"},
+            {"attribute": "more_workout_button", "text": "Workout", "image": self.add_skills_image, "command": self.frame_skills_button_event, "tooltip": "Start workout"},
+            {"attribute": "more_productivity_button", "text": "Productivity", "image": self.add_skills_image, "command": self.frame_more_button_event, "tooltip": "Boost productivity"}
         ]
         
         
