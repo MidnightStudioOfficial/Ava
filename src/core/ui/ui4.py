@@ -447,13 +447,13 @@ class ChatBotGUI:
 
         # Define navigation buttons and their properties
         self.more_buttons = [
-            {"attribute": "more_weather_button", "text": "Weather", "image": self.image_weather_icon_image, "command": self.home_button_event},
-            {"attribute": "more_news_button", "text": "News", "image": self.image_news_icon_image, "command": self.frame_2_button_event},
-            {"attribute": "more_frame_3_button", "text": "Meditation", "image": self.add_skills_image, "command": self.frame_3_button_event},
-            {"attribute": "more_frame_DNA_button", "text": "Reminder", "image": self.add_skills_image, "command": self.frame_DNA_button_event},
-            {"attribute": "more_frame_profile_button", "text": "Music", "image": self.add_skills_image, "command": self.frame_profile_button_event},
-            {"attribute": "more_frame_skills_button", "text": "Workout", "image": self.add_skills_image, "command": self.frame_skills_button_event},
-            {"attribute": "more_frame_more_button", "text": "Productivity", "image": self.add_skills_image, "command": self.frame_more_button_event}
+            {"attribute": "more_weather_button", "text": "Weather", "image": self.image_weather_icon_image, "command": self.home_button_event, "tooltip": "View weather"},
+            {"attribute": "more_news_button", "text": "News", "image": self.image_news_icon_image, "command": self.frame_2_button_event, "tooltip": "Read news"},
+            {"attribute": "more_frame_3_button", "text": "Meditation", "image": self.add_skills_image, "command": self.frame_3_button_event, "tooltip": "Start meditation"},
+            {"attribute": "more_frame_DNA_button", "text": "Reminder", "image": self.add_skills_image, "command": self.frame_DNA_button_event, "tooltip": "Set a reminder"},
+            {"attribute": "more_frame_profile_button", "text": "Music", "image": self.add_skills_image, "command": self.frame_profile_button_event, "tooltip": "Listen to music"},
+            {"attribute": "more_frame_skills_button", "text": "Workout", "image": self.add_skills_image, "command": self.frame_skills_button_event, "tooltip": "Start workout"},
+            {"attribute": "more_frame_more_button", "text": "Productivity", "image": self.add_skills_image, "command": self.frame_more_button_event, "tooltip": "Boost productivity"}
         ]
         
         
@@ -471,7 +471,7 @@ class ChatBotGUI:
                 anchor="w",
                 command=nav_button["command"],
                 width=140,
-                height=28,
+                height=38, #28
             )
             setattr(self, nav_button["attribute"], button)
 
@@ -484,6 +484,9 @@ class ChatBotGUI:
             column = index % 3  # Number of buttons in the current row
 
             button.grid(row=row, column=column, sticky="nsew")
+            # Add tooltip
+            # balloon = Balloon(self.more_frame)
+            # balloon.bind_widget(button, balloonmsg=nav_button["tooltip"])
 
         
         # select default frame
