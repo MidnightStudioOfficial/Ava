@@ -11,6 +11,7 @@ class SpeechRecognizer:
         self.audio_queue = Queue()
         self.recognize_thread = None
         self.callback = callback_function
+        self.stoping = False
 
     def check_for_wakeword(self, text):
         if any(wake_word in text for wake_word in self.wake_words):
@@ -50,6 +51,10 @@ class SpeechRecognizer:
         with sr.Microphone() as source:
             try:
                 while True:  # Repeatedly listen for phrases and put the resulting audio on the audio processing job queue
+                    if self.stoping == True:
+                        #source.audio.close()
+                        print("Stoping mic")
+                        break
                     self.audio_queue.put(self.r.listen(source))
             except KeyboardInterrupt:  # Allow Ctrl + C to shut down the program
                 pass
@@ -58,8 +63,22 @@ class SpeechRecognizer:
         self.audio_queue.put(None)  # Tell the recognize_thread to stop
         self.recognize_thread.join()  # Wait for the recognize_thread to actually stop
     def stop_listening(self):
-        pass
+        self.stoping = True
+        #print("self.recognize_thread2.join()")
+        #self.recognize_thread2.
+        #print("DONE")
+        return
+        print("self.audio_queue.put(None)")
+        self.audio_queue.put(None)
+        print("audio_queue.join()")
+        self.audio_queue.join()
+        print("self.recognize_thread.join()")
+        self.recognize_thread.join()
+        print("self.recognize_thread2.join()")
+        self.recognize_thread2.join()
+        print("DONE")
     def start_listening(self):
+        self.stoping = False
         self.recognize_thread2 = Thread(target=self._start_listening)
         self.recognize_thread2.daemon = True
         self.recognize_thread2.start()

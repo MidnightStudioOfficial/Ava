@@ -3,7 +3,7 @@
   License: MIT
   Description: This is the main script that loads and connects everything
 """
-from core.ui.ui import ChatBotGUI
+from core.ui.ui4 import ChatBotGUI
 import customtkinter as ctk
 from os.path import join, dirname, realpath
 

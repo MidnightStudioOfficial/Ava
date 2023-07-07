@@ -134,7 +134,7 @@ class ChatBotGUI:
         # Create a navigation frame
         self.navigation_frame = ctk.CTkFrame(master, corner_radius=7)
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
-        self.navigation_frame.grid_rowconfigure(7, weight=1) #7
+        self.navigation_frame.grid_rowconfigure(8, weight=1) #7
 
         # Define navigation buttons and their properties
         navigation_buttons = [
@@ -143,7 +143,8 @@ class ChatBotGUI:
             {"attribute": "frame_3_button", "text": "Settings", "image": self.add_user_image, "command": self.frame_3_button_event},
             {"attribute": "frame_DNA_button", "text": "DNA", "image": self.add_DNA_image, "command": self.frame_DNA_button_event},
             {"attribute": "frame_profile_button", "text": "Profile", "image": self.add_profile_image, "command": self.frame_profile_button_event},
-            {"attribute": "frame_skills_button", "text": "Skills", "image": self.add_skills_image, "command": self.frame_skills_button_event}
+            {"attribute": "frame_skills_button", "text": "Skills", "image": self.add_skills_image, "command": self.frame_skills_button_event},
+            {"attribute": "frame_more_button", "text": "More", "image": self.add_profile_image, "command": self.frame_more_button_event}
         ]
         
         # Create the navigation frame label
@@ -172,7 +173,7 @@ class ChatBotGUI:
         # Create an appearance mode menu
         self.appearance_mode_menu = ctk.CTkOptionMenu(self.navigation_frame, values=["Dark", "Light", "System"],
                                                     command=self.change_appearance_mode_event)
-        self.appearance_mode_menu.grid(row=7, column=0, padx=20, pady=20, sticky="s")
+        self.appearance_mode_menu.grid(row=8, column=0, padx=20, pady=20, sticky="s")
 
         # create home frame
         splash_screen.set_text("Creating home frame")
@@ -439,6 +440,52 @@ class ChatBotGUI:
         self.skills_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         SkillGUI(self.skills_frame)
         
+        # create the more frame
+        self.more_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
+        self.more_frame.grid(row=0, column=0, sticky="nsew")
+        self.more_frame.grid_rowconfigure(8, weight=1) #7
+
+        # Define navigation buttons and their properties
+        self.more_buttons = [
+            {"attribute": "more_weather_button", "text": "Weather", "image": self.image_weather_icon_image, "command": self.home_button_event},
+            {"attribute": "more_news_button", "text": "News", "image": self.image_news_icon_image, "command": self.frame_2_button_event},
+            {"attribute": "more_frame_3_button", "text": "Meditation", "image": self.add_skills_image, "command": self.frame_3_button_event},
+            {"attribute": "more_frame_DNA_button", "text": "Reminder", "image": self.add_skills_image, "command": self.frame_DNA_button_event},
+            {"attribute": "more_frame_profile_button", "text": "Music", "image": self.add_skills_image, "command": self.frame_profile_button_event},
+            {"attribute": "more_frame_skills_button", "text": "Workout", "image": self.add_skills_image, "command": self.frame_skills_button_event},
+            {"attribute": "more_frame_more_button", "text": "Productivity", "image": self.add_skills_image, "command": self.frame_more_button_event}
+        ]
+        
+        
+        # Create navigation buttons and assign attributes to self
+        for index, nav_button in enumerate(self.more_buttons):
+            button = ctk.CTkButton(
+                self.more_frame,
+                corner_radius=0,
+                border_spacing=4, #10
+                text=nav_button["text"],
+                fg_color="transparent",
+                text_color=("gray10", "gray90"),
+                hover_color=("gray70", "gray30"),
+                image=nav_button["image"],
+                anchor="w",
+                command=nav_button["command"],
+                width=140,
+                height=28,
+            )
+            setattr(self, nav_button["attribute"], button)
+
+            # Configure column and row to expand and fill available space
+            #self.more_frame.columnconfigure(index, weight=1, minsize=1) #minsize=120
+            #self.more_frame.rowconfigure(0, weight=1)
+
+            # Calculate row and column for the button
+            row = index // 3  # Number of buttons per row
+            column = index % 3  # Number of buttons in the current row
+
+            button.grid(row=row, column=column, sticky="nsew")
+
+        
         # select default frame
         self.select_frame_by_name("home")
         
@@ -483,7 +530,8 @@ class ChatBotGUI:
             "frame_3": (self.third_frame, self.frame_3_button),
             "frame_DNA": (self.DNA_frame, self.frame_DNA_button),
             "frame_profile": (self.profile_frame, self.frame_profile_button),
-            "frame_skills": (self.skills_frame, self.frame_skills_button)
+            "frame_skills": (self.skills_frame, self.frame_skills_button),
+            "frame_more": (self.more_frame, self.frame_more_button)
         }
 
         # Set button color for selected button
@@ -641,6 +689,9 @@ class ChatBotGUI:
     
     def frame_skills_button_event(self):
         self.select_frame_by_name("frame_skills")
+    
+    def frame_more_button_event(self):
+        self.select_frame_by_name("frame_more")
 
     def change_appearance_mode_event(self, new_appearance_mode):
         """
