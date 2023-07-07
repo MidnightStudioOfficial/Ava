@@ -6,7 +6,7 @@ import logging
 from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
 
-DEBUG_CHATBOT = False #None
+DEBUG_CHATBOT = None #None
 DEBUG_GUI = None
 PEODUCTION = None
 
@@ -517,14 +517,14 @@ class ChatBotGUI:
         self.message_count = 0
         self.is_lisening_wakeword = False
         
-        self.wake_word_detecter = WakeWord(gui_callback=self.wake_word_callback)
-        self.wake_word_detecter.start()
-        
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
          # Initialize chatbot
          splash_screen.set_text("Training the chatbot")
          self.chatbot = Chatbot(splash_screen)
          self.chatbot.train_bot() # Train the chatbot
+         
+        self.wake_word_detecter = WakeWord(gui_callback=self.wake_word_callback)
+        self.wake_word_detecter.start()
 
     def select_frame_by_name(self, name):
         frames = {
