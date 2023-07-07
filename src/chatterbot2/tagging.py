@@ -30,12 +30,14 @@ class PosLemmaTagger(object):
         Return a string of text containing part-of-speech, lemma pairs.
         """
         bigram_pairs = []
-
+        
+        # If the text is short, remove punctuation and use it as is
         if len(text) <= 2:
             text_without_punctuation = text.translate(self.punctuation_table)
             if len(text_without_punctuation) >= 1:
                 text = text_without_punctuation
-
+                
+        # Process the text with spaCy
         document = self.nlp(text)
 
         if len(text) <= 2:

@@ -1,18 +1,21 @@
-from multiprocessing import Process, Queue
-#from queue import Queue
+#from multiprocessing import Process, Queue
+from queue import Queue
+from threading import Thread
 import speech_recognition as sr
 
 class SpeechRecognizer:
-    def __init__(self, wake_words=("ava", "eva")):
+    def __init__(self, wake_words=("ava", "eva"), callback_function=None):
         self.wake_words = wake_words # "hava", "java", "lava"
         self.r = sr.Recognizer()
         self.words_queue = []
         self.audio_queue = Queue()
         self.recognize_thread = None
+        self.callback = callback_function
 
     def check_for_wakeword(self, text):
         if any(wake_word in text for wake_word in self.wake_words):
             print("I can hear you")
+            self.callback(text)
 
     def recognize_worker(self):
         # This runs in a background thread
@@ -36,10 +39,11 @@ class SpeechRecognizer:
                 print("Could not request results from Google Speech Recognition service: {0}".format(e))
 
             self.audio_queue.task_done()  # Mark the audio processing job as completed in the queue
+            #self.audio_queue.
 
     def _start_listening(self):
         # Start a new thread to recognize audio while this thread focuses on listening
-        self.recognize_thread = Process(target=self.recognize_worker)
+        self.recognize_thread = Thread(target=self.recognize_worker)
         self.recognize_thread.daemon = True
         self.recognize_thread.start()
         print("Starting")
@@ -56,7 +60,10 @@ class SpeechRecognizer:
     def stop_listening(self):
         pass
     def start_listening(self):
-        self._start_listening()    
+        self.recognize_thread2 = Thread(target=self._start_listening)
+        self.recognize_thread2.daemon = True
+        self.recognize_thread2.start()
+        #self._start_listening()    
 
 # Create an instance of the SpeechRecognizer class and start listening
 #if __name__ == "__main__":

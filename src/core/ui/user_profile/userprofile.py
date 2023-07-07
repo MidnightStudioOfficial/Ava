@@ -29,14 +29,17 @@ class ProfileClass(ctk.CTkFrame):
 
         # Create a PhotoImage from the modified image
         photo = ImageTk.PhotoImage(image)
-
+        
+        # Create a profile label with the modified image
         self.canvas = ctk.CTkFrame(parent, width=500, height=150)  # ctk.CTkCanvas
         self.canvas.pack_propagate(False)  # Prevent resizing of the canvas
         self.canvas.pack()
-
+        
+        # Create a profile label with the modified image
         self.profile_label = ctk.CTkLabel(self.canvas, image=photo, text="")
         self.profile_label.pack(pady=(0, 78), side="top")  # padx=30, pady=60
-
+        
+        # Create a frame to hold the name labels
         self.name_frame = ctk.CTkFrame(
             parent, width=400, height=100, fg_color="#333333"
         )
@@ -55,9 +58,11 @@ class ProfileClass(ctk.CTkFrame):
         )
         self.title_label.pack(pady=(20, 10))
 
-
+        # Create a frame to hold the bio information labels
         self.info_frame = ctk.CTkFrame(parent, width=400, height=300)
         self.info_frame.pack(padx=10, pady=10, expand=True, fill="both")
+        
+        # Create bio title label
         self.title_info_label = ctk.CTkLabel(
             self.info_frame,
             text="Bio:",
@@ -79,6 +84,7 @@ class ProfileClass(ctk.CTkFrame):
         )
         self.info_label.pack()
 
+        # Create a frame to hold the skills label
         self.skills_frame = ctk.CTkFrame(parent, width=400, height=100)
         self.skills_frame.pack_propagate(False)  # Prevent resizing of the canvas
         self.skills_frame.pack(padx=10, pady=10, fill="both")  # , expand=True
@@ -105,8 +111,10 @@ class ProfileClass(ctk.CTkFrame):
         self.badges_frame = ctk.CTkFrame(self.achievements_frame)
         self.badges_frame.pack()
         
+        # Initialize badge images list
         self.badge_images = []
 
+        # Load profile data and set profile information
         self._load_profile()
         self._set_profile()
 
@@ -120,9 +128,13 @@ class ProfileClass(ctk.CTkFrame):
         except json.JSONDecodeError:
             print("Invalid JSON syntax")
     def _set_profile(self):
+        """
+        Set the user's profile information, including interests, name, and badges/achievements.
+        """
         # Set interests
         interests = self.profile_data["interests"]
         for interest in interests:
+            # Create a label for each interest and add it to the skills frame
             interest_label = ctk.CTkLabel(
                 self.skills_frame, text="- " + interest, font=("Segoe UI", 12)
             )
@@ -141,10 +153,12 @@ class ProfileClass(ctk.CTkFrame):
             self.profile_data["achievements_3"],
         ]
         
+        # Check if the user has any badges/achievements
         for i, badge_to_check in enumerate(badges_to_check, start=1):
             if badge_to_check:
                 self.badge_images.append(self.achievements[i])
         
+        # Add the badges to the badges frame
         for badge_path in self.badge_images:
             badge = Image.open(badge_path)
             badge = badge.resize((30, 30), Image.ANTIALIAS)
@@ -153,5 +167,6 @@ class ProfileClass(ctk.CTkFrame):
             badge_label = ctk.CTkLabel(self.badges_frame, image=badge, text="")
             badge_label.pack(padx=5)
             del badge
+
 
         
