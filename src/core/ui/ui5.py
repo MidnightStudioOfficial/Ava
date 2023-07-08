@@ -31,6 +31,9 @@ from core.ui.widgets.ctk_xyframe import CTkXYFrame
 print("Importing win_style")
 from core.ui.utils.win_style import *
 
+print("Importing weather")
+from core.ui.weather.weather import WeatherGUI
+
 print("Importing global_vars")
 import core.base.global_vars as global_vars
 
@@ -440,6 +443,9 @@ class ChatBotGUI:
         self.skills_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         SkillGUI(self.skills_frame)
         
+        self.weather_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
+        WeatherGUI(self.weather_frame)
+        
         # create the more frame
         self.more_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         self.more_frame.grid(row=0, column=0, sticky="nsew")
@@ -447,7 +453,7 @@ class ChatBotGUI:
 
         # Define navigation buttons and their properties
         self.more_buttons = [
-            {"attribute": "more_weather_button", "text": "Weather", "image": self.image_weather_icon_image, "command": self.home_button_event, "tooltip": "View weather"},
+            {"attribute": "more_weather_button", "text": "Weather", "image": self.image_weather_icon_image, "command": self.frame_more_weather_button_event, "tooltip": "View weather"},
             {"attribute": "more_news_button", "text": "News", "image": self.image_news_icon_image, "command": self.frame_2_button_event, "tooltip": "Read news"},
             {"attribute": "more_meditation_button", "text": "Meditation", "image": self.add_skills_image, "command": self.frame_3_button_event, "tooltip": "Start meditation"},
             {"attribute": "more_reminder_button", "text": "Reminder", "image": self.add_skills_image, "command": self.frame_DNA_button_event, "tooltip": "Set a reminder or todo"},
@@ -534,7 +540,8 @@ class ChatBotGUI:
             "frame_DNA": (self.DNA_frame, self.frame_DNA_button),
             "frame_profile": (self.profile_frame, self.frame_profile_button),
             "frame_skills": (self.skills_frame, self.frame_skills_button),
-            "frame_more": (self.more_frame, self.frame_more_button)
+            "frame_more": (self.more_frame, self.frame_more_button),
+            "frame_more_weather": (self.weather_frame, self.more_weather_button)
         }
 
         # Set button color for selected button
@@ -558,7 +565,6 @@ class ChatBotGUI:
     def wake_word_callback_END(self):
         self.is_lisening_wakeword = False
         self.wake_word_detecter.unpause()
-        #w_gui = WakeWordGUI(self.master)   
         
     def wake_word_callback(self, text):
         if self.is_lisening_wakeword == False:
@@ -695,6 +701,9 @@ class ChatBotGUI:
     
     def frame_more_button_event(self):
         self.select_frame_by_name("frame_more")
+        
+    def frame_more_weather_button_event(self):
+        self.select_frame_by_name("frame_more_weather")
 
     def change_appearance_mode_event(self, new_appearance_mode):
         """
