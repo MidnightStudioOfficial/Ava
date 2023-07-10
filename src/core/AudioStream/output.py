@@ -17,7 +17,7 @@ class AudioPlayer:
             return
 
         self.playing = True
-        self.thread = multiprocessing.Process(target=self._play_audio)
+        self.thread = multiprocessing.Process(target=self.play_audio)
         self.thread.start()
     
     def set_file(self, new_filename):
@@ -30,7 +30,7 @@ class AudioPlayer:
         pass
     
 
-    def _play_audio(self):
+    def play_audio(self):
         chunk = 1024
         wf = wave.open(self.filename, 'rb')
 
@@ -42,7 +42,7 @@ class AudioPlayer:
 
         data = wf.readframes(chunk)
 
-        while data and self.playing:
+        while data: # and self.playing
             stream.write(data)
             data = wf.readframes(chunk)
 

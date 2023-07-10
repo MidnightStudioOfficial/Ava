@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from PIL import Image, ImageTk, ImageDraw
-
+from core.AudioStream.output import AudioPlayer
 
 
 class WakeWordGUI(ctk.CTkToplevel):
@@ -21,11 +21,12 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.MainFrame.pack(fill=ctk.BOTH)
         self.center_image = ctk.CTkLabel(self.MainFrame, text='',image=photo, height=90,  width=90)
         self.center_image.pack(pady=10, anchor='n')
+
         
         self.center_image2 = ctk.CTkButton(self.MainFrame, text='',image=self.mic_photo, height=50, width=50, command=self.mic_click)
         self.center_image2.pack(pady=10)
         
-
+        self.audio = AudioPlayer("Data/start.wav")
         
         # Center the window on the screen
         self.update_idletasks()
@@ -42,6 +43,7 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.destroy()
     
     def mic_click(self):
+        self.audio.play_audio()
         self.VoiceFrame = ctk.CTkFrame(self.MainFrame, fg_color="transparent")
         self.VoiceFrame.pack(fill=ctk.BOTH)
         #self.center_label = ctk.CTkLabel(self.VoiceFrame, text='Starting')
