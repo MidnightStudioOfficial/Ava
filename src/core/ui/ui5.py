@@ -6,7 +6,7 @@ import logging
 from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
 
-DEBUG_CHATBOT = False #None
+DEBUG_CHATBOT = None #None
 DEBUG_GUI = None
 PEODUCTION = None
 
