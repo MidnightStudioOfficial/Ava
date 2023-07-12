@@ -6,7 +6,6 @@ from nltk.tag import pos_tag
 from nltk.corpus import wordnet as wn
 from nltk.corpus import stopwords
 from collections import defaultdict
-#import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import naive_bayes #, svm, model_selection
 #from sklearn.metrics import accuracy_score

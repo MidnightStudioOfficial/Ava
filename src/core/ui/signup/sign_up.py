@@ -1,6 +1,7 @@
 import tkinter as tk
 import customtkinter
 from PIL import ImageTk, Image
+from core.controllers.profile_create.profile import ProfileCreator
 
 class SignUpApp(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
@@ -9,9 +10,9 @@ class SignUpApp(customtkinter.CTkToplevel):
         self.geometry("600x440")
         self.title('Create Profile')
 
-        img1 = ImageTk.PhotoImage(Image.open("Data/images/home2.jpg"))
-        self.l1 = customtkinter.CTkLabel(master=self, image=img1)
-        self.l1.pack()
+        background_image = ImageTk.PhotoImage(Image.open("Data/images/home2.jpg"))
+        self.background_label = customtkinter.CTkLabel(master=self, image=background_image)
+        self.background_label.pack()
 
         self.pages = [
             {'label': 'Create your Profile', 'inputs': ['Username', 'Age']},
@@ -26,9 +27,9 @@ class SignUpApp(customtkinter.CTkToplevel):
 
     def create_page(self):
         page = self.pages[self.current_page]
-        self.l1.configure(text=page['label'])
+        self.background_label.configure(text=page['label'])
 
-        frame = customtkinter.CTkFrame(master=self.l1, width=320, height=360, corner_radius=15)
+        frame = customtkinter.CTkFrame(master=self.background_label, width=320, height=360, corner_radius=15)
         frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         for i, input_label in enumerate(page['inputs']):
@@ -64,8 +65,8 @@ class SignUpApp(customtkinter.CTkToplevel):
             self.create_page()
 
     def save_info(self):
-        page = self.pages[self.current_page]
-        for i, input_label in enumerate(page['inputs']):
+        current_page = self.pages[self.current_page]
+        for i, input_label in enumerate(current_page['inputs']):
             value = self.entries[i].get()
             self.signup_info[input_label] = value
 
@@ -73,6 +74,7 @@ class SignUpApp(customtkinter.CTkToplevel):
         self.save_info()
         # Process the sign-up information from self.signup_info dictionary here
         print(self.signup_info)
+        creator = ProfileCreator(self.signup_info)
+        creator.save_profile()
 
         self.destroy()  # Destroy current window and create new one
-        

@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from PIL import Image, ImageTk, ImageDraw
 import json
+from core.controllers.profile.profile import Profile
 
 
 class ProfileClass(ctk.CTkFrame):
@@ -8,6 +9,7 @@ class ProfileClass(ctk.CTkFrame):
         super().__init__(parent)
 
         self.profile_data = None
+        self.profile = Profile()
         
         self.achievements = {
             1: "Data/assets/ava.jfif",
@@ -119,14 +121,9 @@ class ProfileClass(ctk.CTkFrame):
         self._set_profile()
 
     def _load_profile(self):
-        try:
-            with open("Data/profile/profile.json", "r") as f:
-                data = json.load(f)
-                self.profile_data = data
-        except FileNotFoundError:
-            print("File not found")
-        except json.JSONDecodeError:
-            print("Invalid JSON syntax")
+        self.profile.load_profile()
+        self.profile_data = self.profile.profile_data
+        
     def _set_profile(self):
         """
         Set the user's profile information, including interests, name, and badges/achievements.

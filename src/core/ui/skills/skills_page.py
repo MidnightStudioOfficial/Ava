@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
-import threading
-import time
+#import threading
+#import time
 
 from core.skill.skill import Skills
 

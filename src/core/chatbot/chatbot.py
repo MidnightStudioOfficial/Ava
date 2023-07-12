@@ -83,9 +83,6 @@ class Chatbot:
         self.engine = ConversationalEngine(lemmatize_data=True, filepath=trainingdata, modelpath=None)
         self.currentConversation = Conversation(engine=self.engine, articulationdata=articulationdata)
 
-        # Load the NLP model
-        #self.nlp = load("en_core_web_sm")
-
         # Check if the chatbot database exists
         self.chatbot_exists = None
         if isfile("./db.sqlite3") == False:
@@ -101,7 +98,9 @@ class Chatbot:
         self.trainer = ChatterBotCorpusTrainer(self.chatBot)
 
     def train_bot(self) -> None:
-        # Train the chatbot if it doesn't already exist
+        """
+        Train the chatbot if it doesn't already exist.
+        """
         logging.debug("Training bot")
         if self.chatbot_exists == False:
             self.trainer.train("./Data/training/export.json")

@@ -6,15 +6,15 @@ import logging
 from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
 
-DEBUG_CHATBOT = None #None
+DEBUG_CHATBOT = False #None
 DEBUG_GUI = None
 PEODUCTION = None
 
-print("Importing user_profile")
-from core.ui.user_profile.userprofile import ProfileClass
-
 print("Importing skills_page")
 from core.ui.skills.skills_page import SkillGUI
+
+print("Importing profile_controller")
+from core.controllers.profile.profile import Profile
 
 print("Importing Debug")
 from core.base.debug import DebugGUI
@@ -95,6 +95,16 @@ class ChatBotGUI:
         # Set the grid layout to 1 row and 2 columns
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(1, weight=1)
+        
+        print("checking if a profile exists")
+        from core.ui.signup.profile_checker import ProfileChecker
+        checker = ProfileChecker()
+        checker.create_profile(self.master)
+        
+        self.profile_controller = Profile()
+        
+        print("Importing user_profile")
+        from core.ui.user_profile.userprofile import ProfileClass
         
         self.min_w = 50 # Minimum width of the frame
         self.max_w = 200 # Maximum width of the frame
@@ -186,7 +196,7 @@ class ChatBotGUI:
         
         self.profile_button = ctk.CTkButton(self.home_frame, text="", image=self.add_profile_image2, fg_color="transparent", corner_radius=0, width=40, height=40, border_width=0, border_spacing=0, compound="left")
         self.profile_button.grid(row=0, column=0, sticky="nw")
-        CTkScrollableDropdown(self.profile_button, values=global_vars.STYLES_LIST, height=270, resize=False, button_height=30,
+        CTkScrollableDropdown(self.profile_button, values=self.profile_controller.list_profiles(), height=270, resize=False, button_height=30,
                       scrollbar=True, width=100)
         self.profile_button_tooltip = CTkToolTip(self.profile_button, delay=0.8, message=str(global_vars.TOOLTIP_MESSAGES["profile_button"]))
         

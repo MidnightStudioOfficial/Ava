@@ -4,15 +4,72 @@ import threading
 import time
 import difflib
 
+import os
+import json
+
 class Bell:
-    def __init__(self) -> None:
-        self.notifications = None
-    
-    def save_notifications(self):
-        pass
-    
-    def load_notifications(self):
-        pass
+    def __init__(self):
+        self.notifications = {}
+        self.load_notifications()
+
+    def save_notifications(self) -> None:
+        """Saves the notifications to a file"""
+        try:
+            with open("Data/notifications.json", 'w') as file:
+                json.dump(self.notifications, file)
+            print("Notifications saved successfully.")
+        except Exception as e:
+            print(f"Error saving notifications: {e}")
+
+    def load_notifications(self) -> None:
+        """Loads the notifications from a file"""
+        try:
+            if os.path.exists("Data/notifications.json"):
+                with open("Data/notifications.json", 'r') as file:
+                    self.notifications = json.load(file)
+                print("Notifications loaded successfully.")
+            else:
+                self.create_default_file()
+                print("New file created with default data.")
+        except Exception as e:
+            print(f"Error loading notifications: {e}")
+
+    def create_default_file(self):
+        """Creates a new file with default data"""
+        default_data = {
+            "Welcome to Ava!": {
+                "value": "Welcome to Ava! We hope you like it!",
+                "type": "other",
+                "details": "Welcome to Ava! We hope you like it!",
+                "tags": ["welcome", "ava"]
+            }
+        }
+        self.notifications = default_data
+        self.save_notifications()
+
+    def add_notification(self, notification_id, name, details, notification_type, tags):
+        """Adds a new notification to the list"""
+        self.notifications[str(notification_id)] = {
+                "value": str(name),
+                "type": str(notification_type),
+                "details": str(details),
+                "tags": tags
+            }
+        self.save_notifications()
+
+    def remove_notification(self, notification):
+        """Removes a notification from the list"""
+        if notification in self.notifications:
+            del self.notifications[notification]
+            #self.notifications.remove(notification)
+            print("Notification removed successfully.")
+        else:
+            print("Notification not found.")
+
+    def get_notifications(self):
+        """Returns the list of notifications"""
+        return self.notifications
+
         
 class BellGUI(ctk.CTkToplevel):
     def __init__(self, parent) -> None:
@@ -33,6 +90,7 @@ class BellGUI(ctk.CTkToplevel):
                 "tags": ["test2"]
             }
         }
+        self.layout = self.bell.notifications
 
         # Create the main frame
         self.main_frame = ctk.CTkFrame(master=parent)
@@ -69,7 +127,7 @@ class BellGUI(ctk.CTkToplevel):
         # Create the list of items
         self.create_list()
 
-    def clear_list(self):
+    def clear_list(self) -> None:
         """Clears the list of items"""
         for frame in self.item_frame.values():
             frame.pack_forget()
@@ -150,12 +208,12 @@ class BellGUI(ctk.CTkToplevel):
         except Exception as e:
             print(f"Error searching package: {e}")
                 
-    def update_notification_info(self, key, value):
+    def update_notification_info(self, key, value) -> None:
         self.layout[key]["value"] = value
         self.clear_list()
         self.create_list()
 
-    def destroy_item_frame(self, item_name):
+    def destroy_item_frame(self, item_name) -> None:
         if item_name in self.item_frame:
             self.item_frame[item_name].destroy()
             del self.item_frame[item_name]
@@ -183,7 +241,7 @@ class BellGUI(ctk.CTkToplevel):
         except Exception as e:
             print(f"Error filtering list: {e}")
 
-    def add_notification(self, name, value):
+    def add_notification(self, name, value) -> None:
         """Add a new notification to the list"""
 
         # Create a frame to contain the notification item
@@ -215,21 +273,21 @@ class BellGUI(ctk.CTkToplevel):
                                     command=lambda item_name=name: self.delete_item(item_name))
         delete_button.grid(row=0, column=3, padx=5)
 
-    def create_list(self):
+    def create_list(self) -> None:
         for key, notification in self.layout.items():
             value = notification["value"]
             self.add_notification(str(key), str(value))
     
-    def new_notification(self, name, data):
+    def new_notification(self, name, data) -> None:
         self.layout[str(name)] = data
         self.clear_list()
         self.create_list()
     
-    def remove_notification(self, name):
+    def remove_notification(self, name) -> None:
         del self.layout[name]
         self.destroy_item_frame(name)    
         
-    def edit_item(self, item_name):
+    def edit_item(self, item_name) -> None:
         """Callback function to edit the item's value"""
         # You can implement the editing functionality here
         # For example, you can open a dialog or entry field to allow the user to modify the value
