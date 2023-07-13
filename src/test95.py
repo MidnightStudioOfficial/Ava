@@ -28,31 +28,47 @@ def scrape_results(results):
         title = result.find('h2').get_text()
         url = result.find('a')['href']
         snippet = result.find('p').get_text()
+
+        # Remove unwanted phrases like "WebJul 3, 2023"
+        snippet = re.sub(r'(Web|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}', '', snippet)
+
         extracted_results.append({'title': title, 'url': url, 'snippet': snippet})
     return extracted_results
+
+
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import re
+from string import punctuation
+from nltk.stem import WordNetLemmatizer
 
 def summarize_text(text):
     sentences = sent_tokenize(text)
 
-    # Remove stopwords and punctuation
+    # Remove stopwords, punctuation, and perform lemmatization
     stop_words = set(stopwords.words("english"))
-    words = [word.lower() for word in nltk.word_tokenize(text) if word.isalpha() and word.lower() not in stop_words]
+    lemmatizer = WordNetLemmatizer()
+    clean_sentences = []
+    for sentence in sentences:
+        words = [lemmatizer.lemmatize(word.lower()) for word in nltk.word_tokenize(sentence) if word.isalpha() and word.lower() not in stop_words]
+        clean_sentence = ' '.join(words)
+        clean_sentences.append(clean_sentence)
 
-    # Check if there are valid words left after stop word removal
-    if not words:
+    # Check if there are valid sentences left after preprocessing
+    if not clean_sentences:
         return ""
 
     # Calculate word frequency
-    word_frequency = FreqDist(words)
+    word_frequency = FreqDist([word for sentence in clean_sentences for word in nltk.word_tokenize(sentence)])
 
     # Calculate TF-IDF scores
-    tfidf = TfidfVectorizer()
-    tfidf_scores = tfidf.fit_transform(sentences)
+    tfidf = TfidfVectorizer(preprocessor=lambda x: re.sub(r'\d+', '', x.lower()), token_pattern=r'\b\w+\b', stop_words='english')
+    tfidf_scores = tfidf.fit_transform(clean_sentences)
 
     # Calculate sentence scores based on TF-IDF scores
     sentence_scores = {}
-    for i, sentence in enumerate(sentences):
-        for word in nltk.word_tokenize(sentence.lower()):
+    for i, sentence in enumerate(clean_sentences):
+        for word in nltk.word_tokenize(sentence):
             if word in word_frequency.keys() and word in tfidf.vocabulary_:
                 if len(sentence.split()) < 30:
                     if i in sentence_scores.keys():
@@ -60,11 +76,30 @@ def summarize_text(text):
                     else:
                         sentence_scores[i] = tfidf_scores[i, tfidf.vocabulary_[word]]
 
-    # Get top 3 sentences with highest scores
-    summary_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)[:4] #[:3]
+    # Determine the summary length based on the needs of the summary
+    desired_length = min(4, len(sentences))  # Set the desired length to 4 or the number of sentences, whichever is smaller
+
+    # Get the top sentences with the highest scores
+    summary_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)[:desired_length]
     summary = [sentences[i] for i in summary_sentences]
 
-    return ' '.join(summary)
+    # Rearrange sentences for cohesiveness
+    summary_array = tfidf_scores[summary_sentences]
+    similarity_matrix = cosine_similarity(summary_array, summary_array)
+
+    rearranged_indices = np.argsort(-similarity_matrix.sum(axis=1))
+
+    rearranged_summary = [summary[i] for i in rearranged_indices]
+
+    # Clean up the summary sentences
+    clean_summary = []
+    for sentence in rearranged_summary:
+        # Remove leading/trailing whitespaces and punctuation
+        sentence = sentence.strip(punctuation + " ")
+        
+        clean_summary.append(sentence)
+
+    return ' '.join(clean_summary)
 
 
 def main():

@@ -31,6 +31,11 @@ def scrape_results(results):
         extracted_results.append({'title': title, 'url': url, 'snippet': snippet})
     return extracted_results
 
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import re
+from string import punctuation
+
 def summarize_text(text):
     sentences = sent_tokenize(text)
 
@@ -46,7 +51,7 @@ def summarize_text(text):
     word_frequency = FreqDist(words)
 
     # Calculate TF-IDF scores
-    tfidf = TfidfVectorizer()
+    tfidf = TfidfVectorizer(preprocessor=lambda x: re.sub(r'\d+', '', x.lower()), token_pattern=r'\b\w+\b', stop_words='english')
     tfidf_scores = tfidf.fit_transform(sentences)
 
     # Calculate sentence scores based on TF-IDF scores
@@ -61,10 +66,26 @@ def summarize_text(text):
                         sentence_scores[i] = tfidf_scores[i, tfidf.vocabulary_[word]]
 
     # Get top 3 sentences with highest scores
-    summary_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)[:4] #[:3]
+    summary_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)[:4]
     summary = [sentences[i] for i in summary_sentences]
 
-    return ' '.join(summary)
+    # Rearrange sentences for cohesiveness
+    summary_array = tfidf_scores[summary_sentences]
+    similarity_matrix = cosine_similarity(summary_array, summary_array)
+
+    rearranged_indices = np.argsort(-similarity_matrix.sum(axis=1))
+
+    rearranged_summary = [summary[i] for i in rearranged_indices]
+
+    # Clean up the summary sentences
+    clean_summary = []
+    for sentence in rearranged_summary:
+        # Remove leading/trailing whitespaces and punctuation
+        sentence = sentence.strip(punctuation + " ")
+        clean_summary.append(sentence)
+
+    return ' '.join(clean_summary)
+
 
 
 def main():

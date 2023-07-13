@@ -31,6 +31,9 @@ def scrape_results(results):
         extracted_results.append({'title': title, 'url': url, 'snippet': snippet})
     return extracted_results
 
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+
 def summarize_text(text):
     sentences = sent_tokenize(text)
 
@@ -61,10 +64,18 @@ def summarize_text(text):
                         sentence_scores[i] = tfidf_scores[i, tfidf.vocabulary_[word]]
 
     # Get top 3 sentences with highest scores
-    summary_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)[:4] #[:3]
+    summary_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)[:4]#[:3]
     summary = [sentences[i] for i in summary_sentences]
 
-    return ' '.join(summary)
+    # Rearrange sentences for cohesiveness
+    summary_array = tfidf_scores[summary_sentences]
+    similarity_matrix = cosine_similarity(summary_array, summary_array)
+
+    rearranged_indices = np.argsort(-similarity_matrix.sum(axis=1))
+
+    rearranged_summary = [summary[i] for i in rearranged_indices]
+
+    return ' '.join(rearranged_summary)
 
 
 def main():
