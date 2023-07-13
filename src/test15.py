@@ -35,15 +35,20 @@ def filter_links(query, links, threshold=0.5):
     filtered_links = []
     for link in links:
         try:
-            print("filltering:"+str(link))
+            print("filtering: " + str(link))
             response = requests.get(link)
+            print("filtering get ")
             soup = BeautifulSoup(response.text, 'html.parser')
-            title = soup.find('title').text
-            if similarity(query, title) >= threshold:
+            print("filtering soup ")
+            title = soup.find('title')
+            if title is not None and similarity(query, title.text) >= threshold:
                 filtered_links.append(link)
         except requests.exceptions.ConnectionError:
             print(f'Error connecting to {link}. Skipping...')
+        except Exception as e:
+            print(f'Error processing {link}: {e}')
     return filtered_links
+
 
 
 def search_bing(query):
@@ -77,7 +82,7 @@ def search_google(query):
 def summarize(url):
     try:
      LANGUAGE = 'english'
-     SENTENCES_COUNT = 3
+     SENTENCES_COUNT = 2 #3
      parser = HtmlParser.from_url(url, Tokenizer(LANGUAGE))
      stemmer = Stemmer(LANGUAGE)
      summarizer = Summarizer(stemmer)
@@ -100,7 +105,17 @@ def main():
     print(f'Bing links: {bing_links}')
     #google_links = search_google2(query)
     #print(f'Google links: {google_links}')
-    all_links = list(set(bing_links)) # + google_links list(set(bing_links))
+    all_links_OLD = list(set(bing_links)) # + google_links list(set(bing_links))
+    all_links = []
+    for i in all_links_OLD:
+        if str(i).endswith('/') == False:
+           # print(str(i)+ str(i).endswith('/'))
+            all_links.append(str(i)+'/')
+        else:
+           # print(str(i))
+            all_links.append(str(i))
+            
+            
     print(f'All links: {all_links}')
     print(f'Found {len(all_links)} links. Filtering...')
     new_links = filter_links(query, all_links)
