@@ -42,6 +42,87 @@ import re
 from string import punctuation
 from nltk.stem import WordNetLemmatizer
 
+def determine_summary_length(sentences, tfidf_scores):
+    sentence_scores = tfidf_scores.sum(axis=1)
+    avg_score = sentence_scores.mean()
+    threshold = avg_score * 0.8  # Set the threshold to 80% of the average score
+
+    summary_sentences = []
+    for i, score in enumerate(sentence_scores):
+        if score >= threshold:
+            summary_sentences.append(i)
+
+    desired_length = min(4, len(summary_sentences))  # Set the desired length to 4 or the number of sentences above the threshold, whichever is smaller
+    return desired_length
+
+def determine_summary_length2(sentences, tfidf_scores, similarity_matrix):
+    sentence_scores = tfidf_scores.sum(axis=1)
+    sorted_indices = np.argsort(-sentence_scores)  # Sort sentence indices by score in descending order
+
+    summary_sentences = []
+    used_indices = set()
+    for index in sorted_indices:
+        if index.item() not in used_indices:  # Convert index to item() to access the actual value
+            summary_sentences.append(index.item())  # Convert index to item() to access the actual value
+            used_indices.add(index.item())  # Convert index to item() to access the actual value
+            # Consider similar sentences to maintain cohesiveness in the summary
+            for i, similarity in enumerate(similarity_matrix[index.item()]):  # Convert index to item() to access the actual value
+                if similarity >= 0.2:  # Set a similarity threshold of 0.2 (adjust as needed)
+                    used_indices.add(i)
+
+        if len(summary_sentences) >= 4:
+            break
+
+    desired_length = min(4, len(summary_sentences))  # Set the desired length to 4 or the number of selected sentences, whichever is smaller
+    return desired_length
+
+
+def determine_summary_length3(sentences, tfidf_scores, similarity_matrix):
+    sentence_scores = tfidf_scores.sum(axis=1)
+    sorted_indices = np.argsort(-sentence_scores)  # Sort sentence indices by score in descending order
+
+    summary_sentences = []
+    used_indices = set()
+    for index in sorted_indices:
+        if index.item() not in used_indices:  # Convert index to item() to access the actual value
+            summary_sentences.append(index.item())  # Convert index to item() to access the actual value
+            used_indices.add(index.item())  # Convert index to item() to access the actual value
+            # Consider similar sentences to maintain cohesiveness in the summary
+            for i, similarity in enumerate(similarity_matrix[index.item()]):  # Convert index to item() to access the actual value
+                if similarity >= 0.2:  # Set a similarity threshold of 0.2 (adjust as needed)
+                    used_indices.add(i)
+
+            if len(summary_sentences) >= len(sentences) * 0.5:  # Include up to 50% of the sentences in the summary
+                break
+
+    desired_length = min(4, len(summary_sentences))  # Set the desired length to 4 or the number of selected sentences, whichever is smaller
+    return desired_length
+
+def determine_summary_length4(sentences, tfidf_scores, similarity_matrix):
+    sentence_scores = tfidf_scores.sum(axis=1)
+    sorted_indices = np.argsort(-sentence_scores)  # Sort sentence indices by score in descending order
+
+    summary_sentences = []
+    used_indices = set()
+    max_sentences = min(4, len(sentences))  # Set the maximum number of sentences to include in the summary
+
+    for index in sorted_indices:
+        if len(summary_sentences) >= max_sentences:
+            break
+
+        if index.item() not in used_indices:
+            summary_sentences.append(index.item())
+            used_indices.add(index.item())
+
+            for i, similarity in enumerate(similarity_matrix[index.item()]):
+                if similarity >= 0.2 and i not in used_indices:  # Adjust the similarity threshold as needed
+                    summary_sentences.append(i)
+                    used_indices.add(i)
+
+    desired_length = min(max_sentences, len(summary_sentences))
+    return desired_length
+
+
 def summarize_text(text):
     sentences = sent_tokenize(text)
 
@@ -78,6 +159,11 @@ def summarize_text(text):
 
     # Determine the summary length based on the needs of the summary
     desired_length = min(4, len(sentences))  # Set the desired length to 4 or the number of sentences, whichever is smaller
+    #desired_length = determine_summary_length(sentences, tfidf_scores)
+    #desired_length = determine_summary_length2(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
+    #desired_length = determine_summary_length3(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
+    #desired_length = determine_summary_length4(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
+
 
     # Get the top sentences with the highest scores
     summary_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)[:desired_length]
