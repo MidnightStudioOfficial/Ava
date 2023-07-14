@@ -7,7 +7,7 @@ class InitPage(ttk.Frame):
         super().__init__(parent, style='debugger.TFrame')
         # variables
         self.logo: PhotoImage = PhotoImage(
-            file=join(props['abs_path'], r'Resources\\icon.png')),
+            file=join(props['abs_path'], r'Data\\icon.png')),
         # ui
         ttk.Label(self, image=self.logo, style='debugger.TLabel').place(
             relx=.5, rely=0.5, anchor='c')

@@ -27,7 +27,7 @@ class Debugger(Toplevel):
         self.attributes("-topmost", True)
         self.minsize(665, 500)
         self.protocol('WM_DELETE_WINDOW', self.__exit)
-        self.iconbitmap(join(self.abs_path, r'Resources\\icon.ico'))
+        self.iconbitmap(join(self.abs_path, r'Data\\icon.ico'))
         # binds
         self.parent.unbind('<F12>')
         self.bind('<Escape>', lambda _: self.__exit())

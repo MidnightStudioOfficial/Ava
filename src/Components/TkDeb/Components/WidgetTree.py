@@ -16,18 +16,18 @@ class WidgetTree(ttk.Frame):
         # ui
 
         self.icons: dict = {
-            'Tk': PhotoImage(file=join(self.abs_path, r'Resources\\app.png')),
-            'TFrame': PhotoImage(file=join(self.abs_path, r'Resources\\frame.png')),
-            'TButton': PhotoImage(file=join(self.abs_path, r'Resources\\button.png')),
-            'TLabel': PhotoImage(file=join(self.abs_path, r'Resources\\label.png')),
-            'TEntry': PhotoImage(file=join(self.abs_path, r'Resources\\entry.png')),
-            'TRadiobutton': PhotoImage(file=join(self.abs_path, r'Resources\\radiobutton.png')),
-            'TCombobox': PhotoImage(file=join(self.abs_path, r'Resources\\combobox.png')),
-            'TScale': PhotoImage(file=join(self.abs_path, r'Resources\\scale.png')),
-            'TProgressbar': PhotoImage(file=join(self.abs_path, r'Resources\\progress.png')),
-            'TCheckbutton': PhotoImage(file=join(self.abs_path, r'Resources\\checkbox.png')),
-            'Treeview': PhotoImage(file=join(self.abs_path, r'Resources\\tree.png')),
-            'Unknown': PhotoImage(file=join(self.abs_path, r'Resources\\unknown.png')),
+            'Tk': PhotoImage(file=join(self.abs_path, r'Data\\app.png')),
+            'TFrame': PhotoImage(file=join(self.abs_path, r'Data\\frame.png')),
+            'TButton': PhotoImage(file=join(self.abs_path, r'Data\\button.png')),
+            'TLabel': PhotoImage(file=join(self.abs_path, r'Data\\label.png')),
+            'TEntry': PhotoImage(file=join(self.abs_path, r'Data\\entry.png')),
+            'TRadiobutton': PhotoImage(file=join(self.abs_path, r'Data\\radiobutton.png')),
+            'TCombobox': PhotoImage(file=join(self.abs_path, r'Data\\combobox.png')),
+            'TScale': PhotoImage(file=join(self.abs_path, r'Data\\scale.png')),
+            'TProgressbar': PhotoImage(file=join(self.abs_path, r'Data\\progress.png')),
+            'TCheckbutton': PhotoImage(file=join(self.abs_path, r'Data\\checkbox.png')),
+            'Treeview': PhotoImage(file=join(self.abs_path, r'Data\\tree.png')),
+            'Unknown': PhotoImage(file=join(self.abs_path, r'Data\\unknown.png')),
         }
         self.icons['Toplevel'] = self.icons['Tk']
 

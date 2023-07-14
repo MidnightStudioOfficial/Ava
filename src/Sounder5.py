@@ -35,8 +35,6 @@ except ImportError as err:
 class Sounder(Tk):
     def __init__(self: Tk) -> None:
         super().__init__()
-        # init logging errors
-        self.init_logging()
         # hide window
         self.withdraw()
         # configure window
@@ -100,9 +98,6 @@ class Sounder(Tk):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def init_logging(self: Tk) -> None:
-        # logging error messages
-        basicConfig(filename=fr'Resources\\Dumps\\sounder_dump.txt', level=40)
 
     def log(self: Tk, err_obj: object) -> None:
         # DING!!!!!!
@@ -128,8 +123,8 @@ class Sounder(Tk):
             self.settings: dict = {}
             self.version: tuple = ('0.9.0', '170722')
             # load settings
-            if isfile(r'Resources\\Settings\\Settings.json'):
-                with open(r'Resources\\Settings\\Settings.json', 'r') as data:
+            if isfile(r'Data\\Settings\\Settings.json'):
+                with open(r'Data\\Settings\\Settings.json', 'r') as data:
                     try:
                         self.settings = load(data)
                     except JSONDecodeError as err_obj:
@@ -176,7 +171,7 @@ class Sounder(Tk):
         self.settings['playlist'] = self.playlist
         # save settings
         try:
-            with open(r'Resources\\Settings\\Settings.json', 'w') as data:
+            with open(r'Data\\Settings\\Settings.json', 'w') as data:
                 dump(self.settings, data)
         except Exception as err_obj:
             self.log(err_obj)
@@ -289,53 +284,53 @@ class Sounder(Tk):
 
     def load_icons(self: Tk) -> None:
         self.icons: dict = {
-            'error': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\error.png'),
-            'library': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\library.png'),
-            'folder': (PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\folder.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\music_folder.png')),
-            'settings': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\settings.png'),
-            'plus': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\plus.png'),
-            'heart': (PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\heart_empty.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\heart_filled.png')),
-            'delete': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\delete.png'),
-            'playlist': (PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\playlist.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\lounge.png')),
-            'play_pause': (PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\play.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\pause.png')),
-            'next': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\next.png'),
-            'previous': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\previous.png'),
-            'repeat': (PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\repeat.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\repeat_one.png')),
-            'shuffle': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\shuffle.png'),
-            'edit': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\edit.png'),
-            'menu': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\menu.png'),
-            'date': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\date.png'),
-            'note': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\note.png'),
-            'arrow': (PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\left.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\right.png')),
-            'checkmark': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\checkmark.png'),
-            'restore': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\restore.png'),
-            'brush': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\brush.png'),
-            'info': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\info.png'),
-            'window': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\window.png'),
-            'user': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\user.png'),
-            'icons8': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\icons8.png'),
-            'code': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\code.png'),
-            'download': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\download.png'),
-            'wheel': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\wheel.png'),
-            'search': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\search.png'),
-            'filter': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\filter.png'),
-            'speaker': (PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\muted.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\low_volume.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\med_volume.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\max_volume.png')),
-            'buffer': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\buffer.png'),
-            'select': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\select.png'),
-            'power': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\power.png'),
-            'time': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\time.png'),
-            'sort': (PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\no_sort.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\normal_sort.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\reversed_sort.png'), PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\star.png')),
-            'puzzled': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\puzzled.png'),
-            'package': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\package.png'),
-            'shield': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\shield.png'),
-            'trash': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\trash.png'),
-            'logo': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\logo.png'),
-            'navigation': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\navigation.png'),
-            'passed': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\passed_time.png'),
-            'bug': PhotoImage(file=fr'Resources\\Icons\\{self.settings["theme"]}\\bug.png'),
+            'error': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\error.png'),
+            'library': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\library.png'),
+            'folder': (PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\folder.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\music_folder.png')),
+            'settings': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\settings.png'),
+            'plus': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\plus.png'),
+            'heart': (PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\heart_empty.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\heart_filled.png')),
+            'delete': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\delete.png'),
+            'playlist': (PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\playlist.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\lounge.png')),
+            'play_pause': (PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\play.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\pause.png')),
+            'next': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\next.png'),
+            'previous': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\previous.png'),
+            'repeat': (PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\repeat.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\repeat_one.png')),
+            'shuffle': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\shuffle.png'),
+            'edit': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\edit.png'),
+            'menu': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\menu.png'),
+            'date': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\date.png'),
+            'note': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\note.png'),
+            'arrow': (PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\left.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\right.png')),
+            'checkmark': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\checkmark.png'),
+            'restore': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\restore.png'),
+            'brush': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\brush.png'),
+            'info': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\info.png'),
+            'window': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\window.png'),
+            'user': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\user.png'),
+            'icons8': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\icons8.png'),
+            'code': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\code.png'),
+            'download': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\download.png'),
+            'wheel': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\wheel.png'),
+            'search': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\search.png'),
+            'filter': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\filter.png'),
+            'speaker': (PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\muted.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\low_volume.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\med_volume.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\max_volume.png')),
+            'buffer': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\buffer.png'),
+            'select': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\select.png'),
+            'power': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\power.png'),
+            'time': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\time.png'),
+            'sort': (PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\no_sort.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\normal_sort.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\reversed_sort.png'), PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\star.png')),
+            'puzzled': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\puzzled.png'),
+            'package': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\package.png'),
+            'shield': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\shield.png'),
+            'trash': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\trash.png'),
+            'logo': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\logo.png'),
+            'navigation': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\navigation.png'),
+            'passed': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\passed_time.png'),
+            'bug': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\bug.png'),
         }
         self.iconbitmap(
-            fr'Resources\\Icons\\{self.settings["theme"]}\\icon.ico')
+            fr'Data\\Icons\\{self.settings["theme"]}\\icon.ico')
 
     def init_ui(self: Tk) -> None:
         # ui variables
@@ -949,8 +944,8 @@ class Sounder(Tk):
             self.log(err_obj)
 
     def open_logs(self: Tk) -> None:
-        if isfile(r'Resources\\Dumps\\sounder_dump.txt'):
-            startfile(r'Resources\\Dumps\\sounder_dump.txt')
+        if isfile(r'Data\\Dumps\\sounder_dump.txt'):
+            startfile(r'Data\\Dumps\\sounder_dump.txt')
             self.exit_app()
 
     def on_wheel(self: Tk, event: Event) -> None:
@@ -1229,7 +1224,7 @@ class Sounder(Tk):
                 self.prepare_update_panel(server_version)
                 # show notification
                 self.toaster.show_toast(f'Update {server_version} is available', 'If you don\'t want to see this message go to settings and disable automatic updates!',
-                                        threaded=True, icon_path=r'Resources\\Icons\\Updater\\setup.ico', duration=0)
+                                        threaded=True, icon_path=r'Data\\Icons\\Updater\\setup.ico', duration=0)
         except Exception:
             pass
 
@@ -1299,19 +1294,19 @@ class Sounder(Tk):
         except Exception as _:
             package_details: str = 'Cannot load update details!'
         # init update history
-        if isfile(r'Resources\\Settings\\Updates.json'):
-            with open(r'Resources\\Settings\\Updates.json', 'r') as data:
+        if isfile(r'Data\\Settings\\Updates.json'):
+            with open(r'Data\\Settings\\Updates.json', 'r') as data:
                 try:
                     updates_history: dict = load(data)
                 except JSONDecodeError as err_obj:
                     updates_history = default_updates
-                    with open(r'Resources\\Settings\\Updates.json', 'w') as data:
+                    with open(r'Data\\Settings\\Updates.json', 'w') as data:
                         try:
                             dump(updates_history, data)
                         except Exception as err_obj:
                             self.log(err_obj)
         else:
-            with open(r'Resources\\Settings\\Updates.json', 'w') as data:
+            with open(r'Data\\Settings\\Updates.json', 'w') as data:
                 try:
                     dump(default_updates, data)
                 except Exception as err_obj:

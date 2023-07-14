@@ -24,10 +24,10 @@ class MainPage(ttk.Frame):
         # icons
 
         self.icons = {
-            'inspect': [PhotoImage(file=join(self.abs_path, r'Resources\\start_inspection.png')), PhotoImage(file=join(self.abs_path, r'Resources\\end_inspection.png'))],
-            'widgets': PhotoImage(file=join(self.abs_path, r'Resources\\widgets.png')),
-            'pin': [PhotoImage(file=join(self.abs_path, r'Resources\\pin.png')), PhotoImage(file=join(self.abs_path, r'Resources\\unpin.png'))],
-            'delete': PhotoImage(file=join(self.abs_path, r'Resources\\delete.png')),
+            'inspect': [PhotoImage(file=join(self.abs_path, r'Data\\start_inspection.png')), PhotoImage(file=join(self.abs_path, r'Data\\end_inspection.png'))],
+            'widgets': PhotoImage(file=join(self.abs_path, r'Data\\widgets.png')),
+            'pin': [PhotoImage(file=join(self.abs_path, r'Data\\pin.png')), PhotoImage(file=join(self.abs_path, r'Data\\unpin.png'))],
+            'delete': PhotoImage(file=join(self.abs_path, r'Data\\delete.png')),
         }
 
         # ui

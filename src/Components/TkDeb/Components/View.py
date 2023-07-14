@@ -21,11 +21,11 @@ class Layout:
         self.parent.layout.layout('debugger.Treeview', [('Treeview.treearea', {
             'sticky': 'nswe'})])  # Remove the borders
         self.tree_open = PhotoImage(
-            file=join(self.abs_path, r'Resources\\plus.png'))
+            file=join(self.abs_path, r'Data\\plus.png'))
         self.tree_close = PhotoImage(
-            file=join(self.abs_path, r'Resources\\minus.png'))
+            file=join(self.abs_path, r'Data\\minus.png'))
         self.tree_empty = PhotoImage(
-            file=join(self.abs_path, r'Resources\\empty.png'))
+            file=join(self.abs_path, r'Data\\empty.png'))
         self.parent.layout.element_create('Treeitem.indicator',
                                           'image', self.tree_open, ('user1', '!user2',
                                                                     self.tree_close), ('user2', self.tree_empty),

@@ -172,13 +172,13 @@ class SSetup(Toplevel):
 
     def load_icons(self: Toplevel) -> None:
         self.icons: dict = {
-            'arrow': (PhotoImage(file=r'Resources\\Icons\\Configurator\\left.png'), PhotoImage(file=r'Resources\\Icons\\Configurator\\right.png')),
-            'logo': PhotoImage(file=r'Resources\\Icons\\Configurator\\setup.png'),
-            'plus': PhotoImage(file=r'Resources\\Icons\\Configurator\\plus.png'),
-            'folder': PhotoImage(file=r'Resources\\Icons\\Configurator\\music_folder.png'),
-            'delete': PhotoImage(file=r'Resources\\Icons\\Configurator\\delete.png'),
-            'brush': PhotoImage(file=r'Resources\\Icons\\Configurator\\brush.png'),
-            'checkmark': PhotoImage(file=r'Resources\\Icons\\Configurator\\checkmark.png')
+            'arrow': (PhotoImage(file=r'Data\\Icons\\Configurator\\left.png'), PhotoImage(file=r'Data\\Icons\\Configurator\\right.png')),
+            'logo': PhotoImage(file=r'Data\\Icons\\Configurator\\setup.png'),
+            'plus': PhotoImage(file=r'Data\\Icons\\Configurator\\plus.png'),
+            'folder': PhotoImage(file=r'Data\\Icons\\Configurator\\music_folder.png'),
+            'delete': PhotoImage(file=r'Data\\Icons\\Configurator\\delete.png'),
+            'brush': PhotoImage(file=r'Data\\Icons\\Configurator\\brush.png'),
+            'checkmark': PhotoImage(file=r'Data\\Icons\\Configurator\\checkmark.png')
         }
         self.iconphoto(False, self.icons['logo'])
 
