@@ -189,7 +189,7 @@ def summarize_text(text):
 
 
 def main():
-    query = input("Enter your search query (make sure your search query has no miss spellings): ")
+    query = input("Enter your search query (Make sure your search query has no miss spellings): ")
     search_results = search_bing(query)
     extracted_results = scrape_results(search_results)
 
