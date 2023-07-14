@@ -6,12 +6,15 @@ import logging
 from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
 
-DEBUG_CHATBOT = None #None
+DEBUG_CHATBOT = False #None
 DEBUG_GUI = None
 PEODUCTION = None
 
 print("Importing skills_page")
 from core.ui.skills.skills_page import SkillGUI
+
+print("Importing music")
+from core.ui.music import Sounder
 
 print("Importing profile_controller")
 from core.controllers.profile.profile import Profile
@@ -456,6 +459,9 @@ class ChatBotGUI:
         self.weather_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         WeatherGUI(self.weather_frame)
         
+        self.music_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
+        Sounder(self.music_frame)
+        
         # create the more frame
         self.more_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         self.more_frame.grid(row=0, column=0, sticky="nsew")
@@ -467,7 +473,7 @@ class ChatBotGUI:
             {"attribute": "more_news_button", "text": "News", "image": self.image_news_icon_image, "command": self.frame_2_button_event, "tooltip": "Read news"},
             {"attribute": "more_meditation_button", "text": "Meditation", "image": self.add_skills_image, "command": self.frame_3_button_event, "tooltip": "Start meditation"},
             {"attribute": "more_reminder_button", "text": "Reminder", "image": self.add_skills_image, "command": self.frame_DNA_button_event, "tooltip": "Set a reminder or todo"},
-            {"attribute": "more_music_button", "text": "Music", "image": self.add_skills_image, "command": self.frame_profile_button_event, "tooltip": "Listen to music"},
+            {"attribute": "more_music_button", "text": "Music", "image": self.add_skills_image, "command": self.frame_music_button_event, "tooltip": "Listen to music"},
             {"attribute": "more_workout_button", "text": "Workout", "image": self.add_skills_image, "command": self.frame_skills_button_event, "tooltip": "Start workout"},
             {"attribute": "more_productivity_button", "text": "Productivity", "image": self.add_skills_image, "command": self.frame_more_button_event, "tooltip": "Boost productivity"}
         ]
@@ -551,7 +557,8 @@ class ChatBotGUI:
             "frame_profile": (self.profile_frame, self.frame_profile_button),
             "frame_skills": (self.skills_frame, self.frame_skills_button),
             "frame_more": (self.more_frame, self.frame_more_button),
-            "frame_more_weather": (self.weather_frame, self.more_weather_button)
+            "frame_more_weather": (self.weather_frame, self.more_weather_button),
+            "frame_more_music": (self.music_frame, self.more_music_button)
         }
 
         # Set button color for selected button
@@ -714,6 +721,9 @@ class ChatBotGUI:
         
     def frame_more_weather_button_event(self):
         self.select_frame_by_name("frame_more_weather")
+        
+    def frame_music_button_event(self):
+        self.select_frame_by_name("frame_more_music")
 
     def change_appearance_mode_event(self, new_appearance_mode):
         """

@@ -1,5 +1,5 @@
 try:
-    from tkinter import Tk, ttk, StringVar, BooleanVar, DoubleVar, Canvas, Event, IntVar, PhotoImage
+    from tkinter import Tk, ttk, StringVar, BooleanVar, DoubleVar, Canvas, Event, IntVar, PhotoImage, Frame
     from tkinter.filedialog import askdirectory, askopenfilename, asksaveasfile
     from tkinter.messagebox import askyesno
     from os.path import isfile, join, isdir, basename, abspath, join, splitext, dirname, exists
@@ -12,10 +12,9 @@ try:
     from io import BytesIO
     from random import choices, shuffle
     from string import ascii_uppercase, digits
-    from Components.SystemTheme import get_theme
-    from Components.SongMenu import SongMenu
-    from Components.DirWatcher import DirWatcher
-    # from Components.TkDeb.TkDeb import Debugger
+    from core.Components.SystemTheme import get_theme
+    from core.Components.SongMenu import SongMenu
+    from core.Components.DirWatcher import DirWatcher
     from requests import get
     from threading import Thread
     from mutagen.mp3 import MP3
@@ -32,15 +31,16 @@ except ImportError as err:
     exit(err)
 
 
-class Sounder(Tk):
-    def __init__(self: Tk) -> None:
-        super().__init__()
+class Sounder(Frame):
+    def __init__(self, parent) -> None:
+        super().__init__(parent)
+        self.parent = parent
         # hide window
-        self.withdraw()
+        #self.withdraw()
         # configure window
-        self.minsize(800, 500)
-        self.title('Sounder')
-        self.protocol('WM_DELETE_WINDOW', self.exit_app)
+        #parent.minsize(800, 500)
+        #self.title('Sounder')
+        parent.master.protocol('WM_DELETE_WINDOW', self.exit_app)
         # self.bind('<F12>', lambda _: Debugger(self))
         # self.attributes('-alpha', 0.9)
         # init notifications
@@ -55,7 +55,7 @@ class Sounder(Tk):
         # init theme
         self.apply_theme()
         # init screen
-        self.deiconify()
+        #self.deiconify()
         self.init_important_panels()
         # self.init_important_panels()
         self.update_idletasks()
@@ -68,7 +68,7 @@ class Sounder(Tk):
         # show main panel
         self.after(180, lambda: self.player_panel.lift())
 
-    def init_important_panels(self: Tk) -> None:
+    def init_important_panels(self) -> None:
         try:
             # error panel
             self.error_panel: ttk.Frame = ttk.Frame(self)
@@ -157,7 +157,7 @@ class Sounder(Tk):
         # bind scroll to content
         self.bind('<MouseWheel>', self.on_wheel)
         # apply geometry
-        self.geometry(self.settings['geometry'])
+        #self.geometry(self.settings['geometry'])
 
     def save_settings(self: Tk) -> None:
         # save last page
@@ -166,7 +166,7 @@ class Sounder(Tk):
             self.settings['page'] = active_panel
         # save player state ...
         # save app geometry
-        self.settings['geometry'] = f'{self.geometry()}'
+        #self.settings['geometry'] = f'{self.geometry()}'
         # save active playlists
         self.settings['playlist'] = self.playlist
         # save settings
@@ -181,7 +181,7 @@ class Sounder(Tk):
             self.settings = {}
             self.exit_app()
 
-    def init_layout(self: Tk) -> None:
+    def init_layout(self) -> None:
         # init theme object
         self.layout = ttk.Style()
         # set theme to clam
@@ -329,10 +329,10 @@ class Sounder(Tk):
             'passed': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\passed_time.png'),
             'bug': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\bug.png'),
         }
-        self.iconbitmap(
-            fr'Data\\Icons\\{self.settings["theme"]}\\icon.ico')
+        #self.iconbitmap(
+        #    fr'Data\\Icons\\{self.settings["theme"]}\\icon.ico')
 
-    def init_ui(self: Tk) -> None:
+    def init_ui(self) -> None:
         # ui variables
         self.menu_option: StringVar = StringVar(value=self.settings['page'])
         self.menu_playlist: StringVar = StringVar(value=self.settings['page'])
@@ -382,7 +382,7 @@ class Sounder(Tk):
         # songs info
         self.songs_info: StringVar = StringVar(value='')
         # player panel
-        self.player_panel: ttk.Frame = ttk.Frame(self)
+        self.player_panel: ttk.Frame = ttk.Frame(self.parent)
         # top panel
         player_top_panel: ttk.Frame = ttk.Frame(self.player_panel)
         # menu panel
@@ -567,7 +567,9 @@ class Sounder(Tk):
             side='top', anchor='center', fill='x', padx=10, pady=10)
         ttk.Label(settings_about, image=self.icons['window'], text=f'Version: {self.version[0]} Build: {self.version[1]}', compound='left').pack(
             side='top', anchor='center', fill='x', padx=10, pady=(0, 10))
-        ttk.Label(settings_about, image=self.icons['user'], text='Author: Mateusz Perczak', compound='left').pack(
+        ttk.Label(settings_about, image=self.icons['user'], text='Original Author: Mateusz Perczak', compound='left').pack(
+            side='top', anchor='center', fill='x', padx=10, pady=(0, 10))
+        ttk.Label(settings_about, image=self.icons['user'], text='Renewed Version: MidnightStudio', compound='left').pack(
             side='top', anchor='center', fill='x', padx=10, pady=(0, 10))
         ttk.Label(settings_about, image=self.icons['icons8'], text='Icons: Icons8', compound='left').pack(
             side='top', anchor='center', fill='x', padx=10, pady=(0, 10))
@@ -658,7 +660,7 @@ class Sounder(Tk):
         ttk.Radiobutton(missing_song_panel, text='Yes', style='second.TRadiobutton', value=True,
                         variable=self.delete_missing, command=self.change_missing).pack(side='right', anchor='center', padx=10)
         missing_song_panel.pack(side='top', fill='x', pady=10, padx=10)
-        ttk.Label(settings_missing_song, image=self.icons['info'], text='Note: Sounder will delete all missing songs from all playlists!', compound='left').pack(
+        ttk.Label(settings_missing_song, image=self.icons['info'], text='Note: Music will delete all missing songs from all playlists!', compound='left').pack(
             side='top', fill='x', padx=10, pady=(0, 10))
         # export playlists
         settings_export: ttk.Frame = ttk.Frame(
@@ -857,7 +859,7 @@ class Sounder(Tk):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def on_song_add(self: Tk, song: str) -> None:
+    def on_song_add(self, song: str) -> None:
         sleep(2)
         if not song in self.library:
             self.library.append(song)
@@ -868,19 +870,19 @@ class Sounder(Tk):
                 self.song_panels[song].pack(
                     side='top', fill='x', pady=5, padx=10)
 
-    def init_watcher(self: Tk) -> None:
+    def init_watcher(self) -> None:
         DirWatcher.on_delete = self.on_song_delete
         DirWatcher.on_add = self.on_song_add
         for priority, folder in enumerate(self.settings['folders']):
             Thread(target=DirWatcher, args=(
                 folder, priority + 2,), daemon=True).start()
 
-    def exit_app(self: Tk) -> None:
-        self.withdraw()
+    def exit_app(self) -> None:
+        self.parent.master.withdraw()
         self.save_settings()
-        self.destroy()
+        self.parent.master.destroy()
 
-    def show_panel(self: Tk) -> None:
+    def show_panel(self) -> None:
         try:
             target_panel: str = self.menu_option.get()
             self.menu_playlist.set(target_panel)
@@ -1834,7 +1836,7 @@ class Sounder(Tk):
             self.muted = True
             self.mute_button.configure(image=self.icons['speaker'][0])
 
-    def set_volume(self: Tk, volume: str) -> None:
+    def set_volume(self, volume: str) -> None:
         temp_volume: float = float(volume)
         if temp_volume == 0.0:
             self.mute_button.configure(image=self.icons['speaker'][0])
@@ -1893,7 +1895,3 @@ class Sounder(Tk):
         self.playlist_options.lift()
         self.playlist_entry.select_range(0, 'end')
         self.playlist_entry.focus_force()
-
-
-if __name__ == '__main__':
-    Sounder().mainloop()
