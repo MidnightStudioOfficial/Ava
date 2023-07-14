@@ -1,0 +1,38 @@
+Numeric identifier of the weather icon. 
+
+The following values can appear: 
+1 - Not available
+2 - Sunny
+3 - Mostly sunny
+4 - Partly sunny
+5 - Mostly cloudy
+6 - Cloudy
+7 - Overcast
+8 - Overcast with low clouds
+9 - Fog
+10 - Light rain
+11 - Rain
+12 - Possible rain
+13 - Rain shower
+14 - Thunderstorm
+15 - Local thunderstorms
+16 - Light snow
+17 - Snow
+18 - Possible snow
+19 - Snow shower
+20 - Rain and snow
+21 - Possible rain and snow
+22 - Freezing rain
+23 - Possible freezing rain
+24 - Hail
+25 - Clear (night)
+26 - Mostly clear (night)
+27 - Partly clear (night)
+28 - Mostly cloudy (night)
+29 - Cloudy (night)
+30 - Overcast with low clouds (night)
+31 - Rain shower (night)
+32 - Local thunderstorms (night)
+33 - Snow shower (night)
+34 - Rain and snow (night)
+35 - Possible freezing rain (night)

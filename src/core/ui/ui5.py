@@ -143,6 +143,7 @@ class ChatBotGUI:
         self.add_profile_image = ctk.CTkImage(Image.open(join(image_path, "profile.png")))
         self.add_profile_image2 = ctk.CTkImage(Image.open(join(image_path, "profile.png")),size=(40,40))
         self.add_skills_image = ctk.CTkImage(Image.open(join(image_path, "box.png")))
+        self.add_music_image = ctk.CTkImage(Image.open(join(image_path, "music.png")))
         
         # create navigation frame
         splash_screen.set_text("Creating gui")
@@ -473,7 +474,7 @@ class ChatBotGUI:
             {"attribute": "more_news_button", "text": "News", "image": self.image_news_icon_image, "command": self.frame_2_button_event, "tooltip": "Read news"},
             {"attribute": "more_meditation_button", "text": "Meditation", "image": self.add_skills_image, "command": self.frame_3_button_event, "tooltip": "Start meditation"},
             {"attribute": "more_reminder_button", "text": "Reminder", "image": self.add_skills_image, "command": self.frame_DNA_button_event, "tooltip": "Set a reminder or todo"},
-            {"attribute": "more_music_button", "text": "Music", "image": self.add_skills_image, "command": self.frame_music_button_event, "tooltip": "Listen to music"},
+            {"attribute": "more_music_button", "text": "Music", "image": self.add_music_image, "command": self.frame_music_button_event, "tooltip": "Listen to music"},
             {"attribute": "more_workout_button", "text": "Workout", "image": self.add_skills_image, "command": self.frame_skills_button_event, "tooltip": "Start workout"},
             {"attribute": "more_productivity_button", "text": "Productivity", "image": self.add_skills_image, "command": self.frame_more_button_event, "tooltip": "Boost productivity"}
         ]
