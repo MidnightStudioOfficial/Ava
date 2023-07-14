@@ -347,8 +347,6 @@ class Sounder(Frame):
             self.theme.set('System')
         else:
             self.theme.set(self.settings['theme'])
-        # update
-        self.updates: BooleanVar = BooleanVar(value=self.settings['updates'])
         # wheel acceleration
         self.wheel_acceleration: DoubleVar = DoubleVar(
             value=self.settings['wheel_acceleration'])
@@ -550,15 +548,6 @@ class Sounder(Frame):
                   command=self.change_acceleration).pack(side='right', anchor='center', fill='x', ipadx=40)
         ttk.Label(settings_acceleration, text='Slow').pack(
             side='right', anchor='center', fill='y', pady=10, padx=10)
-        # updates
-        settings_updates: ttk.Frame = ttk.Frame(
-            self.player_content, style='second.TFrame')
-        ttk.Label(settings_updates, image=self.icons['download'], text='Check for updates', compound='left').pack(
-            side='left', anchor='center', fill='y', pady=10, padx=(10, 0))
-        ttk.Radiobutton(settings_updates, text='No', style='second.TRadiobutton', value=False, variable=self.updates,
-                        command=self.change_updates).pack(side='right', anchor='center', padx=10, pady=10)
-        ttk.Radiobutton(settings_updates, text='Yes', style='second.TRadiobutton', value=True,
-                        variable=self.updates, command=self.change_updates).pack(side='right', anchor='center', pady=10)
         # about
         settings_about: ttk.Frame = ttk.Frame(
             self.player_content, style='second.TFrame')
@@ -713,7 +702,7 @@ class Sounder(Frame):
             self.winfo_width() - 250)).pack(side='top', fill='x', padx=10, pady=(0, 10))
         # panels variable
         self.settings_panels = (ttk.Label(self.player_content, text=' User interface', style='third.TLabel'), settings_acceleration, settings_theme, settings_menu, ttk.Label(self.player_content, text=' Playback', style='third.TLabel'), settings_startup, settings_crossfade, settings_buffer, ttk.Label(self.player_content, text=' Songs', style='third.TLabel'), settings_active_song,
-                                settings_played, settings_missing_song, ttk.Label(self.player_content, text=' Search', style='third.TLabel'), settings_tolerance, ttk.Label(self.player_content, text=' Folders', style='third.TLabel'), settings_subfolders, ttk.Label(self.player_content, text=' Other', style='third.TLabel'), settings_updates, settings_export, settings_about)
+                                settings_played, settings_missing_song, ttk.Label(self.player_content, text=' Search', style='third.TLabel'), settings_tolerance, ttk.Label(self.player_content, text=' Folders', style='third.TLabel'), settings_subfolders, ttk.Label(self.player_content, text=' Other', style='third.TLabel'), settings_export, settings_about)
         # bottom panel
         player_bot_panel: ttk.Frame = ttk.Frame(
             self.player_panel, style='second.TFrame')
@@ -1203,9 +1192,6 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def change_updates(self: Tk) -> None:
-        self.settings['updates'] = self.updates.get()
-
     def change_acceleration(self: Tk, _: Event) -> None:
         self.settings['wheel_acceleration'] = round(
             self.wheel_acceleration.get(), 0)
@@ -1217,116 +1203,6 @@ class Sounder(Frame):
     def change_buffer(self: Tk) -> None:
         self.settings['buffer'] = self.buffer.get()
 
-    def check_update(self: Tk) -> None:
-        try:
-            server_version: str = get(
-                'https://raw.githubusercontent.com/MateuszPerczak/Sounder5/master/updates/version.txt').text.strip()
-            if server_version != self.version[0] and int(server_version.replace('.', '')) > int(self.version[0].replace('.', '')):
-                self.prepare_update_panel(server_version)
-                # show notification
-                self.toaster.show_toast(f'Update {server_version} is available', 'If you don\'t want to see this message go to settings and disable automatic updates!',
-                                        threaded=True, icon_path=r'Data\\Icons\\Updater\\setup.ico', duration=0)
-        except Exception:
-            pass
-
-    def update_panel(self: Tk, package_size: str, package_version: str, package_details: str, updates_history: dict) -> None:
-        # update panel
-        update_panel: ttk.Frame = ttk.Frame(
-            self.player_content, style='second.TFrame')
-        # update title
-        update_title: ttk.Frame = ttk.Frame(
-            update_panel, style='second.TFrame')
-        ttk.Label(update_title, image=self.icons['package'], text=f'Update version {package_version}', compound='left').pack(
-            side='left', padx=10, pady=10)
-        ttk.Label(update_title, text=f'{package_size}MB').pack(
-            side='right', padx=10, pady=10)
-        # pack package title
-        update_title.pack(side='top', fill='x')
-        # package details
-        update_details: ttk.Frame = ttk.Frame(
-            update_panel, style='second.TFrame')
-        ttk.Label(update_details, text=f'{package_details}', style='fifth.TLabel').pack(
-            side='top', fill='x', expand=True)
-        # pack package details
-        update_details.pack(side='top', fill='x', padx=10, pady=(0, 10))
-        # package buttons
-        buttons_panel: ttk.Frame = ttk.Frame(
-            self.player_content, style='second.TFrame')
-        ttk.Label(buttons_panel, image=self.icons['info'], text='Note: This update does not remove any personal data!', compound='left').pack(
-            side='left', padx=10)
-        ttk.Button(buttons_panel, image=self.icons['checkmark'], text='Update now',
-                   compound='left', command=self.do_update).pack(side='right', padx=(0, 10), pady=10)
-        # add panels to render
-        self.update_panels.append(update_panel)
-        self.update_panels.append(buttons_panel)
-        # add update button to menu panel
-        ttk.Radiobutton(self.menu_panel, image=self.icons['download'], text='Updates', compound='left', value='Updates',
-                        variable=self.menu_option, command=self.show_panel).pack(side='bottom', fill='x', padx=10, pady=(0, 10))
-        # updates history
-        self.update_panels.append(
-            ttk.Label(self.player_content, text=' Update history', style='third.TLabel'))
-        updates_history['Updates'].reverse()
-        for update in updates_history['Updates']:
-            history_panel: ttk.Frame = ttk.Frame(
-                self.player_content, style='second.TFrame')
-            package_panel: ttk.Frame = ttk.Frame(
-                history_panel, style='second.TFrame')
-            ttk.Label(package_panel, image=self.icons['package'],
-                      text=f'Package {update["Version"]}', compound='left').pack(side='left')
-            ttk.Label(package_panel, image=self.icons['checkmark'], text='Applied ', compound='right').pack(
-                side='right', padx=(10, 0))
-            ttk.Label(package_panel, image=self.icons['date'], text=f'{update["Date"]}', compound='right').pack(
-                side='right', padx=(0, 10))
-            package_panel.pack(fill='x', expand=True, padx=10, pady=(10, 0))
-            ttk.Label(history_panel, image=self.icons['shield'], text=f'{update["Hash"]}', compound='left').pack(
-                side='top', pady=10, padx=10, fill='x')
-            self.update_panels.append(history_panel)
-
-    def prepare_update_panel(self: Tk, package_version: str) -> None:
-        # variables
-        default_updates: dict = {'Updates': []}
-        try:
-            package_size: str = f'{round(float(float(int(get("https://raw.githubusercontent.com/losek1/Sounder5/master/updates/package.zip", stream=True).headers.get("Content-Length")) / 1024) / 1024), 1)}'
-        except Exception as err_obj:
-            package_size: str = '0'
-        try:
-            package_details: str = get(
-                'https://raw.githubusercontent.com/losek1/Sounder5/master/updates/changelog.txt').text
-        except Exception as _:
-            package_details: str = 'Cannot load update details!'
-        # init update history
-        if isfile(r'Data\\Settings\\Updates.json'):
-            with open(r'Data\\Settings\\Updates.json', 'r') as data:
-                try:
-                    updates_history: dict = load(data)
-                except JSONDecodeError as err_obj:
-                    updates_history = default_updates
-                    with open(r'Data\\Settings\\Updates.json', 'w') as data:
-                        try:
-                            dump(updates_history, data)
-                        except Exception as err_obj:
-                            self.log(err_obj)
-        else:
-            with open(r'Data\\Settings\\Updates.json', 'w') as data:
-                try:
-                    dump(default_updates, data)
-                except Exception as err_obj:
-                    self.log(err_obj)
-            updates_history = default_updates
-        # add package panel
-        self.update_panel(package_size, package_version,
-                          package_details, updates_history)
-        # show update
-        self.menu_option.set('Updates')
-        self.show_panel()
-
-    def do_update(self: Tk) -> None:
-        try:
-            if isfile('Updater.exe'):
-                ctypes.windll.shell32.ShellExecuteW(
-                    None, "runas", 'Updater.exe', self.version[0], None, 1)
-        except Exception as err_obj:
-            self.log(err_obj)
 
     def change_playback(self: Tk) -> None:
         self.settings['start_playback'] = self.start_playback.get()
