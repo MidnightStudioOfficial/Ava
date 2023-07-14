@@ -31,6 +31,7 @@ except ImportError as err:
     exit(err)
 
 
+
 class Sounder(Frame):
     def __init__(self, parent) -> None:
         super().__init__(parent)
@@ -99,7 +100,7 @@ class Sounder(Frame):
             self.log(err_obj)
 
 
-    def log(self: Tk, err_obj: object) -> None:
+    def log(self, err_obj: object) -> None:
         # DING!!!!!!
         self.bell()
         # log error to file
@@ -112,10 +113,10 @@ class Sounder(Frame):
         except Exception as _:
             pass
 
-    def init_notifications(self: Tk) -> None:
+    def init_notifications(self) -> None:
         self.toaster = ToastNotifier()
 
-    def init_settings(self: Tk) -> None:
+    def init_settings(self) -> None:
         try:
             # variables
             default_settings: dict = {'played_percent': 2, 'menu_position': 'left', 'search_compensation': 0.5, 'delete_missing': False, 'follow': 1, 'crossfade': 100, 'shuffle': False, 'start_playback': False, 'playlist': 'Library', 'repeat': 'None', 'buffer': 'Normal', 'last_song': '',
@@ -145,7 +146,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def apply_settings(self: Tk) -> None:
+    def apply_settings(self) -> None:
         # check theme
         if self.settings['use_system_theme']:
             self.settings['theme'] = get_theme()
@@ -159,7 +160,7 @@ class Sounder(Frame):
         # apply geometry
         #self.geometry(self.settings['geometry'])
 
-    def save_settings(self: Tk) -> None:
+    def save_settings(self) -> None:
         # save last page
         active_panel: str = self.menu_option.get()
         if active_panel != 'Updates':
@@ -176,7 +177,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def restore_default(self: Tk) -> None:
+    def restore_default(self) -> None:
         if askyesno('Restore default configuration', 'Are you sure you want to restore the default configuration?', icon='warning'):
             self.settings = {}
             self.exit_app()
@@ -199,7 +200,7 @@ class Sounder(Frame):
         self.layout.layout('TEntry', [('Entry.padding', {'sticky': 'nswe', 'children': [
                            ('Entry.textarea', {'sticky': 'nswe'})]})])
 
-    def apply_theme(self: Tk) -> None:
+    def apply_theme(self) -> None:
         theme: dict = {'Dark': ['#111', '#212121', '#333', '#fff'], 'Light': [
             '#fff', '#ecf0f1', '#ecf0f1', '#000'], 'Contrast': ['#000', '#444', '#444', '#3ff23f']}
         # window
@@ -282,7 +283,7 @@ class Sounder(Frame):
         self.layout.configure("Horizontal.TProgressbar", background=theme[self.settings['theme']][1], lightcolor=theme[self.settings['theme']][0],
                               darkcolor=theme[self.settings['theme']][0], bordercolor=theme[self.settings['theme']][0], troughcolor=theme[self.settings['theme']][0], thickness=2)
 
-    def load_icons(self: Tk) -> None:
+    def load_icons(self) -> None:
         self.icons: dict = {
             'error': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\error.png'),
             'library': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\library.png'),
@@ -329,8 +330,6 @@ class Sounder(Frame):
             'passed': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\passed_time.png'),
             'bug': PhotoImage(file=fr'Data\\Icons\\{self.settings["theme"]}\\bug.png'),
         }
-        #self.iconbitmap(
-        #    fr'Data\\Icons\\{self.settings["theme"]}\\icon.ico')
 
     def init_ui(self) -> None:
         # ui variables
@@ -1645,11 +1644,11 @@ class Sounder(Frame):
                 image=self.icons['play_pause'][1])
             self.active_panels.append(song)
 
-    def update_play_pause(self: Tk) -> None:
+    def update_play_pause(self) -> None:
         self.play_button.configure(
             image=self.icons['play_pause'][not self.paused and mixer.music.get_busy()])
 
-    def update_info_panel(self: Tk, song: str) -> None:
+    def update_info_panel(self, song: str) -> None:
         self.favorite_button.configure(
             image=self.icons['heart'][song in self.settings['playlists']['Favorites']['Songs']])
         if song in self.songs_cache:
@@ -1662,7 +1661,7 @@ class Sounder(Frame):
             self.song_title.configure(text='')
             self.song_artist.configure(text='')
 
-    def update_progress_info(self: Tk, song: str) -> None:
+    def update_progress_info(self, song: str) -> None:
         minute: float = 0.0
         second: float = 0.0
         minute, second = divmod(self.songs_cache[song]['length'], 60)
@@ -1671,7 +1670,7 @@ class Sounder(Frame):
         self.progress_bar.configure(
             value=0, maximum=self.songs_cache[song]['length'])
 
-    def target_playlist(self: Tk) -> None:
+    def target_playlist(self) -> None:
         if self.library:
             self.playlist = self.menu_playlist.get()
             self.songs = self.library.copy(
@@ -1681,7 +1680,7 @@ class Sounder(Frame):
             if not self.paused and not mixer.music.get_busy():
                 self.button_play()
 
-    def init_mixer(self: Tk) -> None:
+    def init_mixer(self) -> None:
         try:
             size: int = 1024
             if self.settings['buffer'] == 'Slow':
@@ -1693,7 +1692,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def mixer_play(self: Tk, song: str) -> None:
+    def mixer_play(self, song: str) -> None:
         try:
             if self.settings['last_song'] and self.settings['last_song'] in self.songs_cache and self.progress_bar['value'] >= (self.songs_cache[self.settings['last_song']]['length'] / self.settings['played_percent']):
                 self.songs_cache[self.settings['last_song']]['plays'] += 1
@@ -1714,19 +1713,19 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def mixer_pause(self: Tk) -> None:
+    def mixer_pause(self) -> None:
         mixer.music.pause()
         self.paused = True
         self.update_active_panel(self.song)
         self.update_play_pause()
 
-    def mixer_unpause(self: Tk) -> None:
+    def mixer_unpause(self) -> None:
         mixer.music.unpause()
         self.paused = False
         self.update_active_panel(self.song)
         self.update_play_pause()
 
-    def panel_play(self: Tk, song: str) -> None:
+    def panel_play(self, song: str) -> None:
         if song == self.song and self.paused:
             self.mixer_unpause()
         elif song == self.song and not self.paused and mixer.music.get_busy():
@@ -1745,7 +1744,7 @@ class Sounder(Frame):
                     shuffle(self.songs)
             self.mixer_play(song)
 
-    # def progress_play(self: Tk, event: Event) -> None:
+    # def progress_play(self, event: Event) -> None:
     #     if self.song in self.songs_cache and not self.songs_cache[self.song]['extension'] in ('.wav',):
     #         print(event.x / self.progress_bar.winfo_width(),
     #               self.songs_cache[self.song]['length'], (
@@ -1754,7 +1753,7 @@ class Sounder(Frame):
     #         self.mixer_play(self.song, (event.x / self.progress_bar.winfo_width())
     #                         * self.songs_cache[self.song]['length'])
 
-    def button_play(self: Tk) -> None:
+    def button_play(self) -> None:
         if self.song and self.paused:
             self.mixer_unpause()
         elif self.song and not self.paused and mixer.music.get_busy():
@@ -1781,7 +1780,7 @@ class Sounder(Frame):
                 else:
                     self.mixer_play(self.songs[0])
 
-    def mixer_thread(self: Tk) -> None:
+    def mixer_thread(self) -> None:
         self.mixer_active = True
         if mixer.music.get_busy() and self.song:
             position: float = mixer.music.get_pos() / 1000
@@ -1792,7 +1791,7 @@ class Sounder(Frame):
             self.mixer_active = False
             self.mixer_after()
 
-    def mixer_after(self: Tk) -> None:
+    def mixer_after(self) -> None:
         self.song_length['text'] = self.time_passed['text']
         self.update_active_panel('')
         self.update_play_pause()
@@ -1803,7 +1802,7 @@ class Sounder(Frame):
             self.after_job = self.after(
                 self.settings['crossfade'], self.button_next)
 
-    def button_next(self: Tk) -> None:
+    def button_next(self) -> None:
         if self.song in self.songs:
             new_index: int = self.songs.index(self.song) + 1
             self.song = self.songs[new_index if new_index < len(
@@ -1814,7 +1813,7 @@ class Sounder(Frame):
             self.mixer_play(self.song)
         self.follow_song()
 
-    def button_previous(self: Tk) -> None:
+    def button_previous(self) -> None:
         if mixer.music.get_pos() > 3000:
             self.mixer_play(self.song)
         else:
@@ -1827,7 +1826,7 @@ class Sounder(Frame):
                 self.mixer_play(self.song)
             self.follow_song()
 
-    def toggle_volume(self: Tk) -> None:
+    def toggle_volume(self) -> None:
         if self.muted:
             self.set_volume(self.settings['volume'])
             self.muted = False
@@ -1852,7 +1851,7 @@ class Sounder(Frame):
         if self.muted:
             self.muted = False
 
-    def toggle_repeat(self: Tk) -> None:
+    def toggle_repeat(self) -> None:
         if self.settings['repeat'] == 'None':
             self.settings['repeat'] = 'All'
             self.repeat_button.configure(
@@ -1865,13 +1864,13 @@ class Sounder(Frame):
             self.repeat_button.configure(
                 style='TButton', image=self.icons['repeat'][0])
 
-    def follow_song(self: Tk) -> None:
+    def follow_song(self) -> None:
         playlist = self.menu_playlist.get()
         if self.settings['follow'] == 2 and self.song in self.songs_queue and playlist == self.playlist:
             self.player_canvas.yview_moveto(float((self.songs_queue.index(
                 self.song) * 65) / self.player_content.winfo_height()))
 
-    def import_settings(self: Tk) -> None:
+    def import_settings(self) -> None:
         try:
             settings_file: str = askopenfilename(
                 title='Open a settings file', initialdir='/', filetypes=(('Sounder settings files', '*.json'),))
@@ -1885,13 +1884,13 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def export_settings(self: Tk) -> None:
+    def export_settings(self) -> None:
         settings_file = asksaveasfile(mode='w', defaultextension='.json', filetypes=(
             ('Sounder settings files', '*.json'),))
         if settings_file:
             dump(self.settings, settings_file)
 
-    def edit_playlist(self: Tk, _: Event) -> None:
+    def edit_playlist(self, _: Event) -> None:
         self.playlist_options.lift()
         self.playlist_entry.select_range(0, 'end')
         self.playlist_entry.focus_force()
