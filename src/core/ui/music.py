@@ -6,7 +6,7 @@ try:
     from os import startfile, listdir, walk
     from json import load, dump
     from json.decoder import JSONDecodeError
-    from logging import basicConfig, error
+    from logging import error
     from traceback import format_exc
     from PIL import Image, ImageTk
     from io import BytesIO
@@ -15,7 +15,7 @@ try:
     from core.Components.SystemTheme import get_theme
     from core.Components.SongMenu import SongMenu
     from core.Components.DirWatcher import DirWatcher
-    from requests import get
+    #from requests import get
     from threading import Thread
     from mutagen.mp3 import MP3
     from mutagen.flac import FLAC
@@ -25,7 +25,7 @@ try:
     from pygame import mixer
     from win10toast import ToastNotifier
     from typing import Union
-    import ctypes
+    #import ctypes
     from time import sleep
 except ImportError as err:
     exit(err)
@@ -122,7 +122,7 @@ class Sounder(Frame):
             default_settings: dict = {'played_percent': 2, 'menu_position': 'left', 'search_compensation': 0.5, 'delete_missing': False, 'follow': 1, 'crossfade': 100, 'shuffle': False, 'start_playback': False, 'playlist': 'Library', 'repeat': 'None', 'buffer': 'Normal', 'last_song': '',
                                       'volume': 0.5, 'sort_by': 'A-Z', 'scan_subfolders': False, 'geometry': '800x500', 'wheel_acceleration': 1.0, 'updates': True, 'folders': [], 'use_system_theme': True, 'theme': 'Light', 'page': 'Library', 'playlists': {'Favorites': {'Name': 'Favorites', 'Songs': []}}}
             self.settings: dict = {}
-            self.version: tuple = ('0.9.0', '170722')
+            self.version: tuple = ('0.9.0', '20230714')
             # load settings
             if isfile(r'Data\\Settings\\Settings.json'):
                 with open(r'Data\\Settings\\Settings.json', 'r') as data:
@@ -793,7 +793,7 @@ class Sounder(Frame):
         ttk.Label(self.no_songs, image=self.icons['info'], text='No songs found!', compound='left').pack(
             side='left', anchor='center', fill='y', pady=10, padx=10)
 
-    def init_player(self: Tk) -> None:
+    def init_player(self) -> None:
         # variables
         self.library: list = []
         self.songs_cache: dict = {}
@@ -829,7 +829,7 @@ class Sounder(Frame):
         Thread(target=self.init_watcher, daemon=True).start()
         # self.init_watcher()
 
-    def on_song_delete(self: Tk, song: str) -> None:
+    def on_song_delete(self, song: str) -> None:
         try:
             if song in self.library:
                 self.remove_song(song)
@@ -886,7 +886,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def show_panels(self: Tk, panel: str) -> None:
+    def show_panels(self, panel: str) -> None:
         try:
             if self.last_panel != panel:
                 # move content to the top
@@ -933,16 +933,16 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def open_logs(self: Tk) -> None:
+    def open_logs(self) -> None:
         if isfile(r'Data\\Dumps\\sounder_dump.txt'):
             startfile(r'Data\\Dumps\\sounder_dump.txt')
             self.exit_app()
 
-    def on_wheel(self: Tk, event: Event) -> None:
+    def on_wheel(self, event: Event) -> None:
         self.player_canvas.yview_scroll(
-            int(-self.settings['wheel_acceleration']*(event.delta/120)), 'units')
+            int(-self.settings['wheel_acceleration'] * (event.delta / 120)), 'units')
 
-    def show_playlist(self: Tk) -> None:
+    def show_playlist(self) -> None:
         try:
             selected_playlist: str = self.menu_playlist.get()
             self.menu_option.set(selected_playlist)
@@ -954,7 +954,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def update_playlist(self: Tk, selected_playlist: str) -> None:
+    def update_playlist(self, selected_playlist: str) -> None:
         try:
             if selected_playlist in self.settings['playlists']:
                 # update playlist info
@@ -980,7 +980,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def add_playlist(self: Tk) -> None:
+    def add_playlist(self) -> None:
         try:
             playlist_id: str = ''.join(choices(ascii_uppercase + digits, k=4))
             if not playlist_id in self.settings['playlists']:
@@ -992,7 +992,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def remove_playlist(self: Tk):
+    def remove_playlist(self):
         try:
             if askyesno('Remove playlist', 'Are you sure you want to remove this playlist?\nThis cannot be undone!', icon='warning'):
                 selected_playlist: str = self.menu_playlist.get()
@@ -1013,13 +1013,13 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def get_playlist_button(self: Tk, playlist: str) -> Union[ttk.Radiobutton, None]:
+    def get_playlist_button(self, playlist: str) -> Union[ttk.Radiobutton, None]:
         try:
             return list(filter(lambda widget: widget.winfo_class() == 'TRadiobutton' and widget['text'] == self.settings['playlists'][playlist]['Name'][:14], self.menu_panel.winfo_children()))[0]
         except Exception as err_obj:
             self.log(err_obj)
 
-    def rename_playlist(self: Tk, _) -> None:
+    def rename_playlist(self, _) -> None:
         try:
             selected_playlist: str = self.menu_playlist.get()
             new_name: str = self.playlist_entry.get()
@@ -1033,7 +1033,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def verify_playlist(self: Tk) -> None:
+    def verify_playlist(self) -> None:
         try:
             for playlist in self.settings['playlists']:
                 for song in self.settings['playlists'][playlist]['Songs']:
@@ -1047,7 +1047,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def add_missing_song(self: Tk, song: str) -> None:
+    def add_missing_song(self, song: str) -> None:
         try:
             self.song_panels[song] = ttk.Frame(
                 self.player_content, style='second.TFrame')
@@ -1065,7 +1065,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def remove_missing_song(self: Tk, song: str) -> None:
+    def remove_missing_song(self, song: str) -> None:
         try:
             playlist = self.menu_playlist.get()
             self.settings['playlists'][playlist]['Songs'].remove(song)
@@ -1075,7 +1075,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def new_folder(self: Tk) -> None:
+    def new_folder(self) -> None:
         try:
             new_dir: str = askdirectory()
             if new_dir and abspath(new_dir) not in self.settings['folders']:
@@ -1090,7 +1090,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def add_folder(self: Tk, path: str) -> None:
+    def add_folder(self, path: str) -> None:
         try:
             self.folder_panels[path] = ttk.Frame(
                 self.player_content, style='second.TFrame')
@@ -1107,7 +1107,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def remove_folder(self: Tk, path: str) -> None:
+    def remove_folder(self, path: str) -> None:
         try:
             if askyesno('Remove folder', 'Are you sure you want to remove this folder?', icon='warning') and path in self.settings['folders']:
                 self.folder_panels[path].destroy()
@@ -1117,7 +1117,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def remove_songs(self: Tk, path: str) -> None:
+    def remove_songs(self, path: str) -> None:
         try:
             path = abspath(path)
             temp_songs: list = self.library.copy()
@@ -1143,13 +1143,13 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def refresh_ui(self: Tk) -> None:
+    def refresh_ui(self) -> None:
         self.update_info_panel('')
         self.time_passed['text'] = '0:00'
         self.song_length['text'] = '0:00'
         self.progress_bar.configure(value=0, maximum=100)
 
-    def scan_folders(self: Tk) -> None:
+    def scan_folders(self) -> None:
         try:
             if self.settings['scan_subfolders']:
                 folders: list = self.settings['folders'].copy()
@@ -1181,7 +1181,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def change_theme(self: Tk) -> None:
+    def change_theme(self) -> None:
         try:
             theme: str = self.theme.get()
             if theme == 'System':
@@ -1192,22 +1192,22 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def change_acceleration(self: Tk, _: Event) -> None:
+    def change_acceleration(self, _: Event) -> None:
         self.settings['wheel_acceleration'] = round(
             self.wheel_acceleration.get(), 0)
 
-    def change_subfolders(self: Tk) -> None:
+    def change_subfolders(self) -> None:
         self.settings['scan_subfolders'] = self.scan_subfolders.get()
         Thread(target=self.scan_folders, daemon=True).start()
 
-    def change_buffer(self: Tk) -> None:
+    def change_buffer(self) -> None:
         self.settings['buffer'] = self.buffer.get()
 
 
-    def change_playback(self: Tk) -> None:
+    def change_playback(self) -> None:
         self.settings['start_playback'] = self.start_playback.get()
 
-    def change_sort(self: Tk) -> None:
+    def change_sort(self) -> None:
         try:
             sort_by: str = self.sort_by.get()
             if sort_by != self.settings['sort_by']:
@@ -1224,29 +1224,29 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def change_crossfade(self: Tk, _: Event) -> None:
+    def change_crossfade(self, _: Event) -> None:
         self.settings['crossfade'] = int(self.crossfade.get())
 
-    def change_follow(self: Tk) -> None:
+    def change_follow(self) -> None:
         self.settings['follow'] = self.follow.get()
 
-    def change_missing(self: Tk) -> None:
+    def change_missing(self) -> None:
         self.settings['delete_missing'] = self.delete_missing.get()
 
-    def change_menu(self: Tk) -> None:
+    def change_menu(self) -> None:
         self.settings['menu_position'] = self.menu_position.get()
 
-    def change_played(self: Tk, _: Event) -> None:
+    def change_played(self, _: Event) -> None:
         self.settings['played_percent'] = self.played_percent.get()
 
-    def change_compensation(self: Tk, _: Event) -> None:
+    def change_compensation(self, _: Event) -> None:
         self.settings['search_compensation'] = round(
             self.search_compensation.get(), 1)
 
-    def update_thread(self: Tk) -> None:
+    def update_thread(self) -> None:
         Thread(target=self.check_update, daemon=True).start()
 
-    def open_search(self: Tk) -> None:
+    def open_search(self) -> None:
         entry_content: str = self.lib_entry.get()
         if entry_content:
             self.search()
@@ -1260,7 +1260,7 @@ class Sounder(Frame):
                 self.lib_search.config(style='third.TButton')
                 self.lib_entry.focus_set()
 
-    def get_filtered_search(self: Tk) -> str:
+    def get_filtered_search(self) -> str:
         allowed_chars: str = 'abcdefghijklmnopqrstuvwxyz123456789. '
         entry_content: str = self.lib_entry.get().lower().strip()
         clean_content: str = ''
@@ -1270,11 +1270,11 @@ class Sounder(Frame):
         #     if letter in allowed_chars: clean_content += letter
         return clean_content
 
-    def search(self: Tk, _: Event = None) -> None:
+    def search(self, _: Event = None) -> None:
         self.sort_panels(self.get_filtered_search(), self.library, True)
         self.player_canvas.yview_moveto(0)
 
-    def sort_panels(self: Tk, search_word: str, songs: list, refresh_panels: bool = False) -> None:
+    def sort_panels(self, search_word: str, songs: list, refresh_panels: bool = False) -> None:
         try:
             temp_songs: list = []
             song_srore: float = 0.0
@@ -1348,23 +1348,23 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def sort_by_plays(self: Tk, song: str) -> int:
+    def sort_by_plays(self, song: str) -> int:
         return self.songs_cache[song]['plays'] if song in self.songs_cache else 0
 
-    def show_song(self: Tk, songs: list) -> None:
+    def show_song(self, songs: list) -> None:
         if self.song in songs:
             self.after(100, lambda: self.player_canvas.yview_moveto(
                 float((songs.index(self.song) * 65) / self.player_content.winfo_height())))
         if self.settings['follow'] == 2:
             self.songs_queue = songs
 
-    def sort_songs(self: Tk, song: str) -> str:
+    def sort_songs(self, song: str) -> str:
         if song in self.songs_cache:
             return self.songs_cache[song]['title'][:2].lower()
         else:
             return ''
 
-    def toggle_shuffle(self: Tk) -> None:
+    def toggle_shuffle(self) -> None:
         if self.settings['shuffle']:
             # change button style
             self.shuffle_button.configure(style='TButton')
@@ -1380,7 +1380,7 @@ class Sounder(Frame):
             if self.songs:
                 shuffle(self.songs)
 
-    def cache_song(self: Tk, song: str) -> None:
+    def cache_song(self, song: str) -> None:
         album_art = self.icons['note']
         song_title, extension = splitext(basename(song))
         song_artist: str = 'Unknown'
@@ -1439,11 +1439,11 @@ class Sounder(Frame):
         self.songs_cache[song]['search_tokens'].extend(
             [song_title.lower(), song_artist.lower(), album.lower()])
 
-    def new_song(self: Tk, song: str) -> None:
+    def new_song(self, song: str) -> None:
         self.cache_song(song)
         self.add_song(song)
 
-    def add_song(self: Tk, song: str) -> None:
+    def add_song(self, song: str) -> None:
         try:
             if song in self.song_panels and self.song_panels[song]:
                 self.song_panels[song].destroy()
@@ -1471,7 +1471,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def remove_song(self: Tk, song: str) -> None:
+    def remove_song(self, song: str) -> None:
         try:
             if song in self.song_panels:
                 self.song_panels[song].destroy()
@@ -1489,7 +1489,7 @@ class Sounder(Frame):
         except Exception as err_obj:
             self.log(err_obj)
 
-    def favorites_song(self: Tk, song: str) -> None:
+    def favorites_song(self, song: str) -> None:
         if self.library:
             if song in self.settings['playlists']['Favorites']['Songs']:
                 self.songs_cache[song]['heart'].configure(
@@ -1506,7 +1506,7 @@ class Sounder(Frame):
                     self.favorite_button.configure(
                         image=self.icons['heart'][1])
 
-    def update_active_panel(self: Tk, song: str) -> None:
+    def update_active_panel(self, song: str) -> None:
         for active_song in filter(lambda active_song: active_song in self.songs_cache and active_song in self.library, self.active_panels):
             self.songs_cache[active_song]['play_pause'].configure(
                 image=self.icons['play_pause'][0])
