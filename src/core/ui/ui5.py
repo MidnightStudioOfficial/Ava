@@ -6,7 +6,7 @@ import logging
 from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
 
-DEBUG_CHATBOT = False #None
+DEBUG_CHATBOT = None #None
 DEBUG_GUI = None
 PEODUCTION = None
 
@@ -144,7 +144,7 @@ class ChatBotGUI:
         self.add_profile_image2 = ctk.CTkImage(Image.open(join(image_path, "profile.png")),size=(40,40))
         self.add_skills_image = ctk.CTkImage(Image.open(join(image_path, "box.png")))
         self.add_music_image = ctk.CTkImage(Image.open(join(image_path, "music.png")))
-        
+
         # create navigation frame
         splash_screen.set_text("Creating gui")
 
@@ -534,6 +534,7 @@ class ChatBotGUI:
         del self.chat_image
         del self.add_user_image
         #del self.logo_image
+        
         
         self.recognize_thread = None
         self.stoped_lisening = False

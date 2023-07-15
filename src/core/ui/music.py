@@ -551,7 +551,7 @@ class Sounder(Frame):
         # about
         settings_about: ttk.Frame = ttk.Frame(
             self.player_content, style='second.TFrame')
-        ttk.Label(settings_about, image=self.icons['info'], text='About Sounder', compound='left').pack(
+        ttk.Label(settings_about, image=self.icons['info'], text='About Music', compound='left').pack(
             side='top', anchor='center', fill='x', padx=10, pady=10)
         ttk.Label(settings_about, image=self.icons['window'], text=f'Version: {self.version[0]} Build: {self.version[1]}', compound='left').pack(
             side='top', anchor='center', fill='x', padx=10, pady=(0, 10))
