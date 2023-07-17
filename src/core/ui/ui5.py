@@ -6,7 +6,7 @@ import logging
 from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
 
-DEBUG_CHATBOT = False #None
+DEBUG_CHATBOT = None #None
 DEBUG_GUI = None
 PEODUCTION = None
 
@@ -227,7 +227,7 @@ class ChatBotGUI:
         for widget, row in widgets:
             widget.grid(row=row, column=0, padx=20, pady=10)
 
-        version_button = ctk.CTkButton(master, text="V0.2.1", width=96, command=self.debug_click)
+        version_button = ctk.CTkButton(master, text="V0.2.2", width=96, command=self.debug_click)
         version_button.grid(sticky="se", column=1)
         
         self.current_chat_bubble = False

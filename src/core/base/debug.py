@@ -15,6 +15,38 @@ class Debug:
     def get_debug_info(self):
         return self.debug_info
 
+class DebugDevPanel(ctk.CTkToplevel):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.title("Debug Development Panel")
+        self.geometry("400x300")
+
+        # Create a label to display some information
+        self.label = tk.Label(self, text="Welcome to the Debug Dev Panel!", font=("Helvetica", 16))
+        self.label.pack(pady=20)
+
+        # Add buttons to perform actions or tests
+        self.btn_action = tk.Button(self, text="Perform Action", command=self.perform_action)
+        self.btn_action.pack(pady=10)
+
+        self.btn_test = tk.Button(self, text="Run Test", command=self.run_test)
+        self.btn_test.pack(pady=10)
+
+        # Add any other widgets or elements you might need for debugging
+
+    def perform_action(self):
+        # Implement the action you want to perform for the "Perform Action" button
+        # Replace this with your actual action code
+        print("Action performed!")
+
+    def run_test(self):
+        # Implement the test you want to run for the "Run Test" button
+        # Replace this with your actual test code
+        from core.base.tests import MultiTestClassRunner
+        self.test_runner = MultiTestClassRunner()
+        self.test_runner.run_tests()
+        print("Test executed!")
+
 class DebugGUI(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -43,7 +75,7 @@ class DebugGUI(ctk.CTkToplevel):
         self.entry = ctk.CTkEntry(master=self.frame, placeholder_text="search", width=200)
         self.entry.grid(row=0, column=1, pady=10, sticky="e")
         
-        self.more_button = ctk.CTkButton(master=self.frame)
+        self.more_button = ctk.CTkButton(master=self.frame, width=30, text='Dev Panel', command=self.open_dev_panel)
         self.more_button.grid(row=0, column=2, pady=10, sticky="e")
         
         self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All","memory", "other"], command=self.filter_list)
@@ -62,10 +94,15 @@ class DebugGUI(ctk.CTkToplevel):
     def clear_list(self):
         for i in self.item_frame.values():
             i.pack_forget()
+            
     def update_debug_info(self, key, value):
         self.layout[key]["value"] = value
         self.clear_list()
         self.create_list()
+        
+    def open_dev_panel(self):
+        self.dev = DebugDevPanel(self)
+        
     def filter_list(self, type_):
         if type_=="All":
             for i in self.item_frame.values():

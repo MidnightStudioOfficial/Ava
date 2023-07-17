@@ -16,9 +16,6 @@ class SplashScreen(CTkToplevel):
         self.progressbar = CTkProgressBar(self, orientation="horizontal", mode="determinate", width=250)
         self.progressbar.pack(pady=10)
         
-        #self.progress_label = CTkLabel(self, text="0%", font=("Arial", 12))
-        #self.progress_label.pack(pady=10)
-        
         self.cancel_button = CTkButton(self, text="Cancel", command=self.cancel)
         self.cancel_button.pack(pady=10)
         
@@ -30,24 +27,6 @@ class SplashScreen(CTkToplevel):
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f"+{x}+{y}")
         
-        # Fade in the text and progress bar
-        #alpha = 0.0
-        #while alpha < 1.0:
-        #    alpha += 0.1
-        #    self.text_label.configure(fg_color=f"#{int(0xec * alpha):02x}{int(0xf0 * alpha):02x}{int(0xf1 * alpha):02x}")
-        #    #self.progressbar.configure(fg_color=f"#3498db{int(alpha * 255):02x}")
-        #    self.update()
-        #    self.after(50)
-
-        # alpha = 0.0
-        # duration = 100000 # duration of the animation in milliseconds
-        # start_time = time.time()
-        # while alpha < 1.0:
-        #     elapsed_time = time.time() - start_time
-        #     alpha = easeInOutQuad(elapsed_time, 0, 1, duration)
-        #     self.text_label.configure(text_color=f"#{int(0xec * alpha):02x}{int(0xf0 * alpha):02x}{int(0xf1 * alpha):02x}")
-        #     self.update()
-        #     self.after(10)
 
         
     def set_text(self, text):
