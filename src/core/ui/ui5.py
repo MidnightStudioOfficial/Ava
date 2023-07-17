@@ -6,7 +6,7 @@ import logging
 from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
 
-DEBUG_CHATBOT = None #None
+DEBUG_CHATBOT = False #None
 DEBUG_GUI = None
 PEODUCTION = None
 
@@ -45,6 +45,9 @@ from core.voice.wake_word import WakeWord
 
 print("Importing WakeWordGUI")
 from core.ui.wakeword.wakeword import WakeWordGUI
+
+print("Importing debugergui")
+from core.TkDeb.TkDeb import Debugger
 
 if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
     
@@ -91,6 +94,8 @@ class ChatBotGUI:
         # Set the title and geometry of the master window
         master.title("ChatBot")
         master.geometry("600x688")
+        
+        self.master.bind('<F12>', lambda _: Debugger(self.master))
 
         # Prevent the master window from being resized (commented out)
         # master.resizable(False, False)
