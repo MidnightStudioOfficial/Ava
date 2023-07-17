@@ -27,6 +27,7 @@ class WidgetTree(ttk.Frame):
             'TProgressbar': PhotoImage(file=join(self.abs_path, r'Data\Resources2\progress.png')),
             'TCheckbutton': PhotoImage(file=join(self.abs_path, r'Data\Resources2\checkbox.png')),
             'Treeview': PhotoImage(file=join(self.abs_path, r'Data\Resources2\tree.png')),
+            'Frame': PhotoImage(file=join(self.abs_path, r'Data\Resources2\frame.png')),
             'Unknown': PhotoImage(file=join(self.abs_path, r'Data\Resources2\unknown.png')),
         }
         self.icons['Toplevel'] = self.icons['Tk']

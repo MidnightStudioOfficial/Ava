@@ -43,6 +43,9 @@ class DebugGUI(ctk.CTkToplevel):
         self.entry = ctk.CTkEntry(master=self.frame, placeholder_text="search", width=200)
         self.entry.grid(row=0, column=1, pady=10, sticky="e")
         
+        self.more_button = ctk.CTkButton(master=self.frame)
+        self.more_button.grid(row=0, column=2, pady=10, sticky="e")
+        
         self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All","memory", "other"], command=self.filter_list)
         self.option_type.set("All")
         self.option_type.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
@@ -55,7 +58,6 @@ class DebugGUI(ctk.CTkToplevel):
         t = threading.Thread(target=self.display_debug_info)
         t.daemon = True
         t.start()
-
 
     def clear_list(self):
         for i in self.item_frame.values():
@@ -139,7 +141,6 @@ class App(ctk.CTk):
             self.toplevel_window = DebugGUI(self)  # create window if its None or destroyed
         else:
             self.toplevel_window.focus()  # if window exists focus it
-
 
 
 

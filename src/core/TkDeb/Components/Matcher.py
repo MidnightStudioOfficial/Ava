@@ -10,7 +10,8 @@ class Matcher:
             'TScale': {'Class': '', 'Name': '', 'Manager': '', 'Manager Config': '', 'Parent': '', 'Position': '', 'Dimentions': '', 'Binds': '', 'State': '', 'Visible': '', 'Value': '', 'Style': 'Default'},
             'TEntry': {'Class': '', 'Name': '', 'Manager': '', 'Manager Config': '', 'Parent': '', 'Position': '', 'Dimentions': '', 'Binds': '', 'State': '', 'Visible': '', 'Value': '', 'Style': 'Default'},
             'TProgressbar': {'Class': '', 'Name': '', 'Manager': '', 'Manager Config': '', 'Parent': '', 'Position': '', 'Dimentions': '', 'Binds': '', 'State': '', 'Visible': '', 'Progress': ''},
-            'TCheckbutton': {'Class': '', 'Name': '', 'Manager': '', 'Manager Config': '', 'Parent': '', 'Position': '', 'Dimentions': '', 'Binds': '', 'State': '', 'Visible': '', 'Text': '', 'WrapLength': 'Infinite', 'Image': 'Not specified', 'Compound': 'None', 'Style': 'Default'}
+            'TCheckbutton': {'Class': '', 'Name': '', 'Manager': '', 'Manager Config': '', 'Parent': '', 'Position': '', 'Dimentions': '', 'Binds': '', 'State': '', 'Visible': '', 'Text': '', 'WrapLength': 'Infinite', 'Image': 'Not specified', 'Compound': 'None', 'Style': 'Default'},
+            'Frame': {'Class': '', 'Name': '', 'Manager': '', 'Manager Config': '', 'Parent': '', 'Childrens': '', 'Position': '', 'Dimentions': '', 'Binds': '', 'State': '', 'Visible': '', 'Style': 'Default'},
 
         }
 
