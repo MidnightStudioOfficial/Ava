@@ -634,7 +634,7 @@ class Sounder(Frame):
         ttk.Radiobutton(active_song_panel, text='Always follow', style='fourth.TRadiobutton', value=2,
                         variable=self.follow, command=self.change_follow).pack(side='right', anchor='center')
         active_song_panel.pack(side='top', fill='x', pady=10, padx=10)
-        ttk.Label(settings_active_song, image=self.icons['info'], text='Note: Sounder will automatically scroll to an active song if found in playlist!', compound='left').pack(
+        ttk.Label(settings_active_song, image=self.icons['info'], text='Note: Music Player will automatically scroll to an active song if found in playlist!', compound='left').pack(
             side='top', fill='x', padx=10, pady=(0, 10))
         # missing songs
         settings_missing_song: ttk.Frame = ttk.Frame(
@@ -648,7 +648,7 @@ class Sounder(Frame):
         ttk.Radiobutton(missing_song_panel, text='Yes', style='second.TRadiobutton', value=True,
                         variable=self.delete_missing, command=self.change_missing).pack(side='right', anchor='center', padx=10)
         missing_song_panel.pack(side='top', fill='x', pady=10, padx=10)
-        ttk.Label(settings_missing_song, image=self.icons['info'], text='Note: Music will delete all missing songs from all playlists!', compound='left').pack(
+        ttk.Label(settings_missing_song, image=self.icons['info'], text='Note: Music Player will delete all missing songs from all playlists!', compound='left').pack(
             side='top', fill='x', padx=10, pady=(0, 10))
         # export playlists
         settings_export: ttk.Frame = ttk.Frame(
@@ -698,7 +698,7 @@ class Sounder(Frame):
         ttk.Label(played_panel, text='50%').pack(
             side='right', anchor='center', fill='y', padx=10)
         played_panel.pack(side='top', fill='x', pady=10, padx=10)
-        ttk.Label(settings_played, image=self.icons['info'], text='Note: Sounder will mark a song as played when the passed time is above the set value!', compound='left', wraplength=(
+        ttk.Label(settings_played, image=self.icons['info'], text='Note: Music Player will mark a song as played when the passed time is above the set value!', compound='left', wraplength=(
             self.winfo_width() - 250)).pack(side='top', fill='x', padx=10, pady=(0, 10))
         # panels variable
         self.settings_panels = (ttk.Label(self.player_content, text=' User interface', style='third.TLabel'), settings_acceleration, settings_theme, settings_menu, ttk.Label(self.player_content, text=' Playback', style='third.TLabel'), settings_startup, settings_crossfade, settings_buffer, ttk.Label(self.player_content, text=' Songs', style='third.TLabel'), settings_active_song,

@@ -149,6 +149,7 @@ class ChatBotGUI:
         self.add_profile_image2 = ctk.CTkImage(Image.open(join(image_path, "profile.png")),size=(40,40))
         self.add_skills_image = ctk.CTkImage(Image.open(join(image_path, "box.png")))
         self.add_music_image = ctk.CTkImage(Image.open(join(image_path, "music.png")))
+        self.add_more_image = ctk.CTkImage(Image.open(join(image_path, "more.png")))
 
         # create navigation frame
         splash_screen.set_text("Creating gui")
@@ -166,7 +167,7 @@ class ChatBotGUI:
             {"attribute": "frame_DNA_button", "text": "DNA", "image": self.add_DNA_image, "command": self.frame_DNA_button_event},
             {"attribute": "frame_profile_button", "text": "Profile", "image": self.add_profile_image, "command": self.frame_profile_button_event},
             {"attribute": "frame_skills_button", "text": "Skills", "image": self.add_skills_image, "command": self.frame_skills_button_event},
-            {"attribute": "frame_more_button", "text": "More", "image": self.add_profile_image, "command": self.frame_more_button_event}
+            {"attribute": "frame_more_button", "text": "More", "image": self.add_more_image, "command": self.frame_more_button_event}
         ]
         
         # Create the navigation frame label
