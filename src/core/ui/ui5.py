@@ -200,18 +200,26 @@ class ChatBotGUI:
 
         # create home frame
         splash_screen.set_text("Creating home frame")
+        # Creating a custom frame with transparent background to hold the buttons
         self.home_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         self.home_frame.grid(row=0, column=0, sticky="w")
+        # Configuring the column in the frame to expand and fill the available space
         self.home_frame.grid_columnconfigure(0, weight=1)
         
+        # Adding the first button for profile selection
         self.profile_button = ctk.CTkButton(self.home_frame, text="", image=self.add_profile_image2, fg_color="transparent", corner_radius=0, width=40, height=40, border_width=0, border_spacing=0, compound="left")
         self.profile_button.grid(row=0, column=0, sticky="nw")
+        
+        # Creating a scrollable dropdown menu for profile selection
         CTkScrollableDropdown(self.profile_button, values=self.profile_controller.list_profiles(), height=270, resize=False, button_height=30,
                       scrollbar=True, width=100)
+        
+        # Adding a tooltip to show a message when hovering over the profile button
         self.profile_button_tooltip = CTkToolTip(self.profile_button, delay=0.8, message=str(global_vars.TOOLTIP_MESSAGES["profile_button"]))
         
+        # Adding the second button for mail notifications
         self.mail_button = ctk.CTkButton(self.home_frame, text="", image=self.image_bell_icon_image, fg_color="transparent")
-        self.mail_button.grid(row=0, column=0, sticky="ne", padx=5, pady=5)  # Adding some padding for aesthetics
+        self.mail_button.grid(row=0, column=0, sticky="ne", padx=5, pady=5)   # Placing the button on the top-right corner with some padding for aesthetics
         self.mail_button.configure(width=30, height=30)
         self.mail_button_tooltip = CTkToolTip(self.mail_button, delay=0.8, message=str(global_vars.TOOLTIP_MESSAGES["mail_button"]))
 
@@ -375,7 +383,6 @@ class ChatBotGUI:
         
         raise_frame(self.root1)
         
-        
         # Create chat history display
         #self.chat_history = ctk.CTkTextbox(self.second_frame, state='disabled', wrap='word', font=('Arial', 12)) #ScrolledText
         #self.chat_history.place(relx=0.5, rely=0.2, relwidth=0.95, relheight=0.6, anchor='n')
@@ -423,23 +430,35 @@ class ChatBotGUI:
         self.chat_bubble_enable = ctk.CTkSwitch(self.frame_1, text="New chat bubble", command=self.chat_bubble_enable_event,
                                  variable=self.chat_bubble_switch_var, onvalue="on", offvalue="off")
         self.chat_bubble_enable.pack() #ipady=10
+        
+        # Initialize a StringVar to hold the state of the segmented button
         self.segemented_button_var = ctk.StringVar(value="blue")
+        
+        # Create a segmented button widget with three values: "blue", "green", "dark-blue"
         self.segemented_button = ctk.CTkSegmentedButton(self.frame_2, values=["blue", "green", "dark-blue"],
                                                      variable=self.segemented_button_var)
-        self.segemented_button.pack()
-        self.reset_train_button = ctk.CTkButton(self.frame_1, border_width=0, text="Reset training data")
-        self.reset_train_button.pack()
-        self.entry = ctk.CTkEntry(self.frame_3, width=240, placeholder_text="Window Style")
-        self.entry.pack(fill='x', padx=10, pady=10)
+        self.segemented_button.pack()  # Pack the segmented button onto the frame
         
+        # Create a button to reset training data
+        self.reset_train_button = ctk.CTkButton(self.frame_1, border_width=0, text="Reset training data")
+        self.reset_train_button.pack() # Pack the reset training button onto the frame
+        
+        # Create an entry widget to input "Window Style" text
+        self.entry = ctk.CTkEntry(self.frame_3, width=240, placeholder_text="Window Style")
+        self.entry.pack(fill='x', padx=10, pady=10)  # Pack the entry widget onto the frame
+        
+        # Create a scrollable dropdown widget for selecting a window style
         self.style_dropdown = CTkScrollableDropdown(self.entry, values=global_vars.STYLES_LIST, command=self.style_dropdown_click,
                             autocomplete=True) # Using autocomplete
         self.style_dropdown_tooltip = CTkToolTip(self.entry, delay=0.7, message=str(global_vars.TOOLTIP_MESSAGES["style_dropdown"]))
-        self.entry.insert(0, 'Window Style')
+        self.entry.insert(0, 'Window Style')  # Insert default text to the entry widget
+        
         label = ctk.CTkLabel(self.frame_1, text="Chat Bubble Corner Radius", font=ctk.CTkFont(family='Sans Serif', size=13, weight="bold"))
         label.pack(ipady=2)
+        # Create a slider widget with a range from 0 to 100
         self.slider_1 = ctk.CTkSlider(master=self.frame_1, from_=0, to=100)
-        self.slider_1.pack(padx=10)#pady=10, 
+
+        self.slider_1.pack(padx=10) #pady=10, 
  
         # create the DNA frame
         self.DNA_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
@@ -573,11 +592,13 @@ class ChatBotGUI:
         for frame_name, (frame, button) in frames.items():
             button.configure(fg_color=("gray75", "gray25") if name == frame_name else "transparent")
 
-        # Show selected frame
+        # Show selected frame and hide others
         for frame_name, (frame, _) in frames.items():
             if name == frame_name:
+                # If the current frame name matches the selected frame name, show the frame
                 frame.grid(row=0, column=1, sticky="nsew")
             else:
+                # If the current frame name does not match the selected frame name, hide the frame
                 frame.grid_forget()
 
     def debug_click(self):
@@ -848,7 +869,16 @@ class ChatBotGUI:
         
     def _add_to_chat_history(self, message, bot=False):
         """
-        Adds new text to the chat history
+        Adds new text to the chat history.
+
+        Parameters:
+            message (str): The text message to be added to the chat history.
+            bot (bool): A flag indicating whether the message is from the bot or not.
+                        If True, it will be displayed with the bot's icon; otherwise, the user's icon.
+
+        Note: The chat history consists of a vertical list of messages with alternating chat bubbles
+            representing user and bot messages.
+
         """
         if self.current_chat_bubble == True:
          if bot is True:

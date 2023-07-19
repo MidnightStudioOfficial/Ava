@@ -10,7 +10,7 @@ class Debug:
     
     def update_debug_info_DEBUG(self):
         self.debug_info["gc"] = gc.get_count()
-        self.debug_info["version"] = "V1.0"
+        self.debug_info["version"] = "V0.2.2"
     
     def get_debug_info(self):
         return self.debug_info
@@ -22,17 +22,19 @@ class DebugDevPanel(ctk.CTkToplevel):
         self.geometry("400x300")
 
         # Create a label to display some information
-        self.label = tk.Label(self, text="Welcome to the Debug Dev Panel!", font=("Helvetica", 16))
+        self.label = ctk.CTkLabel(self, text="Welcome to the Debug Dev Panel!", font=("Helvetica", 16))
         self.label.pack(pady=20)
 
         # Add buttons to perform actions or tests
-        self.btn_action = tk.Button(self, text="Perform Action", command=self.perform_action)
+        self.btn_action = ctk.CTkButton(self, text="Perform Action", command=self.perform_action)
         self.btn_action.pack(pady=10)
 
-        self.btn_test = tk.Button(self, text="Run Test", command=self.run_test)
+        self.btn_test = ctk.CTkButton(self, text="Run Test", command=self.run_test)
         self.btn_test.pack(pady=10)
+        
+        self.services = ctk.CTkButton(master=self, text='Services')
+        self.services.pack(pady=10)
 
-        # Add any other widgets or elements you might need for debugging
 
     def perform_action(self):
         # Implement the action you want to perform for the "Perform Action" button
@@ -85,7 +87,9 @@ class DebugGUI(ctk.CTkToplevel):
         self.scrollable_frame = ctk.CTkScrollableFrame(self.frame)
         self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0,10), sticky="nsew")
         
+        # Dictionary to hold references to individual frames for each item in the debug list
         self.item_frame = {}
+        
         self.create_list()
         t = threading.Thread(target=self.display_debug_info)
         t.daemon = True
