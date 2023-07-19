@@ -15,7 +15,7 @@ if __name__ == '__main__':
     skills = Skills()
 
     # speak a greeting from the greeting skill
-    message = skills.skills['greeting'].actAndGetResponse()
+    #message = skills.skills['greeting'].actAndGetResponse()
 
     while True:
 

@@ -13,7 +13,7 @@ class IntentCheck():
         with open('label_encoder.pickle', 'rb') as enc:
             self.label_encoder = pickle.load(enc)
         # parameters
-        self.max_len = 20
+        self.max_len = 25
 
     def getIntentFromString(self, text):
         result = self.model.predict(
