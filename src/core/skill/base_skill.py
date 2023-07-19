@@ -1,5 +1,3 @@
-
-
 def abstract(f):
     def _decorator(*_):
         raise NotImplementedError(f"Method '{f.__name__}' is abstract")
