@@ -13,7 +13,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 #from tensorflow.random import set_seed
 from sklearn.model_selection import train_test_split
 from nltk.stem import PorterStemmer
-from tensorflow.keras.regularizers import l1, l2
+#from tensorflow.keras.regularizers import l1, l2
 
 wordnet_lemmatizer = WordNetLemmatizer()
 stop_words_eng = set(stopwords.words('english'))
@@ -24,7 +24,9 @@ testing = [
     "What is your favorite holiday?",
     "hi",
     "can you tell me a joke",
-    "can you get the weather"
+    "can you get the weather",
+    
+    "can you play me some music"
 ]
 
 # Set random seeds for reproducibility (optional)
@@ -32,7 +34,6 @@ testing = [
 #set_seed(42)
 
 
-# ... (existing code)
 
 # Initialize the Porter Stemmer
 porter_stemmer = PorterStemmer()
@@ -58,8 +59,6 @@ def preprocess_sentence(sentence):
 
     #print(stemmed_sentence)
     return " ".join(stemmed_sentence)
-
-# ... (rest of the code, including model training and testing)
 
 
 if __name__ == '__main__':

@@ -8,6 +8,7 @@ from importlib.util import spec_from_file_location, module_from_spec
 from ava_skills.chat import ChatSkill
 from ava_skills.joke import JokeSkill
 from ava_skills.weather import WeatherSkill
+from ava_skills.music import MusicSkill
 
 skills_list = [
     {
