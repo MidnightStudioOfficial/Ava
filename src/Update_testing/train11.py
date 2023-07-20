@@ -39,6 +39,7 @@ porter_stemmer = PorterStemmer()
 
 # Replace the existing stopword list with the NLTK English stopword list
 stop_words_eng = set(stopwords.words('english'))
+stop_words_eng.remove("what")
 
 # Modify the preprocess_sentence function
 def preprocess_sentence(sentence):
