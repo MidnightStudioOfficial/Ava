@@ -1,22 +1,31 @@
-import numpy as np
-import pickle
-import os
-import nltk
-from tensorflow import keras
-from sklearn.preprocessing import LabelEncoder
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.callbacks import EarlyStopping
+# Standard libraries
+import os  # For interacting with the operating system (e.g., checking file existence)
+import pickle  # For pickling (serializing) Python objects
 
-from core.skill.bulitin_skills import BuiltinSkills
-import spacy
+# Third-party libraries
+import numpy as np  # NumPy for numerical operations and array handling
+import nltk  # Natural Language Toolkit for NLP functionalities
+from nltk.corpus import stopwords  # NLTK's stopwords for filtering common words
+from nltk.stem import WordNetLemmatizer  # WordNetLemmatizer for word lemmatization
+import spacy  # spaCy for advanced natural language processing
+
+# TensorFlow and Keras libraries
+from tensorflow import keras  # TensorFlow library for deep learning
+from tensorflow.keras.models import Sequential, load_model  # Keras's Sequential model for creating neural networks
+from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D  # Keras layers for building the neural network architecture
+from tensorflow.keras.preprocessing.text import Tokenizer  # Tokenizer for text preprocessing
+from tensorflow.keras.preprocessing.sequence import pad_sequences  # Padding sequences for input data
+from tensorflow.keras.callbacks import EarlyStopping  # EarlyStopping callback for stopping training early
+
+# Third-party library
+from sklearn.preprocessing import LabelEncoder  # LabelEncoder for encoding target labels
+
+# Local import
+from core.skill.bulitin_skills import BuiltinSkills  # Custom built-in skills for the conversational engine
 
 
-# This class defines a conversational engine that can predict the intent of an utterance using a nural network.
+
+# This class defines a conversational engine that can predict the intent of an utterance using a neural network.
 class Engine2():
     # The constructor takes in several optional arguments to customize the behavior of the engine.
     def __init__(self, lemmatize_data=True, filepath=None, modelpath=None):
@@ -27,13 +36,14 @@ class Engine2():
         modelpath str, optional | the path to the .p file containing a pickled model you wish to use. If passed, will use that model instead of retraining from the training data. This leads to faster instantiation.
         '''
         if os.path.exists('Data/sir-bot-a-lot.brain') and os.path.exists('Data/tokenizer.pickle') and os.path.exists('Data/label_encoder.pickle'):
-            # Read in the training data from a CSV file and sort it by intent name.
+            # Load the pre-trained model and associated objects
             self.model = keras.models.load_model('Data/sir-bot-a-lot.brain')
             with open('Data/tokenizer.pickle', 'rb') as handle:
                 self.tokenizer = pickle.load(handle)
             with open('Data/label_encoder.pickle', 'rb') as enc:
                 self.label_encoder = pickle.load(enc)
         else:
+            # Set up data preprocessing and train the model
             self.testing = [
                 "what do you want to do?",
                 "I am board",
@@ -41,38 +51,55 @@ class Engine2():
                 "hi",
                 "can you tell me a joke"
             ]
+            # WordNetLemmatizer is used to reduce words to their base or root form (lemmas).
+            # It helps to normalize different forms of a word, such as plurals or verb conjugations, to a common base form.
             self.wordnet_lemmatizer = WordNetLemmatizer()
+            
+            # Initialize the set of English stopwords, which are common words that are usually removed from text during preprocessing.
+            # Stopwords are words like "the", "and", "is", "are", etc., that do not contribute much to the meaning of the text.
             self.stop_words_eng = set(stopwords.words('english'))
             self.train()
-        # parameters
+            
+        # Define parameters
         self.max_len = 25
-        # load skills
+        
+        # Load built-in skills for the engine
         self.skills = BuiltinSkills()
+        
+        # Load the spaCy language model for natural language processing
         self.nlp = spacy.load("en_core_web_sm")
     
     def getIntent(self, utterance):
         '''
-        arguments:
-            utterance: str | the utterance entered by the user
+        Predicts the intent of an utterance using the neural network.
 
-        returns: 
-            a dictionary containing the following key-value pairs:
-            intent: str -- the predicted intent
-            probability -- float | the probability score for that intent 
+        Parameters:
+            utterance (str): The utterance entered by the user.
+
+        Returns:
+            dict: A dictionary containing the following key-value pairs:
+                  'intent' (str): The predicted intent.
+                  'probability' (float): The probability score for the predicted intent.
         '''
+        # Predict the intent using the neural network model
         result = self.model.predict(
             keras.preprocessing.sequence.pad_sequences(self.tokenizer.texts_to_sequences([utterance]),
                                 truncating='post', maxlen=self.max_len))
+        
+        # Convert prediction to human-readable intent
         tag = self.label_encoder.inverse_transform([np.argmax(result)])
         # TODO: Only the max probability intent is returned. It may be wise to have a skill 'unknown' based on some probability.
         
-
-        # initialize standard set of parameters
+        # Initialize standard set of parameters for skill parsing
         params = {'intentCheck': tag, 'skills': self.skills.skills} 
-
+        
+        # Get the corresponding skill based on the predicted intent
         skill = self.skills.skills[tag[0]]
+        
+        # Parse entities from the utterance using spaCy
         params |= skill.parseEntities(self.nlp(utterance))
 
+        # Get the response from the skill based on the parsed entities
         response = skill.actAndGetResponse(**params)
         print(response)
         
