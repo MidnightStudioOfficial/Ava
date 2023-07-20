@@ -1,12 +1,24 @@
+"""
+Built-in Skills Module
+
+This module defines a class to manage built-in skills for an AI assistant application. It imports specific skills from their respective modules and instantiates them, creating instances of each skill class. The instantiated skills are stored in a dictionary, allowing easy access and management of the skills by using their intents as keys.
+
+The `BuiltinSkills` class is responsible for the following tasks:
+1. Importing specific skills from their respective modules.
+2. Instantiating each skill class derived from the `BaseSkill` class.
+3. Storing the instantiated skills in the `self.skills` dictionary with the skill intent as the key.
+
+The `skills_list` variable is not directly used within this class, but it could be used to store additional information about each skill, such as their name, description, or other relevant data, if needed elsewhere in the application.
+
+Please note that the `BaseSkill` class and its subclasses are expected to be defined in the appropriate modules before using this module.
+"""
 from core.skill.base_skill import BaseSkill
-from pathlib import Path
-from glob import glob
-import os
-from importlib.util import spec_from_file_location, module_from_spec
 
-
+# Import specific skills from their respective modules
 from core.skill.ava_skills.chat import ChatSkill
 from core.skill.ava_skills.joke import JokeSkill
+from core.skill.ava_skills.weather import WeatherSkill
+from core.skill.ava_skills.music import MusicSkill
 
 skills_list = [
     {
@@ -16,8 +28,9 @@ skills_list = [
 
 class BuiltinSkills():
     def __init__(self):
+        # Create an empty dictionary to store skills with their intents as keys
         self.skills = dict()
-        
+
         # for all subclasses of BaseSkill, instantiate and add them to the skills dict
         for concreteSkill in BaseSkill.__subclasses__():
             skill_instance = concreteSkill()

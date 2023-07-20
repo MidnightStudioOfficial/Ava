@@ -5,6 +5,11 @@ designed to compare one statement to another.
 from chatterbot2.exceptions import OptionalDependencyImportError
 from difflib import SequenceMatcher
 
+from sklearn.metrics.pairwise import cosine_similarity
+from difflib import SequenceMatcher
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
+
 
 class Comparator:
 
@@ -151,11 +156,7 @@ class JaccardSimilarity(Comparator):
         ratio = numerator / denominator
 
         return ratio
-    
-from sklearn.metrics.pairwise import cosine_similarity
-from difflib import SequenceMatcher
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.decomposition import LatentDirichletAllocation
+
 class TopicAndCosineSimilarity(Comparator):
 
     def compare(self, statement_a, statement_b):
@@ -184,6 +185,7 @@ class TopicAndCosineSimilarity(Comparator):
         combined_similarity_percent = (0.4 * topic_similarity_percent) + (0.7 * cosine_similarity_percent)
 
         return combined_similarity_percent
+
 class CosineSimilarity(Comparator):
     def compare(self, statement_a, statement_b):
         if not statement_a.text or not statement_b.text:
@@ -201,6 +203,7 @@ class CosineSimilarity(Comparator):
         percent = round(cosine_similarities[0][0] * 100, 2)
 
         return percent
+
 class avrig(Comparator):
     """
     Compare two statements based on the Levenshtein distance
@@ -230,4 +233,3 @@ class avrig(Comparator):
         percent = (s1_r + s2_r) / 2
 
         return percent
-

@@ -22,7 +22,7 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.center_image = ctk.CTkLabel(self.MainFrame, text='',image=photo, height=90,  width=90)
         self.center_image.pack(pady=10, anchor='n')
 
-        
+
         self.center_image2 = ctk.CTkButton(self.MainFrame, text='',image=self.mic_photo, height=50, width=50, command=self.mic_click)
         self.center_image2.pack(pady=10)
         
@@ -35,8 +35,7 @@ class WakeWordGUI(ctk.CTkToplevel):
         x = (self.winfo_screenwidth() // 2) - (width // 2)
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f"+{x}+{y}")
-        
-        
+
     def close_window(self):
         print("closeing")
         self.end_callback()

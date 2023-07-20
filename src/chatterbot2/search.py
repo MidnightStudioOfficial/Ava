@@ -14,7 +14,7 @@ class IndexedTextSearch:
         from chatterbot2 import constants
 
         self.chatbot = chatbot
-        
+
         if constants.default_comparison_function == 1:
             from chatterbot2.comparisons import LevenshteinDistance
             statement_comparison_function = kwargs.get(
@@ -36,9 +36,6 @@ class IndexedTextSearch:
               CosineSimilarity
             )
             print("CosineSimilarity")
-
-
-
 
         self.compare_statements = statement_comparison_function(
             language=self.chatbot.storage.tagger.language
@@ -88,7 +85,7 @@ class IndexedTextSearch:
         best_confidence_so_far = 0
 
         self.chatbot.logger.info('Processing search results')
-        
+
         # Find the closest matching known statement
         for statement in statement_list:
             confidence = self.compare_statements(input_statement, statement)
@@ -123,7 +120,7 @@ class TextSearch:
         from chatterbot2 import constants
 
         self.chatbot = chatbot
-        
+
         if constants.default_comparison_function == 1:
             from chatterbot2.comparisons import LevenshteinDistance
             statement_comparison_function = kwargs.get(

@@ -15,9 +15,9 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
                  scrollbar=True, scrollbar_button_hover_color=None, frame_border_width=2, values=[],
                  command=None, image_values=[], alpha: float = 0.97, frame_corner_radius=20, double_click=False,
                  resize=True, frame_border_color=None, text_color=None, autocomplete=False, **button_kwargs):
-        
+
         super().__init__(takefocus=1)
-        
+
         self.focus()
         self.alpha = alpha
         self.attach = attach
@@ -25,7 +25,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         self.padding = 0
         self.focus_something = False
         self.disable = True
-        
+
         if sys.platform.startswith("win"):
             self.after(100, lambda: self.overrideredirect(True))
             self.transparent_color = self._apply_appearance_mode(self._fg_color)

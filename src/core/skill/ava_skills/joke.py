@@ -14,7 +14,6 @@ class JokeSkill(BaseSkill):
             "tell me something funny"
         ]
 
-
     def actAndGetResponse(self, **kwargs) -> str:
         r = requests.get("https://v2.jokeapi.dev/joke/Any")
         j = r.json()

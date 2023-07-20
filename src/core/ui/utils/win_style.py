@@ -33,14 +33,14 @@ class apply_style():
         
         styles = ["dark", "mica", "aero", "transparent", "acrylic", "win7",
                   "inverse", "popup", "native", "optimised", "light"]
-        
+
         if style not in styles:
             raise ValueError(f"Invalid style name! No such window style exists: {style} \nAvailable styles: {styles}")
             return
-        
+
         window.update()
         self.HWND = windll.user32.GetParent(window.winfo_id())
-        
+
         if style=="mica":
             ChangeDWMAttrib(self.HWND, 19, c_int(1))
             ChangeDWMAttrib(self.HWND, 1029, c_int(0x01))
@@ -71,16 +71,16 @@ class apply_style():
             window.config(bg="black")
             ChangeDWMAccent(self.HWND, 30, 2)
             ChangeDWMAccent(self.HWND, 19, 4, color=0)
-      
+
 class change_header_color():
     """ change the titlebar background color """
     def __init__(self,
                  window,
                  color):
-        
+
         window.update()
         self.HWND = windll.user32.GetParent(window.winfo_id())
-    
+
         if color=="transparent":
             ChangeDWMAccent(self.HWND, 30, 2)
             return

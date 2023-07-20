@@ -37,14 +37,14 @@ class SignUpApp(customtkinter.CTkToplevel):
             entry.place(x=50, y=110 + (i * 55))
             self.entries.append(entry)
 
-        back_button = customtkinter.CTkButton(master=frame, width=100, text="Back", command=self.previous_page)
+        back_button = customtkinter.CTkButton(master=frame, width=100, text='Back', command=self.previous_page)
         back_button.place(x=50, y=300)
 
         if self.current_page < len(self.pages) - 1:
-            next_button = customtkinter.CTkButton(master=frame, width=100, text="Next", command=self.next_page)
+            next_button = customtkinter.CTkButton(master=frame, width=100, text='Next', command=self.next_page)
             next_button.place(x=170, y=300)
         else:
-            create_button = customtkinter.CTkButton(master=frame, width=100, text="Create", command=self.create_profile)
+            create_button = customtkinter.CTkButton(master=frame, width=100, text='Create', command=self.create_profile)
             create_button.place(x=170, y=300)
 
     def next_page(self):

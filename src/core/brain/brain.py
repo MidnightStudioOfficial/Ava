@@ -22,7 +22,7 @@ class Brain:
         # Initialize mood to 0.0 and create an empty list for mood history
         self.mood = 0.0
         self.mood_history = []
-        
+
         self.thought = "" 
         self.thoughts = {
         "happy": ["I wonder what the weather is like today", "I should call my friend", "What should I have for dinner?"],
@@ -37,8 +37,8 @@ class Brain:
         }
         self.traits = []
         self.memory = {}
-        
-        
+
+
         # Create an instance of the SentimentIntensityAnalyzer
         self.sentiment_analyzer = SentimentIntensityAnalyzer()
 

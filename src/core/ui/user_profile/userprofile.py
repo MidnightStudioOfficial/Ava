@@ -10,7 +10,7 @@ class ProfileClass(ctk.CTkFrame):
 
         self.profile_data = None
         self.profile = Profile()
-        
+
         self.achievements = {
             1: "Data/assets/ava.jfif",
             2: "Data/assets/ava.jfif",
@@ -31,16 +31,16 @@ class ProfileClass(ctk.CTkFrame):
 
         # Create a PhotoImage from the modified image
         photo = ImageTk.PhotoImage(image)
-        
+
         # Create a profile label with the modified image
         self.canvas = ctk.CTkFrame(parent, width=500, height=150)  # ctk.CTkCanvas
         self.canvas.pack_propagate(False)  # Prevent resizing of the canvas
         self.canvas.pack()
-        
+
         # Create a profile label with the modified image
         self.profile_label = ctk.CTkLabel(self.canvas, image=photo, text="")
         self.profile_label.pack(pady=(0, 78), side="top")  # padx=30, pady=60
-        
+
         # Create a frame to hold the name labels
         self.name_frame = ctk.CTkFrame(
             parent, width=400, height=100, fg_color="#333333"
@@ -63,7 +63,7 @@ class ProfileClass(ctk.CTkFrame):
         # Create a frame to hold the bio information labels
         self.info_frame = ctk.CTkFrame(parent, width=400, height=300)
         self.info_frame.pack(padx=10, pady=10, expand=True, fill="both")
-        
+
         # Create bio title label
         self.title_info_label = ctk.CTkLabel(
             self.info_frame,
@@ -112,7 +112,7 @@ class ProfileClass(ctk.CTkFrame):
         # User Badges
         self.badges_frame = ctk.CTkFrame(self.achievements_frame)
         self.badges_frame.pack()
-        
+
         # Initialize badge images list
         self.badge_images = []
 
@@ -123,7 +123,7 @@ class ProfileClass(ctk.CTkFrame):
     def _load_profile(self):
         self.profile.load_profile()
         self.profile_data = self.profile.profile_data
-        
+
     def _set_profile(self):
         """
         Set the user's profile information, including interests, name, and badges/achievements.
@@ -136,25 +136,25 @@ class ProfileClass(ctk.CTkFrame):
                 self.skills_frame, text="- " + interest, font=("Segoe UI", 12)
             )
             interest_label.pack()
-            
+
         # Set first name
         self.first_name_label.configure(text=self.profile_data["first_name"])
-        
+
         # Set last name
         self.last_name_label.configure(text=self.profile_data["last_name"])
-        
+
         # Set Badges/Achievements
         badges_to_check = [
             self.profile_data["achievements_1"],
             self.profile_data["achievements_2"],
             self.profile_data["achievements_3"],
         ]
-        
+
         # Check if the user has any badges/achievements
         for i, badge_to_check in enumerate(badges_to_check, start=1):
             if badge_to_check:
                 self.badge_images.append(self.achievements[i])
-        
+
         # Add the badges to the badges frame
         for badge_path in self.badge_images:
             badge = Image.open(badge_path)
@@ -164,6 +164,3 @@ class ProfileClass(ctk.CTkFrame):
             badge_label = ctk.CTkLabel(self.badges_frame, image=badge, text="")
             badge_label.pack(padx=5)
             del badge
-
-
-        

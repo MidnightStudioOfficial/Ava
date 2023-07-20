@@ -14,15 +14,14 @@ class skill:
         self.training_labels = []
         self.labels = []
         self.responses = []
-        
-    
+
     def update_debug_info_DEBUG(self):
         self.debug_info["Music"] = "TEST"
         self.debug_info["Story"] = "TEST"
-    
+
     def get_debug_info(self):
         return self.debug_info
-    
+
     def get_skills_intent(self):
         for intent, skill in self.skills.skills.items():
             for sample in skill.samples:
@@ -31,7 +30,7 @@ class skill:
             if intent not in self.labels:
                 self.labels.append(intent)
         return self.training_sentences, self.training_labels
-    
+
     def get_skills(self):
         for intent, skill in self.skills.skills.items():
             for sample in skill.samples:
@@ -65,10 +64,10 @@ class SkillGUI(ctk.CTkFrame):
         # Configure the grid layout
         self.frame.columnconfigure(1, weight=1)
         self.frame.rowconfigure(2, weight=1)
-        
+
         # Set the font
         self.font = ctk.ThemeManager.theme["CTkFont"]["family"]
-   
+
         # Create a label for the title
         self.label = ctk.CTkLabel(master=self.frame, text="Skills", font=(self.font,25,"bold"))
         self.label.grid(row=0, column=0, padx=20, pady=10)
@@ -76,7 +75,7 @@ class SkillGUI(ctk.CTkFrame):
         # Create an entry for search
         self.entry = ctk.CTkEntry(master=self.frame, placeholder_text="search", width=200)
         self.entry.grid(row=0, column=1, pady=10, sticky="e")
-        
+
         # Create a segmented button for filtering options
         self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All","memory", "other"], command=self.filter_list)
         self.option_type.set("All")
@@ -85,17 +84,17 @@ class SkillGUI(ctk.CTkFrame):
         # Create a scrollable frame for the list of items
         self.scrollable_frame = ctk.CTkScrollableFrame(self.frame)
         self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0,10), sticky="nsew")
-        
+
         # Initialize the item frame dictionary
         self.item_frame = {}
         labels = self.skill.get_skills()
-        
+
         for s in labels:
             self.layout[str(s)] = {
                 "value": "test",
                 "type": "other"
             }
-        
+
         # Create the list of items
         self.create_list()
 

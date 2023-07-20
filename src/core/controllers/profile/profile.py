@@ -4,7 +4,7 @@ import json
 class Profile:
     def __init__(self) -> None:
         self.profile_data = None
-        
+   
     def list_profiles(self):
         new_profile_list = []
         profile_list = os.listdir("Data/profile")
@@ -12,7 +12,7 @@ class Profile:
             root, ext = os.path.splitext(profile_file)
             new_profile_list.append(root)
         return new_profile_list
-    
+
     def load_profile(self):
         try:
             if os.path.exists("Data/profile/profile.json"):

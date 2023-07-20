@@ -92,4 +92,3 @@ class Conversation():
     def getConversationLength(self):
         '''returns the conversation length'''
         return len(self.interactions)
-

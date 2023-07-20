@@ -4,14 +4,15 @@ import threading
 import gc
 import time
 
+
 class Debug:
     def __init__(self) -> None:
         self.debug_info = {}
-    
+
     def update_debug_info_DEBUG(self):
         self.debug_info["gc"] = gc.get_count()
         self.debug_info["version"] = "V0.2.2"
-    
+
     def get_debug_info(self):
         return self.debug_info
 
@@ -31,10 +32,9 @@ class DebugDevPanel(ctk.CTkToplevel):
 
         self.btn_test = ctk.CTkButton(self, text="Run Test", command=self.run_test)
         self.btn_test.pack(pady=10)
-        
+
         self.services = ctk.CTkButton(master=self, text='Services')
         self.services.pack(pady=10)
-
 
     def perform_action(self):
         # Implement the action you want to perform for the "Perform Action" button
@@ -70,26 +70,26 @@ class DebugGUI(ctk.CTkToplevel):
         self.frame.columnconfigure(1, weight=1)
         self.frame.rowconfigure(2, weight=1)
         self.font = ctk.ThemeManager.theme["CTkFont"]["family"]
-   
+
         self.label = ctk.CTkLabel(master=self.frame, text="Debug", font=(self.font,25,"bold"))
         self.label.grid(row=0, column=0, padx=20, pady=10)
 
         self.entry = ctk.CTkEntry(master=self.frame, placeholder_text="search", width=200)
         self.entry.grid(row=0, column=1, pady=10, sticky="e")
-        
+
         self.more_button = ctk.CTkButton(master=self.frame, width=30, text='Dev Panel', command=self.open_dev_panel)
         self.more_button.grid(row=0, column=2, pady=10, sticky="e")
-        
+
         self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All","memory", "other"], command=self.filter_list)
         self.option_type.set("All")
         self.option_type.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
         self.scrollable_frame = ctk.CTkScrollableFrame(self.frame)
         self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0,10), sticky="nsew")
-        
+
         # Dictionary to hold references to individual frames for each item in the debug list
         self.item_frame = {}
-        
+
         self.create_list()
         t = threading.Thread(target=self.display_debug_info)
         t.daemon = True
@@ -98,15 +98,15 @@ class DebugGUI(ctk.CTkToplevel):
     def clear_list(self):
         for i in self.item_frame.values():
             i.pack_forget()
-            
+
     def update_debug_info(self, key, value):
         self.layout[key]["value"] = value
         self.clear_list()
         self.create_list()
-        
+
     def open_dev_panel(self):
         self.dev = DebugDevPanel(self)
-        
+
     def filter_list(self, type_):
         if type_=="All":
             for i in self.item_frame.values():
@@ -124,7 +124,7 @@ class DebugGUI(ctk.CTkToplevel):
                 if self.layout[i]["type"]=="other":
                     self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
             return
-            
+
         self.clear_list()
     def add_item(self, name, value):
         """ add new package to the list """

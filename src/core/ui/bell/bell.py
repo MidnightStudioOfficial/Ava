@@ -70,7 +70,7 @@ class Bell:
         """Returns the list of notifications"""
         return self.notifications
 
-        
+ 
 class BellGUI(ctk.CTkToplevel):
     def __init__(self, parent) -> None:
         super().__init__(parent)
@@ -99,10 +99,10 @@ class BellGUI(ctk.CTkToplevel):
         # Configure the grid layout
         self.main_frame.columnconfigure(1, weight=1)
         self.main_frame.rowconfigure(2, weight=1)
-        
+
         # Set the font
         self.font = ctk.ThemeManager.theme["CTkFont"]["family"]
-   
+
         # Create a label for the title
         self.title_label = ctk.CTkLabel(master=self.main_frame, text="Notifications", font=(self.font, 25, "bold"))
         self.title_label.grid(row=0, column=0, padx=20, pady=10)
@@ -111,7 +111,7 @@ class BellGUI(ctk.CTkToplevel):
         self.search_entry = ctk.CTkEntry(master=self.main_frame, placeholder_text="search", width=200)
         self.search_entry.grid(row=0, column=1, pady=10, sticky="e")
         self.search_entry.bind("<KeyRelease>", lambda e: self.search_package2(self.search_entry.get()))
-        
+
         # Create a segmented button for filtering options
         self.option_type = ctk.CTkSegmentedButton(self.main_frame, values=["All", "memory", "other"], command=self.filter_list)
         self.option_type.set("All")
@@ -120,10 +120,10 @@ class BellGUI(ctk.CTkToplevel):
         # Create a scrollable frame for the list of items
         self.scrollable_frame = ctk.CTkScrollableFrame(self.main_frame)
         self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0,10), sticky="nsew")
-        
+
         # Initialize the item frame dictionary
         self.item_frame = {}
-        
+
         # Create the list of items
         self.create_list()
 
@@ -131,7 +131,7 @@ class BellGUI(ctk.CTkToplevel):
         """Clears the list of items"""
         for frame in self.item_frame.values():
             frame.pack_forget()
-    
+
     def search_package(self, string):
         """Searches the packages based on package tags"""
         try:
@@ -168,7 +168,6 @@ class BellGUI(ctk.CTkToplevel):
 
         except Exception as e:
             print(f"Error searching package: {e}")
-    
 
     def search_package2(self, string):
         """Searches the packages based on package tags"""
@@ -207,7 +206,7 @@ class BellGUI(ctk.CTkToplevel):
 
         except Exception as e:
             print(f"Error searching package: {e}")
-                
+
     def update_notification_info(self, key, value) -> None:
         self.layout[key]["value"] = value
         self.clear_list()
@@ -277,16 +276,16 @@ class BellGUI(ctk.CTkToplevel):
         for key, notification in self.layout.items():
             value = notification["value"]
             self.add_notification(str(key), str(value))
-    
+
     def new_notification(self, name, data) -> None:
         self.layout[str(name)] = data
         self.clear_list()
         self.create_list()
-    
+
     def remove_notification(self, name) -> None:
         del self.layout[name]
         self.destroy_item_frame(name)    
-        
+
     def edit_item(self, item_name) -> None:
         """Callback function to edit the item's value"""
         # You can implement the editing functionality here
@@ -314,17 +313,17 @@ class BellGUI(ctk.CTkToplevel):
          # Here, we will print the details to the console for demonstration purposes
          print(f"Item: {item_name}")
          print(f"Details: {details}")
-        
+
     def update_items_thread(self):
         """Thread target function to update the items asynchronously"""
         # Simulating a time-consuming task
         time.sleep(3)
-        
+
         # Update the item values
         for key in self.layout:
             new_value = f"New Value for {key}"
             self.update_notification_info(key, new_value)
-        
+
     def update_items(self):
         """Updates the items asynchronously using a separate thread"""
         thread = threading.Thread(target=self.update_items_thread)

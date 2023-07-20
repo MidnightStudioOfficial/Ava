@@ -19,16 +19,15 @@ class AudioPlayer:
         self.playing = True
         self.thread = multiprocessing.Process(target=self.play_audio)
         self.thread.start()
-    
+
     def set_file(self, new_filename):
         if self.playing:
             print("Audio is already playing. Cant set new filename")
             return
         self.filename = new_filename
-    
+
     def process_audio(self):
         pass
-    
 
     def play_audio(self):
         chunk = 1024

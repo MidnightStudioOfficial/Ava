@@ -31,7 +31,6 @@ except ImportError as err:
     exit(err)
 
 
-
 class Sounder(Frame):
     def __init__(self, parent) -> None:
         super().__init__(parent)
@@ -98,7 +97,6 @@ class Sounder(Frame):
             init_panel.place(x=0, y=0, relwidth=1, relheight=1)
         except Exception as err_obj:
             self.log(err_obj)
-
 
     def log(self, err_obj: object) -> None:
         # DING!!!!!!
@@ -1202,7 +1200,6 @@ class Sounder(Frame):
 
     def change_buffer(self) -> None:
         self.settings['buffer'] = self.buffer.get()
-
 
     def change_playback(self) -> None:
         self.settings['start_playback'] = self.start_playback.get()

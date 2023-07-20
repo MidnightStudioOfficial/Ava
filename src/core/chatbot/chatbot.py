@@ -1,6 +1,23 @@
-print('Importing engine (This may take a while!)')
-from core.engine.Engine import ConversationalEngine
-from core.engine.Conversation import Conversation
+"""
+Chatbot System
+
+This script implements a chatbot system that combines a Conversational Engine and a ChatterBot-based chatbot.
+The Conversational Engine handles natural language interactions, while the ChatterBot is used to provide responses 
+to user inputs when the Conversational Engine does not find an appropriate response.
+
+It is recommended to review the required data files, ensure proper file paths, and have the necessary data available before running the script.
+"""
+
+Debug = False
+UseEngine2 = True
+
+if UseEngine2 == True:
+    print('Importing engine2 (This may take a while!)')
+    from core.engine.Engine2 import Engine2
+else:
+    print('Importing engine (This may take a while!)')
+    from core.engine.Engine import ConversationalEngine
+    from core.engine.Conversation import Conversation
 print("Importing brain (This may take a while!)")
 from core.brain.brain import Brain
 from os.path import isfile
@@ -11,7 +28,6 @@ from chatterbot2 import ChatBot as CHATBOT
 from chatterbot2.trainers import ChatterBotCorpusTrainer
 print("Importing DONE")
 
-Debug = False
 
 if Debug != True:
  trainingdata='Data/training.csv'
@@ -35,18 +51,17 @@ class ChatbotProfile:
                    "thought": None,
                    "memory": {}
               }
-
           }
           brain.start()
-          
+
       def update_profile(self): #, key, value
           self.profile_data["brain"]["mood"] = brain.mood
           self.profile_data["brain"]["thought"] = brain.thought
-      
+
       def _set_profile_data(self):
           brain.mood = self.profile_data["brain"]["mood"]
           brain.thought = self.profile_data["brain"]["thought"]
-      
+
       def load_profile(self):
         # Open the JSON file
         try:
@@ -64,7 +79,7 @@ class ChatbotProfile:
         except json.JSONDecodeError:
            print("Invalid JSON syntax")
         self._set_profile_data()
-      
+
       def save_profile(self):
        self.update_profile()
        try:
@@ -76,12 +91,16 @@ class ChatbotProfile:
        except json.JSONDecodeError:
            print("Invalid JSON syntax")
 
+
 class Chatbot:
     def __init__(self, splash_screen) -> None:
         # Initialize the conversational engine and conversation
         splash_screen.set_text("Initializing the conversational engine and conversation")
-        self.engine = ConversationalEngine(lemmatize_data=True, filepath=trainingdata, modelpath=None)
-        self.currentConversation = Conversation(engine=self.engine, articulationdata=articulationdata)
+        if UseEngine2 == True:
+            self.engine = Engine2()
+        else:
+            self.engine = ConversationalEngine(lemmatize_data=True, filepath=trainingdata, modelpath=None)
+            self.currentConversation = Conversation(engine=self.engine, articulationdata=articulationdata)
 
         # Check if the chatbot database exists
         self.chatbot_exists = None
@@ -106,21 +125,44 @@ class Chatbot:
             self.trainer.train("./Data/training/export.json")
             self.trainer.train("./Data/training/messages.json")
 
-    def get_skill(self, input):
-        # Check if the input is a skill
-        if input != "(NOT_FOUND)":
+    def get_skill(self, input) -> bool:
+        """
+        Check if the input is a skill.
+
+        Parameters:
+            input_text (str): The user input text.
+
+        Returns:
+            bool: True if the input is a skill, False otherwise.
+        """
+        if input != "CHAT":
             return True
         else:
             return False
 
     def get_response(self, input):
+        """
+        Get a response from the conversational engine or chatbot.
+
+        Parameters:
+            input_text (str): The user input text.
+
+        Returns:
+            str: The response from the conversational engine or chatbot.
+        """
         # Get a response from the conversational engine or chatbot
-        payload = self.currentConversation.interact(input, returnPayload=True)
-        response = payload.get('articulation')
-        is_skill = self.get_skill(response)
-        print(payload.get('probability_matrix'))
-        if is_skill == False:
-            bot = self.chatBot.get_response(text=input, search_text=input)
-            print(bot.text)
-            return bot.text
-        return response
+        if UseEngine2 == True:  # Checking if Engine2 is being used
+            payload = self.engine.getIntent(input) # Get the intent from Engine2 based on the input
+            response = payload.get('intent') # Extract the intent from the payload
+        else:
+            payload = self.currentConversation.interact(input, returnPayload=True)
+            response = payload.get('articulation')
+
+        is_skill = self.get_skill(response)  # Check if the response is a skill using the get_skill method
+        if is_skill: # If it's a skill
+            return response # Return the response as it is a skill
+
+        # If not a skill, get a response from the chatbot
+        bot = self.chatBot.get_response(text=input, search_text=input)
+        print(bot.text)
+        return bot.text

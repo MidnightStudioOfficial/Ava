@@ -15,7 +15,20 @@ class ChatSkill(BaseSkill):
             "who are you",
             "lets chat",
             
-            "its good that you had fun"
+            "its good that you had fun",
+            
+            "hows it going",
+            "whats your favorite hobby",
+            "what can you do for me",
+            
+            
+            
+            "hi",
+            "thank you",
+            "what is your name",
+            "thanks a lot",
+            "i admire your creativity",
+            "i did not mean to upset you"
         ]
 
     def actAndGetResponse(self, **kwargs) -> str:

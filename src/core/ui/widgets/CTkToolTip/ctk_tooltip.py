@@ -28,15 +28,15 @@ class CTkToolTip(Toplevel):
         alpha: float = 0.8,
         padding: tuple = (10,2),
         **message_kwargs):
-        
+
         super().__init__()
 
         self.widget = widget
-        
+
         self.withdraw()
         # Disable ToolTip's title bar
         self.overrideredirect(True)
-                
+  
         if sys.platform.startswith("win"):
             self.transparent_color = self.widget._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkToplevel"]["fg_color"])
             self.attributes("-transparentcolor", self.transparent_color)
@@ -49,18 +49,18 @@ class CTkToolTip(Toplevel):
             self.transparent_color = '#000001'
             corner_radius = 0
             self.transient()
-            
+
         self.resizable(width=True, height=True)
         self.transient()
-        
+
         # Make the background transparent
         self.config(background=self.transparent_color)
-        
+
         # StringVar instance for msg string
         self.messageVar = customtkinter.StringVar()
         self.message = message
         self.messageVar.set(self.message)
-      
+
         self.delay = delay
         self.follow = follow
         self.x_offset = x_offset
@@ -72,20 +72,20 @@ class CTkToolTip(Toplevel):
         self.bg_color = bg_color
         self.border_color = border_color
         self.disable = False
-        
+
         # visibility status of the ToolTip inside|outside|visible
         self.status = "outside"
         self.last_moved = 0
         self.attributes('-alpha', self.alpha)
-        
+
         # Add the message widget inside the tooltip
         self.transparent_frame = Frame(self, bg=self.transparent_color)
         self.transparent_frame.pack(padx=0, pady=0, fill="both", expand=True)
-        
+
         self.frame = customtkinter.CTkFrame(self.transparent_frame, bg_color=self.transparent_color, corner_radius=self.corner_radius,
                                             border_width=self.border_width, fg_color=self.bg_color, border_color=self.border_color)
         self.frame.pack(padx=0, pady=0, fill="both", expand=True)
-        
+
         self.message_label = customtkinter.CTkLabel(self.frame, textvariable=self.messageVar, **message_kwargs)
         self.message_label.pack(fill="both", padx=self.padding[0]+self.border_width,
                                 pady=self.padding[1]+self.border_width, expand=True)

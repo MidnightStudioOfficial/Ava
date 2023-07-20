@@ -11,4 +11,3 @@ class ArticulationMapper():
     def get(self, intent: str) -> str: 
         """returns the articulation for a given intent. if the intent has no articulation, then returns None"""
         return self.articulations.get(intent)
-

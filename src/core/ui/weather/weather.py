@@ -11,7 +11,6 @@ today = str(date.today())
 class WeatherGUI(ctk.CTkFrame):
     def __init__(self, parent) -> None:
         super().__init__(parent)
-        
 
         self.city_value = ctk.StringVar()
         self.location_var = ctk.StringVar()
@@ -86,7 +85,7 @@ class WeatherGUI(ctk.CTkFrame):
 
         self.searchBtn = ctk.CTkButton(parent, command = self.showWeather, text = "Check Weather", font = ('Arial', 12), hover= True, 
                                                 hover_color= "black", height=40, width= 130, border_width=2, corner_radius=10).place(x=46,y=83) #border_color= "#c75d55", fg_color= "#262626"  text_color="#c75d55",
-        
+
         self.left_frame = ctk.CTkFrame(parent, width=300, height=300, corner_radius=5)
         self.left_frame.grid(row=0, column=0, sticky="nsew", padx=(25, 345), pady=(200, 350))
         self.left_frame.grid_rowconfigure(1, weight=1)
@@ -109,7 +108,7 @@ class WeatherGUI(ctk.CTkFrame):
         self.dateLbl = ctk.CTkLabel(self.right_frame, text= f"Date: {today}", font = ('Arial', 25), anchor = ctk.CENTER).place(relx=0.5, rely=0.1, anchor=ctk.CENTER)  
         self.tempLbl = ctk.CTkLabel(self.right_frame, textvariable = self.temp_var, font = ('Arial', 90)).place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
         self.feelsLbl = ctk.CTkLabel(self.right_frame,textvariable = self.feelsLike_var, font = ('Arial', 18)).place(relx=0.5, rely=0.9, anchor = ctk.CENTER)
-        
+
         self.probPrecipLbl = ctk.CTkLabel(parent, textvariable = self.probPrecip_var, font = ('Arial', 50)).place(x=140, y=500, anchor = ctk.CENTER)  
         self.speedLb1 = ctk.CTkLabel(parent, textvariable = self.speed_var, font = ('Arial', 50)).place(x=352, y=500, anchor = ctk.CENTER)  
         self.humidityLbl = ctk.CTkLabel(parent, textvariable = self.humidity_var, font = ('Arial', 50)).place(x=562, y=500, anchor = ctk.CENTER)
@@ -117,7 +116,7 @@ class WeatherGUI(ctk.CTkFrame):
         self.probPrecipH = ctk.CTkLabel(parent, textvariable = self.prob_var, font = ('Arial', 22)).place(x=80, y=550)  
         self.speedH = ctk.CTkLabel(parent, textvariable = self.wind_var, font = ('Arial', 22)).place(x=325, y=550)  
         self.humidityH = ctk.CTkLabel(parent, textvariable = self.humidity, font = ('Arial', 22)).place(x=520, y=550)
-    
+
         self.tabview = ctk.CTkTabview(parent, width=660, height=180, border_width = 4)
         self.tabview.grid(row=0, column=0, padx=(10, 0), pady=(690, 0), sticky="nsew")
         self.tabview.place(x=20, y=600)
@@ -134,7 +133,7 @@ class WeatherGUI(ctk.CTkFrame):
         self.tempMaxLbl = ctk.CTkLabel(self.tabview.tab("Temperature"), textvariable = self.tempMax_var, font = ('Arial', 14)).place(x=15, y=40)
         self.feelsMinLbl = ctk.CTkLabel(self.tabview.tab("Temperature"), textvariable = self.feelsLike_varMin_var, font = ('Arial', 14)).place(x=15, y=60)
         self.feelsMaxLbl = ctk.CTkLabel(self.tabview.tab("Temperature"), textvariable = self.feelsLike_varMax_var, font = ('Arial', 14)).place(x=15, y=80)  
-        
+
         self.gusts = ctk.CTkLabel(self.tabview.tab("Wind"), textvariable = self.gusts_var, font = ('Arial', 14)).place(x=15, y=20)
         self.dir = ctk.CTkLabel(self.tabview.tab("Wind"), textvariable = self.dir_var, font = ('Arial', 14)).place(x=15, y=40)
         self.angle = ctk.CTkLabel(self.tabview.tab("Wind"), textvariable = self.angle_var, font = ('Arial', 14)).place(x=15, y=60)
@@ -152,19 +151,11 @@ class WeatherGUI(ctk.CTkFrame):
         self.locLbl = ctk.CTkLabel(self.tabview.tab("Others"), textvariable = self.location_var, font = ('Arial', 14)).place(x=450, y=0)
         self.longLbl = ctk.CTkLabel(self.tabview.tab("Others"), textvariable = self.long_var, font = ('Arial', 14)).place(x=470, y=25)
         self.latLbl = ctk.CTkLabel(self.tabview.tab("Others"), textvariable = self.lat_var, font = ('Arial', 14)).place(x=470, y=50) 
-        
-
-        # =================================================
-
-
-    # =====================================================
-
-    # A function for the button search ====================
 
     def showWeather(self):
         if len(self.textbox.get("1.0", ctk.END))>=1: #check if the textbox is not empty
             self.textbox.delete("1.0", ctk.END) #if not, delete prev. summary
-            
+
         city_name = self.city_value.get()
 
         if len(city_name) == 0:

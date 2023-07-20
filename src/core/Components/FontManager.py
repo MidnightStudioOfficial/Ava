@@ -36,7 +36,6 @@ class FontManager:
             wintypes.LPVOID,  # lpBuffer
             wintypes.DWORD)   # dwQueryType
 
-
     def install_font(self: object, path: str):
         # copy the font to the Windows Fonts folder
         dst_path = join(environ['SystemRoot'], 'Fonts', basename(path))
@@ -62,11 +61,9 @@ class FontManager:
             cb.value = sizeof(is_truetype)
 
             self.gdi32.GetFontResourceInfoW(filename, byref(cb), byref(is_truetype), 3)
-            
+
             if is_truetype:
                 fontname += ' (TrueType)'
 
             with OpenKey(HKEY_LOCAL_MACHINE, r'Software\Microsoft\Windows NT\CurrentVersion\Fonts', 0, KEY_SET_VALUE) as key:
                 SetValueEx(key, fontname, 0, REG_SZ, filename)
-
-
