@@ -9,8 +9,9 @@ from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
-from tensorflow.keras.callbacks import EarlyStopping, Callback
+from tensorflow.keras.callbacks import EarlyStopping
 #from tensorflow.random import set_seed
+from sklearn.model_selection import train_test_split
 
 wordnet_lemmatizer = WordNetLemmatizer()
 stop_words_eng = set(stopwords.words('english'))
@@ -43,24 +44,6 @@ def preprocess_sentence(sentence):
         lemmatized_sentence.append(lemmatized_word)
 
     return " ".join(lemmatized_sentence)
-
-class EarlyStoppingByLossVal(Callback):
-    def __init__(self, monitor='val_loss', value=0.00001, verbose=0):
-        super(Callback, self).__init__()
-        self.monitor = monitor
-        self.value = value
-        self.verbose = verbose
-
-    def on_epoch_end(self, epoch, logs={}):
-        val_loss = logs.get(self.monitor)
-        accuracy = logs.get('accuracy')
-
-        if val_loss == 0.0100:
-            print("loss")
-            if accuracy == 1.0000:
-                if self.verbose > 0:
-                    print("Epoch %05d: early stopping THR" % epoch)
-                self.model.stop_training = True
 
 if __name__ == '__main__':
     print("Loading all skills...")
@@ -99,6 +82,9 @@ if __name__ == '__main__':
     word_index = tokenizer.word_index
     sequences = tokenizer.texts_to_sequences(lemmatized_training_sentences)
     padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)
+    
+    X_train, X_temp, y_train, y_temp = train_test_split(padded_sequences, np.array(training_labels), test_size=0.2, random_state=42)
+    X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
 
     # Define model
     model = Sequential()
@@ -119,11 +105,15 @@ if __name__ == '__main__':
     #early_stopping = EarlyStoppingByLossVal(monitor='val_loss', value=0.0090, verbose=1)
     #early_stopping = EarlyStopping(monitor='val_loss', patience=156, restore_best_weights=True, min_delta=0.001, mode='max')
     history = model.fit(
-        padded_sequences, np.array(training_labels),
+        X_train, y_train,
         verbose=1,
         batch_size=32,
         validation_split=0.1, epochs=epochs,
+        validation_data=(X_val, y_val),  # Use validation data for early stopping
         callbacks=[early_stopping])
+
+    loss, accuracy = model.evaluate(X_test, y_test, verbose=0)
+    print(f"Test Loss: {loss:.4f}, Test Accuracy: {accuracy:.4f}")
 
     # Save the model and tokenizer
     model.save("sir-bot-a-lot.brain")

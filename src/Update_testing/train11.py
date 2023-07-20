@@ -9,8 +9,11 @@ from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
-from tensorflow.keras.callbacks import EarlyStopping, Callback
+from tensorflow.keras.callbacks import EarlyStopping
 #from tensorflow.random import set_seed
+from sklearn.model_selection import train_test_split
+from nltk.stem import PorterStemmer
+from tensorflow.keras.regularizers import l1, l2
 
 wordnet_lemmatizer = WordNetLemmatizer()
 stop_words_eng = set(stopwords.words('english'))
@@ -28,39 +31,35 @@ testing = [
 #np.random.seed(42)
 #set_seed(42)
 
+
+# ... (existing code)
+
+# Initialize the Porter Stemmer
+porter_stemmer = PorterStemmer()
+
+# Replace the existing stopword list with the NLTK English stopword list
+stop_words_eng = set(stopwords.words('english'))
+
+# Modify the preprocess_sentence function
 def preprocess_sentence(sentence):
     sentence = sentence.lower()
     punctuations = "?:!.,;'`´"
     sentence_words = nltk.word_tokenize(sentence)
-    lemmatized_sentence = []
+    stemmed_sentence = []
 
     for word in sentence_words:
         if word in stop_words_eng:
-             continue
+            continue
         if word in punctuations:
             continue
-        lemmatized_word = wordnet_lemmatizer.lemmatize(word, pos="v")
-        lemmatized_sentence.append(lemmatized_word)
+        stemmed_word = porter_stemmer.stem(word)  # Use stemming instead of lemmatization
+        stemmed_sentence.append(stemmed_word)
 
-    return " ".join(lemmatized_sentence)
+    #print(stemmed_sentence)
+    return " ".join(stemmed_sentence)
 
-class EarlyStoppingByLossVal(Callback):
-    def __init__(self, monitor='val_loss', value=0.00001, verbose=0):
-        super(Callback, self).__init__()
-        self.monitor = monitor
-        self.value = value
-        self.verbose = verbose
+# ... (rest of the code, including model training and testing)
 
-    def on_epoch_end(self, epoch, logs={}):
-        val_loss = logs.get(self.monitor)
-        accuracy = logs.get('accuracy')
-
-        if val_loss == 0.0100:
-            print("loss")
-            if accuracy == 1.0000:
-                if self.verbose > 0:
-                    print("Epoch %05d: early stopping THR" % epoch)
-                self.model.stop_training = True
 
 if __name__ == '__main__':
     print("Loading all skills...")
@@ -99,31 +98,44 @@ if __name__ == '__main__':
     word_index = tokenizer.word_index
     sequences = tokenizer.texts_to_sequences(lemmatized_training_sentences)
     padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)
+    
+    X_train, X_temp, y_train, y_temp = train_test_split(padded_sequences, np.array(training_labels), test_size=0.2, random_state=42)
+    X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
 
     # Define model
     model = Sequential()
     model.add(Embedding(vocab_size, embedding_dim, input_length=max_len))
     model.add(GlobalAveragePooling1D())
-    model.add(Dense(64, activation='relu')) #32
-    model.add(Dense(32, activation='relu')) #16
-    model.add(Dense(num_classes, activation='softmax'))
+    #model.add(Dense(128, activation='relu', kernel_regularizer=l2(0.01))) # Adding L2 regularization 64
+    #model.add(Dense(32, activation='relu', kernel_regularizer=l1(0.01))) # Adding L1 regularization
+    model.add(Dense(128, activation='relu')) # Adding L2 regularization 64
+    model.add(Dense(32, activation='relu')) # Adding L1 regularization
+    model.add(Dense(num_classes, activation='softmax'))  # Output layer with appropriate number of units for classification
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     model.summary()
 
+
     # Train the model with early stopping
-    epochs = 5000
+    epochs = 1000 #5000
     early_stopping = EarlyStopping(monitor='val_loss', patience=100, restore_best_weights=True) # patience=10 30
     early_stopping = EarlyStopping(monitor='val_accuracy', patience=156, restore_best_weights=True, mode="max") # , patience=100, mode="min"
     early_stopping = EarlyStopping(monitor='val_accuracy', patience=230, restore_best_weights=True, mode="max") # , patience=100, mode="min"
+    early_stopping = EarlyStopping(monitor='loss', patience=100, restore_best_weights=True)
+    #early_stopping = EarlyStopping(monitor='val_loss', patience=230, restore_best_weights=True, mode="max") # , patience=100, mode="min"
     #early_stopping = EarlyStopping(monitor='loss', mode='min', verbose=0, patience=20, min_delta=0.01)
     #early_stopping = EarlyStoppingByLossVal(monitor='val_loss', value=0.0090, verbose=1)
     #early_stopping = EarlyStopping(monitor='val_loss', patience=156, restore_best_weights=True, min_delta=0.001, mode='max')
     history = model.fit(
-        padded_sequences, np.array(training_labels),
+        X_train, y_train,
         verbose=1,
         batch_size=32,
         validation_split=0.1, epochs=epochs,
-        callbacks=[early_stopping])
+        validation_data=(X_val, y_val),  # Use validation data for early stopping
+        callbacks=[early_stopping]
+    )
+
+    loss, accuracy = model.evaluate(X_test, y_test, verbose=1) #0
+    print(f"Test Loss: {loss:.4f}, Test Accuracy: {accuracy:.4f}")
 
     # Save the model and tokenizer
     model.save("sir-bot-a-lot.brain")

@@ -3,10 +3,9 @@ import requests
 
 class JokeSkill(BaseSkill):
 
-
     def __init__(self):
         super().__init__()
-        self.intent = __name__
+        self.intent = "ava_skills.joke"
         self.active = True
         self.samples = [
             "joke",
