@@ -90,20 +90,20 @@ class change_header_color():
         self.color = DWORD(int(convert_color(color), base=16))
         self.attrib = 35
         ChangeDWMAttrib(self.HWND, self.attrib, self.color)
-        
-            
+
+
 class change_border_color():
     """ change the window border color """
     def __init__(self,
                  window,
                  color):
-        
+
         window.update()            
         self.HWND = windll.user32.GetParent(window.winfo_id())
         self.color = DWORD(int(convert_color(color), base=16))
         self.attrib = 34
         ChangeDWMAttrib(self.HWND, self.attrib, self.color)
-        
+
 class change_title_color():
     """ change the title color """
     def __init__(self,
@@ -115,13 +115,13 @@ class change_title_color():
         self.color = DWORD(int(convert_color(color), base=16))
         self.attrib = 36
         ChangeDWMAttrib(self.HWND, self.attrib, self.color)
-        
+
 def ChangeDWMAttrib(hWnd: int, attrib: int, color):
     windll.dwmapi.DwmSetWindowAttribute(hWnd, attrib, byref(color), sizeof(c_int))
-        
+
 def ChangeDWMAccent(hWnd: int, attrib: int, state: int, color=None):
     accentPolicy = ACCENT_POLICY()  
-                                                
+
     winCompAttrData = WINDOW_COMPOSITION_ATTRIBUTES()
     winCompAttrData.Attribute = attrib
     winCompAttrData.SizeOfData = sizeof(accentPolicy)
@@ -130,7 +130,7 @@ def ChangeDWMAccent(hWnd: int, attrib: int, state: int, color=None):
     accentPolicy.AccentState =  state
     if color:
         accentPolicy.GradientColor = color
-                                    
+
     windll.user32.SetWindowCompositionAttribute(hWnd, pointer(winCompAttrData))
 
 def convert_color(color_name: str):
@@ -284,7 +284,7 @@ def convert_color(color_name: str):
         "yellow": "#ffff00",
         "yellowgreen": "#9acd32",
     }
-    
+
     if not color_name.startswith("#"):
         if color_name in NAMES_TO_HEX:
             color =  NAMES_TO_HEX[color_name]
@@ -292,6 +292,6 @@ def convert_color(color_name: str):
             raise ValueError(f"Invalid color passed: {color_name}")
     else:
         color = color_name
-        
+
     color = f"{color[5:7]}{color[3:5]}{color[1:3]}"
     return color

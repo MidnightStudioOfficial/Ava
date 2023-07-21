@@ -40,7 +40,6 @@ class Debugger(Toplevel):
         self.after(150, self.__init)
 
     def __init(self: Toplevel) -> None:
-
         # load parent properties
         self.main_page: MainPage = MainPage(
             self, props={'parent': self.parent, 'disallowed_windows': self.disallowed_windows, 'inspector': self.inspector, 'abs_path': self.abs_path, 'move': self.__move})

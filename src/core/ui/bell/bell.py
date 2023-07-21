@@ -7,6 +7,7 @@ import difflib
 import os
 import json
 
+
 class Bell:
     def __init__(self):
         self.notifications = {}
@@ -61,7 +62,7 @@ class Bell:
         """Removes a notification from the list"""
         if notification in self.notifications:
             del self.notifications[notification]
-            #self.notifications.remove(notification)
+            # self.notifications.remove(notification)
             print("Notification removed successfully.")
         else:
             print("Notification not found.")
@@ -70,7 +71,7 @@ class Bell:
         """Returns the list of notifications"""
         return self.notifications
 
- 
+
 class BellGUI(ctk.CTkToplevel):
     def __init__(self, parent) -> None:
         super().__init__(parent)
@@ -119,7 +120,7 @@ class BellGUI(ctk.CTkToplevel):
 
         # Create a scrollable frame for the list of items
         self.scrollable_frame = ctk.CTkScrollableFrame(self.main_frame)
-        self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0,10), sticky="nsew")
+        self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0, 10), sticky="nsew")
 
         # Initialize the item frame dictionary
         self.item_frame = {}
@@ -284,7 +285,7 @@ class BellGUI(ctk.CTkToplevel):
 
     def remove_notification(self, name) -> None:
         del self.layout[name]
-        self.destroy_item_frame(name)    
+        self.destroy_item_frame(name)
 
     def edit_item(self, item_name) -> None:
         """Callback function to edit the item's value"""
@@ -306,13 +307,13 @@ class BellGUI(ctk.CTkToplevel):
     def show_item_details(self, event, item_name):
         """Show additional details for the clicked item"""
         if item_name in self.layout:
-         details = self.layout[item_name]["details"]
-         # You can implement the display of item details here
-         # For example, you can expand the item frame to show the details or open a popup window
+            details = self.layout[item_name]["details"]
+            # You can implement the display of item details here
+            # For example, you can expand the item frame to show the details or open a popup window
 
-         # Here, we will print the details to the console for demonstration purposes
-         print(f"Item: {item_name}")
-         print(f"Details: {details}")
+            # Here, we will print the details to the console for demonstration purposes
+            print(f"Item: {item_name}")
+            print(f"Details: {details}")
 
     def update_items_thread(self):
         """Thread target function to update the items asynchronously"""
@@ -328,4 +329,3 @@ class BellGUI(ctk.CTkToplevel):
         """Updates the items asynchronously using a separate thread"""
         thread = threading.Thread(target=self.update_items_thread)
         thread.start()
-            

@@ -792,7 +792,7 @@ class Sounder(Frame):
             side='left', anchor='center', fill='y', pady=10, padx=10)
 
     def init_player(self) -> None:
-        # variables
+        # Initialize the player with various variables
         self.library: list = []
         self.songs_cache: dict = {}
         self.active_panels: list = []
@@ -801,30 +801,44 @@ class Sounder(Frame):
         self.songs: list = []
         self.after_job: Union[str, None] = None
         self.songs_queue: list = []
-        # set last song
+
+        # Set the last song to the one specified in the settings
         self.song: str = self.settings['last_song']
-        # init mixer
+
+        # Initialize the mixer in a separate thread
         # self.init_mixer()
         Thread(target=self.init_mixer, daemon=True).start()
-        # scan folders
+
+        # Scan folders to populate the library
         self.scan_folders()
-        # verify playlists
+
+         # Verify playlists in a separate thread
         Thread(target=self.verify_playlist, daemon=True).start()
-        # show last panel
+
+        # Show the appropriate panel depending on the last saved page setting
         self.show_panel() if self.settings['page'] in (
             'Library', 'Folders', 'Settings') else self.show_playlist()
-        # load last song info
+
+        # Load information for the last played song
         self.update_info_panel(self.song)
-        # restore volume
+
+        # Restore the volume level to the one saved in the settings
         self.volume_bar.set(self.settings['volume'])
-        # song menu
+
+        # Create a song menu instance
         self.song_menu = SongMenu(self)
-        # mixer thread
+
+        # Initialize mixer thread status
         self.mixer_active: bool = False
+
+        # Automatically start playback if specified in the settings
         if self.settings['start_playback']:
             self.after(10, self.button_play)
-        # dir watcher
+
+        # Start a separate thread for directory watching
         Thread(target=self.init_watcher, daemon=True).start()
+
+        # Uncomment the following line if needed to initialize the watcher directly
         # self.init_watcher()
 
     def on_song_delete(self, song: str) -> None:
@@ -1555,11 +1569,15 @@ class Sounder(Frame):
 
     def init_mixer(self) -> None:
         try:
+            # Set the default size for the mixer buffer
             size: int = 1024
+
             if self.settings['buffer'] == 'Slow':
                 size = 2048
             if self.settings['buffer'] == 'Fast':
                 size = 512
+
+            # Pre-initialize the mixer with specified parameters
             mixer.pre_init(192000, -16, 2, size)
             mixer.init()
         except Exception as err_obj:
@@ -1654,6 +1672,7 @@ class Sounder(Frame):
                     self.mixer_play(self.songs[0])
 
     def mixer_thread(self) -> None:
+        # Set the mixer to active
         self.mixer_active = True
         if mixer.music.get_busy() and self.song:
             position: float = mixer.music.get_pos() / 1000

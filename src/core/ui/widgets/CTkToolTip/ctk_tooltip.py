@@ -109,7 +109,7 @@ class CTkToolTip(Toplevel):
         Enable the widget.
         """
         self.disable = False
-        
+
     def on_enter(self, event) -> None:
         """
         Processes motion within the widget including entering and moving.

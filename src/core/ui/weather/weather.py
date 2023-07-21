@@ -215,7 +215,7 @@ class WeatherGUI(ctk.CTkFrame):
             visibility = str(weather_info['daily']['data'][0]['visibility'])
 
             icon = str(weather_info['daily']['data'][0]['icon'])
-            
+
             cityCountry = str(city+", " + country)
             if len(cityCountry) > 25:
                 cityCountry = cityCountry[:22] + '...'

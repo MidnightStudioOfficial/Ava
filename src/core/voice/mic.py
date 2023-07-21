@@ -3,6 +3,7 @@ from queue import Queue
 from threading import Thread
 import speech_recognition as sr
 
+
 class SpeechRecognizer:
     def __init__(self, wake_words=("ava", "eva"), callback_function=None):
         self.wake_words = wake_words # "hava", "java", "lava"
