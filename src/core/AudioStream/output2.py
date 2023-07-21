@@ -1,7 +1,6 @@
 import pyaudio
 import threading
 import wave
-import multiprocessing
 
 #ffmpeg -i song.mp3 -acodec pcm_u8 -ar 22050 song.wav
 
@@ -10,6 +9,7 @@ class AudioPlayer:
         self.filename = filename
         self.playing = False
         self.thread = None
+        self.p = pyaudio.PyAudio()
 
     def play(self):
         if self.playing:
@@ -33,8 +33,7 @@ class AudioPlayer:
         chunk = 1024
         wf = wave.open(self.filename, 'rb')
 
-        p = pyaudio.PyAudio()
-        stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+        stream = self.p.open(format=self.p.get_format_from_width(wf.getsampwidth()),
                         channels=wf.getnchannels(),
                         rate=wf.getframerate(),
                         output=True)
@@ -48,7 +47,7 @@ class AudioPlayer:
         stream.stop_stream()
         stream.close()
         wf.close()
-        p.terminate()
+        #p.terminate()
         self.playing = False
 
     def stop(self):

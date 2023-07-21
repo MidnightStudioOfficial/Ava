@@ -3,6 +3,10 @@ from PIL import Image, ImageTk, ImageDraw
 from core.AudioStream.output2 import AudioPlayer
 import speech_recognition as sr
 import threading
+import whisper
+import numpy as np
+import wave
+import os
 
 
 class WakeWordGUI(ctk.CTkToplevel):
@@ -57,33 +61,49 @@ class WakeWordGUI(ctk.CTkToplevel):
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f"+{x}+{y}")
 
+        self.model = whisper.load_model("tiny")
+        
+
     def close_window(self):
-        print("closeing")
+        print("closing")
         self.end_callback()
         self.destroy()
-        
-    def mic_click(self):
-        #self.audio.play_audio()
-        if self.listening == False:
-            #self.AITaskStatusLbl.configure(text="Listening..")
 
-            # Use the microphone as a source
+    def mic_click(self):
+        if self.listening == False:
+            # Start the speech recognition process in a new thread
+            threading.Thread(target=self.mic_click2, daemon=True).start()
+
+    def mic_click2(self):
+        if self.listening == False:
             with sr.Microphone() as source:
                 print("Speak something...")
-                #self.recognizer.adjust_for_ambient_noise(source)  # Adjust for ambient noise
-                audio = self.recognizer.listen(source)
+                #self.recognizer.adjust_for_ambient_noise(source)
+                audio = self.recognizer.listen(source,timeout=7)
+                print("DONE")
 
             try:
-                self.AITaskStatusLbl.configure(text="Thinking..")
-                # Recognize speech using Google Web Speech API
-                text = self.recognizer.recognize_google(audio)
+                #self.AITaskStatusLbl.configure(text="Thinking..")
+                wav_filename = "audio.wav"
+                with wave.open(wav_filename, 'wb') as wf:
+                    wf.setnchannels(1)
+                    wf.setsampwidth(2)
+                    wf.setframerate(audio.sample_rate)
+                    wf.writeframes(audio.get_wav_data())
+
+                # Load the saved WAV file using Whisper
+                #audio_data, sample_rate = whisper.load_audio(wav_filename)
+                #audio_data = whisper.pad_or_trim(whisper.load_audio(wav_filename))
+
+                # Use Whisper for speech recognition with numpy array
+                print("transcribeing")
+                result = self.model.transcribe(wav_filename) #audio=audio_data, sample_rate=sample_rate
+                text = result["text"]
                 print("You said:", text)
-            except sr.UnknownValueError:
-                print("Speech recognition could not understand audio.")
-            except sr.RequestError as e:
-                print("Could not request results from Google Web Speech API; {0}".format(e))
+                os.remove(wav_filename)
+            except Exception as e:
+                print("", e)
 
-
-            #self.listening = True
-        
+            # Update the status label with the recognized text
+            #self.AITaskStatusLbl.configure(text="Recognized: " + text)
         
