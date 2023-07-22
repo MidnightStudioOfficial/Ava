@@ -83,7 +83,4 @@ class WakeWordGUI(ctk.CTkToplevel):
             except sr.RequestError as e:
                 print("Could not request results from Google Web Speech API; {0}".format(e))
 
-
             #self.listening = True
-        
-        

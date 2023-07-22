@@ -30,11 +30,11 @@ print("Importing DONE")
 
 
 if Debug != True:
- trainingdata='Data/training.csv'
- articulationdata='Data/articulations.csv'
+ trainingdata = 'Data/training.csv'
+ articulationdata = 'Data/articulations.csv'
 else:
- trainingdata='Data/training_dev.csv'
- articulationdata='Data/articulations_dev.csv'
+ trainingdata = 'Data/training_dev.csv'
+ articulationdata = 'Data/articulations_dev.csv'
 
 logging.basicConfig(level=logging.INFO)
 

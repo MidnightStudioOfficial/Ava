@@ -26,7 +26,7 @@ class CTkToolTip(Toplevel):
         border_width: int = 0,
         border_color: str = None,
         alpha: float = 0.8,
-        padding: tuple = (10,2),
+        padding: tuple = (10, 2),
         **message_kwargs):
 
         super().__init__()
@@ -91,8 +91,8 @@ class CTkToolTip(Toplevel):
                                 pady=self.padding[1]+self.border_width, expand=True)
 
         if self.widget != None:
-            if self.widget.winfo_name()!="tk":
-                if self.frame.cget("fg_color")==self.widget.cget("bg_color"):
+            if self.widget.winfo_name() != "tk":
+                if self.frame.cget("fg_color") == self.widget.cget("bg_color"):
                     if not bg_color:             
                         self._top_fg_color = self.frame._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkFrame"]["top_fg_color"])
                         self.frame.configure(fg_color=self._top_fg_color)

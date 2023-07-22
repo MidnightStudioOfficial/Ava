@@ -9,7 +9,7 @@ class FontManager:
 
     def __init__(self: object) -> None:
         # do init stuff here
-        # this stuff it's not mine 
+        # this stuff it's not mine
 
         self.user32 = WinDLL('user32', use_last_error=True)
         self.gdi32 = WinDLL('gdi32', use_last_error=True)

@@ -17,14 +17,14 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.geometry("400x400")
         #self.overrideredirect(True)
         #self.configure(background="#2c3e50")
-        photo = ctk.CTkImage(Image.open("Data/assets/ava_t.png"), size=(90,90))
+        photo = ctk.CTkImage(Image.open("Data/assets/ava_t.png"), size=(90, 90))
         self.pre_button_photo = Image.open("Data/images/centralButton1.png")
         self.button_photo = ctk.CTkImage(self.pre_button_photo, size=(self.pre_button_photo.width, self.pre_button_photo.height))
         self.pre_mic_button_photo = Image.open("Data/images/mic.png")
         self.mic_photo = ctk.CTkImage(self.pre_mic_button_photo, size=(50, 50))
         self.MainFrame = ctk.CTkFrame(self, fg_color="transparent")
         self.MainFrame.pack(fill=ctk.BOTH)
-        self.center_image = ctk.CTkLabel(self.MainFrame, text='',image=photo, height=90,  width=90)
+        self.center_image = ctk.CTkLabel(self.MainFrame, text='', image=photo, height=90,  width=90)
         self.center_image.pack(pady=10, anchor='n')
         self.VoiceFrame = ctk.CTkFrame(self.MainFrame, fg_color="transparent")
         self.VoiceFrame.pack(fill=ctk.BOTH)
@@ -42,16 +42,14 @@ class WakeWordGUI(ctk.CTkToplevel):
         # Place the AI task status label at position (165, 32) in its parent widget
         self.AITaskStatusLbl.place(x=165, y=32)
 
-
-        self.center_image2 = ctk.CTkButton(self.MainFrame, text='',image=self.mic_photo, height=50, width=50, command=self.mic_click)
+        self.center_image2 = ctk.CTkButton(self.MainFrame, text='', image=self.mic_photo, height=50, width=50, command=self.mic_click)
         self.center_image2.pack(pady=10)
-        
-        
+
         self.audio = AudioPlayer("Data/start.wav")
         # Create a recognizer object
         self.recognizer = sr.Recognizer()
         self.listening = False
-        
+
         # Center the window on the screen
         self.update_idletasks()
         width = self.winfo_width()
@@ -61,7 +59,6 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.geometry(f"+{x}+{y}")
 
         self.model = whisper.load_model("tiny")
-        
 
     def close_window(self):
         self.audio.set_file("Data/back.wav")
@@ -82,7 +79,7 @@ class WakeWordGUI(ctk.CTkToplevel):
                 print("Speak something...")
                 self.AITaskStatusLbl.configure(text="Listening..")
                 #self.recognizer.adjust_for_ambient_noise(source)
-                audio = self.recognizer.listen(source,timeout=7)
+                audio = self.recognizer.listen(source, timeout=7)
                 print("DONE")
 
             try:
@@ -111,4 +108,3 @@ class WakeWordGUI(ctk.CTkToplevel):
 
             # Update the status label with the recognized text
             self.AITaskStatusLbl.configure(text="Recognized: " + text)
-        

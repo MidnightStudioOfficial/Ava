@@ -41,33 +41,33 @@ class apply_style():
         window.update()
         self.HWND = windll.user32.GetParent(window.winfo_id())
 
-        if style=="mica":
+        if style == "mica":
             ChangeDWMAttrib(self.HWND, 19, c_int(1))
             ChangeDWMAttrib(self.HWND, 1029, c_int(0x01))
-        elif style=="optimised":
+        elif style == "optimised":
             ChangeDWMAccent(self.HWND, 30, 1)
-        elif style=="dark":
+        elif style == "dark":
             ChangeDWMAttrib(self.HWND, 19, c_int(1))
-        elif style=="light":
+        elif style == "light":
             ChangeDWMAttrib(self.HWND, 19, c_int(0))
-        elif style=="inverse":
+        elif style == "inverse":
             ChangeDWMAccent(self.HWND, 6, 1)
-        elif style=="win7":
+        elif style == "win7":
             ChangeDWMAccent(self.HWND, 11, 1)
-        elif style=="aero":
+        elif style == "aero":
             window.config(bg="black")
             ChangeDWMAccent(self.HWND, 30, 2)
             ChangeDWMAccent(self.HWND, 19, 3, color=0x000000)
-        elif style=="acrylic":
+        elif style == "acrylic":
             window.config(bg="black")
             ChangeDWMAccent(self.HWND, 30, 2)
             ChangeDWMAccent(self.HWND, 19, 4, color=0x292929)
-        elif style=="popup":
+        elif style == "popup":
             ChangeDWMAccent(self.HWND, 4, 1)
-        elif style=="native":
+        elif style == "native":
             ChangeDWMAccent(self.HWND, 30, 2)
             ChangeDWMAccent(self.HWND, 19, 2)
-        elif style=="transparent":
+        elif style == "transparent":
             window.config(bg="black")
             ChangeDWMAccent(self.HWND, 30, 2)
             ChangeDWMAccent(self.HWND, 19, 4, color=0)
@@ -81,7 +81,7 @@ class change_header_color():
         window.update()
         self.HWND = windll.user32.GetParent(window.winfo_id())
 
-        if color=="transparent":
+        if color == "transparent":
             ChangeDWMAccent(self.HWND, 30, 2)
             return
         else:
@@ -98,7 +98,7 @@ class change_border_color():
                  window,
                  color):
 
-        window.update()            
+        window.update()
         self.HWND = windll.user32.GetParent(window.winfo_id())
         self.color = DWORD(int(convert_color(color), base=16))
         self.attrib = 34
@@ -110,7 +110,7 @@ class change_title_color():
                  window,
                  color):
         
-        window.update()     
+        window.update()
         self.HWND = windll.user32.GetParent(window.winfo_id())
         self.color = DWORD(int(convert_color(color), base=16))
         self.attrib = 36
@@ -120,14 +120,14 @@ def ChangeDWMAttrib(hWnd: int, attrib: int, color):
     windll.dwmapi.DwmSetWindowAttribute(hWnd, attrib, byref(color), sizeof(c_int))
 
 def ChangeDWMAccent(hWnd: int, attrib: int, state: int, color=None):
-    accentPolicy = ACCENT_POLICY()  
+    accentPolicy = ACCENT_POLICY()
 
     winCompAttrData = WINDOW_COMPOSITION_ATTRIBUTES()
     winCompAttrData.Attribute = attrib
     winCompAttrData.SizeOfData = sizeof(accentPolicy)
     winCompAttrData.Data = pointer(accentPolicy)
 
-    accentPolicy.AccentState =  state
+    accentPolicy.AccentState = state
     if color:
         accentPolicy.GradientColor = color
 
@@ -287,7 +287,7 @@ def convert_color(color_name: str):
 
     if not color_name.startswith("#"):
         if color_name in NAMES_TO_HEX:
-            color =  NAMES_TO_HEX[color_name]
+            color = NAMES_TO_HEX[color_name]
         else:
             raise ValueError(f"Invalid color passed: {color_name}")
     else:

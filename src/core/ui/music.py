@@ -812,7 +812,7 @@ class Sounder(Frame):
         # Scan folders to populate the library
         self.scan_folders()
 
-         # Verify playlists in a separate thread
+        # Verify playlists in a separate thread
         Thread(target=self.verify_playlist, daemon=True).start()
 
         # Show the appropriate panel depending on the last saved page setting
@@ -1372,8 +1372,8 @@ class Sounder(Frame):
     def sort_songs(self, song: str) -> str:
         if song in self.songs_cache:
             return self.songs_cache[song]['title'][:2].lower()
-        else:
-            return ''
+        
+        return ''
 
     def toggle_shuffle(self) -> None:
         if self.settings['shuffle']:

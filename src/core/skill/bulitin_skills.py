@@ -64,5 +64,3 @@ if __name__ == '__main__':
 
     num_classes = len(labels)
     print(num_classes)
-
-    

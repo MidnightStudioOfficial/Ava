@@ -20,7 +20,7 @@ class Profile:
                     data = json.load(f)
                     self.profile_data = data
             else:
-                self.profile_data ={
+                self.profile_data = {
                     "first_name": "N/A",
                     "last_name": "N/A",
                     "bio": "N/A",

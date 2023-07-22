@@ -63,6 +63,7 @@ class SpeechRecognizer:
         self.audio_queue.join()  # Block until all current audio processing jobs are done
         self.audio_queue.put(None)  # Tell the recognize_thread to stop
         self.recognize_thread.join()  # Wait for the recognize_thread to actually stop
+
     def stop_listening(self):
         self.stoping = True
         #print("self.recognize_thread2.join()")
@@ -78,6 +79,7 @@ class SpeechRecognizer:
         print("self.recognize_thread2.join()")
         self.recognize_thread2.join()
         print("DONE")
+
     def start_listening(self):
         self.stoping = False
         self.recognize_thread2 = Thread(target=self._start_listening)

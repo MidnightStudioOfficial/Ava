@@ -150,7 +150,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
             self.var_update.trace_add('write', self._update)
         
     def fade_out(self):
-        for i in range(100,0,-10):
+        for i in range(100, 0, -10):
             if not self.winfo_exists():
                 break
             self.attributes("-alpha", i/100)
@@ -158,7 +158,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
             sleep(1/100)
             
     def fade_in(self):
-        for i in range(0,100,10):
+        for i in range(0, 100, 10):
             if not self.winfo_exists():
                 break
             self.attributes("-alpha", i/100)
@@ -178,7 +178,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
                                                           anchor=self.justify,
                                                           command=lambda k=row: self._attach_key_press(k), **button_kwargs)
             self.widgets[self.i].pack(fill="x", pady=2, padx=(self.padding, 0))
-            self.i+=1
+            self.i += 1
              
         self.hide = False
             
@@ -192,11 +192,11 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         self.width_new = self.attach.winfo_width() if self.width is None else self.width
         
         if self.resize:
-            if self.button_num==1:      
+            if self.button_num == 1:      
                 self.height_new = self.button_height * self.button_num + 45
             else:
                 self.height_new = self.button_height * self.button_num + 35
-            if self.height_new>self.height:
+            if self.height_new > self.height:
                 self.height_new = self.height
 
         self.geometry('{}x{}+{}+{}'.format(self.width_new, self.height_new,
@@ -236,7 +236,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         if string:
             string = string.lower()
             self._deiconify()
-            i=1
+            i = 1
             for key in self.widgets.keys():
                 s = self.widgets[key].cget("text").lower()
                 text_similarity = difflib.SequenceMatcher(None, s[0:len(string)], string).ratio()
@@ -245,9 +245,9 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
                     self.widgets[key].pack_forget()
                 else:
                     self.widgets[key].pack(fill="x", pady=2, padx=(self.padding, 0))
-                    i+=1
+                    i += 1
                     
-            if i==1:
+            if i == 1:
                 self.no_match.pack(fill="x", pady=2, padx=(self.padding, 0))
             else:
                 self.no_match.pack_forget()
@@ -274,11 +274,11 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
                                                        anchor=self.justify,
                                                        command=lambda k=value: self._attach_key_press(k), **kwargs)
         self.widgets[self.i].pack(fill="x", pady=2, padx=(self.padding, 0))
-        self.i+=1
+        self.i += 1
         self.values.append(value)
         
     def _deiconify(self):
-        if len(self.values)>0:
+        if len(self.values) > 0:
             self.deiconify()
 
     def popup(self, x=None, y=None):
@@ -312,10 +312,10 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
             self.image_values = kwargs.pop("image_values")
             self.image_values = None if len(self.image_values)!=len(self.values) else self.image_values
             if self.image_values is not None:
-                i=0
+                i = 0
                 for key in self.widgets.keys():
                     self.widgets[key].configure(image=self.image_values[i])
-                    i+=1
+                    i += 1
                     
         if "button_color" in kwargs:
             for key in self.widgets.keys():

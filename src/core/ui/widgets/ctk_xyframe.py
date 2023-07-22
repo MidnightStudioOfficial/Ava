@@ -17,12 +17,12 @@ class CTkXYFrame(customtkinter.CTkFrame):
         self.parent_frame = customtkinter.CTkFrame(master=master, **kwargs)
         self.bg_color = self.parent_frame._apply_appearance_mode(self.parent_frame.cget("fg_color"))
         self.xy_canvas = customtkinter.CTkCanvas(self.parent_frame, bg=self.bg_color, borderwidth=0, highlightthickness=0, width=380, height=551)
-        self.parent_frame.rowconfigure(0,weight=1)
-        self.parent_frame.columnconfigure(0,weight=1)
+        self.parent_frame.rowconfigure(0, weight=1)
+        self.parent_frame.columnconfigure(0, weight=1)
 
         customtkinter.CTkFrame.__init__(self, master=self.xy_canvas)
 
-        self.xy_canvas.create_window((0,0), window=self, anchor="nw")
+        self.xy_canvas.create_window((0, 0), window=self, anchor="nw")
 
         self.vsb = customtkinter.CTkScrollbar(self.parent_frame, orientation="vertical", command=self.xy_canvas.yview,
                                               fg_color=scrollbar_fg_color, button_color=scrollbar_button_color,
@@ -31,9 +31,9 @@ class CTkXYFrame(customtkinter.CTkFrame):
                                               fg_color=scrollbar_fg_color, button_color=scrollbar_button_color,
                                               button_hover_color=scrollbar_button_hover_color)
 
-        self.xy_canvas.configure(yscrollcommand=lambda x,y: self.dynamic_scrollbar_vsb(x,y),
-                                 xscrollcommand=lambda x,y: self.dynamic_scrollbar_hsb(x,y))
-        self.xy_canvas.grid(row=0, column=0, sticky="nsew", padx=(7,0), pady=(7,0)) #padx=(7,0), pady=(7,0)
+        self.xy_canvas.configure(yscrollcommand=lambda x, y: self.dynamic_scrollbar_vsb(x, y),
+                                 xscrollcommand=lambda x, y: self.dynamic_scrollbar_hsb(x, y))
+        self.xy_canvas.grid(row=0, column=0, sticky="nsew", padx=(7, 0), pady=(7, 0)) #padx=(7,0), pady=(7,0)
 
         self.bind("<Configure>", lambda event, canvas=self.xy_canvas: self.onFrameConfigure(canvas))
         self.xy_canvas.bind_all("<MouseWheel>", lambda e: self._on_mousewheel(e.delta))
@@ -48,18 +48,18 @@ class CTkXYFrame(customtkinter.CTkFrame):
         self.parent_frame.destroy()
 
     def dynamic_scrollbar_vsb(self, x, y):
-        if float(x)==0.0 and float(y)==1.0:
+        if float(x) == 0.0 and float(y) == 1.0:
             self.vsb.grid_forget()
         else:
             self.vsb.grid(row=0, column=1, rowspan=2, sticky="nse", pady=5)
-        self.vsb.set(x,y)
+        self.vsb.set(x, y)
 
     def dynamic_scrollbar_hsb(self, x, y):
-        if float(x)==0.0 and float(y)==1.0:
+        if float(x) == 0.0 and float(y) == 1.0:
             self.hsb.grid_forget()
         else:
             self.hsb.grid(row=1, column=0, sticky="nwe", padx=(5,0))
-        self.hsb.set(x,y)
+        self.hsb.set(x, y)
 
     def onFrameConfigure(self, canvas):
         canvas.configure(scrollregion=canvas.bbox("all"))

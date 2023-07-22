@@ -69,7 +69,7 @@ class SkillGUI(ctk.CTkFrame):
         self.font = ctk.ThemeManager.theme["CTkFont"]["family"]
 
         # Create a label for the title
-        self.label = ctk.CTkLabel(master=self.frame, text="Skills", font=(self.font,25,"bold"))
+        self.label = ctk.CTkLabel(master=self.frame, text="Skills", font=(self.font, 25, "bold"))
         self.label.grid(row=0, column=0, padx=20, pady=10)
 
         # Create an entry for search
@@ -77,13 +77,13 @@ class SkillGUI(ctk.CTkFrame):
         self.entry.grid(row=0, column=1, pady=10, sticky="e")
 
         # Create a segmented button for filtering options
-        self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All","memory", "other"], command=self.filter_list)
+        self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All", "memory", "other"], command=self.filter_list)
         self.option_type.set("All")
         self.option_type.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
         # Create a scrollable frame for the list of items
         self.scrollable_frame = ctk.CTkScrollableFrame(self.frame)
-        self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0,10), sticky="nsew")
+        self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0, 10), sticky="nsew")
 
         # Initialize the item frame dictionary
         self.item_frame = {}
@@ -102,6 +102,7 @@ class SkillGUI(ctk.CTkFrame):
         """Clears the list of items"""
         for i in self.item_frame.values():
             i.pack_forget()
+
     def update_debug_info(self, key, value):
         self.layout[key]["value"] = value
         self.clear_list()
@@ -109,24 +110,25 @@ class SkillGUI(ctk.CTkFrame):
         
     def filter_list(self, type_):
         """Filters the list of items based on type"""
-        if type_=="All":
+        if type_ == "All":
             for i in self.item_frame.values():
                 i.pack(expand=True, fill="x", padx=5, pady=5)
-            return    
-        elif type_=="memory":
+            return
+        elif type_ == "memory":
             self.clear_list()
             for i in self.layout.keys():
-                if self.layout[i]["type"]=="memory":
+                if self.layout[i]["type"] == "memory":
                     self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
             return
-        elif type_=="other":
+        elif type_ == "other":
             self.clear_list()
             for i in self.layout.keys():
-                if self.layout[i]["type"]=="other":
+                if self.layout[i]["type"] == "other":
                     self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
             return
             
         self.clear_list()
+
     def add_item(self, name, value):
         """ add new package to the list """
         self.item_frame[name] = ctk.CTkFrame(self.scrollable_frame)
@@ -147,4 +149,3 @@ class SkillGUI(ctk.CTkFrame):
         for key in self.layout:
             value = self.layout[key]["value"]
             self.add_item(str(key), str(value))
-            

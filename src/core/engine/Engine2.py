@@ -121,7 +121,7 @@ class Engine2():
         # TODO: Only the max probability intent is returned. It may be wise to have a skill 'unknown' based on some probability.
 
         # Initialize standard set of parameters for skill parsing
-        params = {'intentCheck': tag, 'skills': self.skills.skills} 
+        params = {'intentCheck': tag, 'skills': self.skills.skills}
 
         # Get the corresponding skill based on the predicted intent
         skill = self.skills.skills[tag[0]]
@@ -390,8 +390,3 @@ class Engine2():
             result = self.model.predict(pad_sequences(self.tokenizer.texts_to_sequences([preprocessed_s]), truncating='post', maxlen=max_len))
             intent = self.label_encoder.inverse_transform([np.argmax(result)])
             print(s + " --> " + str(intent[0]))
-
-
-
-
-

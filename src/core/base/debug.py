@@ -71,7 +71,7 @@ class DebugGUI(ctk.CTkToplevel):
         self.frame.rowconfigure(2, weight=1)
         self.font = ctk.ThemeManager.theme["CTkFont"]["family"]
 
-        self.label = ctk.CTkLabel(master=self.frame, text="Debug", font=(self.font,25,"bold"))
+        self.label = ctk.CTkLabel(master=self.frame, text="Debug", font=(self.font, 25, "bold"))
         self.label.grid(row=0, column=0, padx=20, pady=10)
 
         self.entry = ctk.CTkEntry(master=self.frame, placeholder_text="search", width=200)
@@ -80,12 +80,12 @@ class DebugGUI(ctk.CTkToplevel):
         self.more_button = ctk.CTkButton(master=self.frame, width=30, text='Dev Panel', command=self.open_dev_panel)
         self.more_button.grid(row=0, column=2, pady=10, sticky="e")
 
-        self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All","memory", "other"], command=self.filter_list)
+        self.option_type = ctk.CTkSegmentedButton(self.frame, values=["All", "memory", "other"], command=self.filter_list)
         self.option_type.set("All")
         self.option_type.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
         self.scrollable_frame = ctk.CTkScrollableFrame(self.frame)
-        self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0,10), sticky="nsew")
+        self.scrollable_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=(0, 10), sticky="nsew")
 
         # Dictionary to hold references to individual frames for each item in the debug list
         self.item_frame = {}
@@ -108,29 +108,29 @@ class DebugGUI(ctk.CTkToplevel):
         self.dev = DebugDevPanel(self)
 
     def filter_list(self, type_):
-        if type_=="All":
+        if type_ == "All":
             for i in self.item_frame.values():
                 i.pack(expand=True, fill="x", padx=5, pady=5)
-            return    
-        elif type_=="memory":
+            return 
+        elif type_ == "memory":
             self.clear_list()
             for i in self.layout.keys():
-                if self.layout[i]["type"]=="memory":
+                if self.layout[i]["type"] == "memory":
                     self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
             return
-        elif type_=="other":
+        elif type_ == "other":
             self.clear_list()
             for i in self.layout.keys():
-                if self.layout[i]["type"]=="other":
+                if self.layout[i]["type"] == "other":
                     self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
             return
 
         self.clear_list()
+
     def add_item(self, name, value):
         """ add new package to the list """
         self.item_frame[name] = ctk.CTkFrame(self.scrollable_frame)
         self.item_frame[name].pack(expand=True, fill="x", padx=5, pady=5)
-        
 
         self.item_frame[name].columnconfigure(0, weight=1)
         item_name = ctk.CTkButton(self.item_frame[name], fg_color="transparent",
@@ -182,7 +182,6 @@ class App(ctk.CTk):
             self.toplevel_window = DebugGUI(self)  # create window if its None or destroyed
         else:
             self.toplevel_window.focus()  # if window exists focus it
-
 
 
 if __name__ == '__main__':
