@@ -6,7 +6,14 @@ except ImportError as err:
 
 
 class SongMenu(Toplevel):
+    """A custom tkinter Toplevel window for managing playlists and songs."""
     def __init__(self: object, parent: object) -> None:
+        """
+        Initialize the SongMenu window.
+
+        Args:
+            parent (object): The parent widget to which this window belongs.
+        """
         super().__init__(parent)
         # expose variables to this class
         self.parent: object = parent
@@ -28,10 +35,11 @@ class SongMenu(Toplevel):
         self.init_ui()
 
     def init_ui(self: object) -> None:
+        """Initialize the user interface for the SongMenu window."""
         # add playlist and append song
         ttk.Button(self, image=self.icons['plus'], text='Add playlist', compound='left',
                    command=self.add_playlist).pack(side='top', fill='x', padx=5, pady=(5, 5))
-        # playlist buttons
+        # Create playlist buttons for each playlist
         self.playlist_panel = ttk.Frame(self)
         for playlist in self.playlists:
             if playlist != 'Favorites':
@@ -46,6 +54,12 @@ class SongMenu(Toplevel):
         self.delete_button.pack(side='top', fill='x', padx=5, pady=(5, 5))
 
     def show(self: object, song: str) -> None:
+        """
+        Show the SongMenu window and update its options based on the selected song.
+
+        Parameters:
+            song (str): The selected song.
+        """
         self.song = song
         self.update_options()
         self.set_position()
@@ -55,9 +69,15 @@ class SongMenu(Toplevel):
         self.focus_set()
 
     def hide(self: object) -> None:
+        """
+        Hide the SongMenu window.
+        """
         self.after(50, self.withdraw)
 
     def update_options(self: object) -> None:
+        """
+        Update the options of the SongMenu window based on the selected playlist.
+        """
         selected_playlist: str = self.playlist_menu.get()
         # block playlists
         for playlist in self.playlists:
@@ -75,11 +95,14 @@ class SongMenu(Toplevel):
             self.delete_button.state(['!disabled'])
 
     def set_position(self: object) -> None:
-        # get mouse position
+        """
+        Set the position of the SongMenu window based on the mouse position and button class.
+        """
+        # Get mouse position
         mouse_pos: tuple = self.parent.winfo_pointerxy()
-        # get window dimensions
+        # Get window dimensions
         dimensions: tuple = (self.winfo_width(), self.winfo_height())
-        # get button class
+        # Get button class
         button: ttk.Button = self.parent.winfo_containing(
             mouse_pos[0], mouse_pos[1])
         if button:
@@ -95,6 +118,9 @@ class SongMenu(Toplevel):
             self.geometry(f'+{mouse_pos[0]}+{mouse_pos[1]}')
 
     def animate(self: object) -> None:
+        """
+        Animate the SongMenu window with a smooth expansion effect.
+        """
         # get window dimensions
         dimensions: tuple = (self.winfo_width(), self.winfo_height())
         num_of_panels: int = len(self.playlists) + 1
@@ -109,12 +135,24 @@ class SongMenu(Toplevel):
         self.animation = None
 
     def append(self: object, playlist: str) -> None:
+        """
+        Append a new playlist button to the SongMenu window.
+
+        Parameters:
+            playlist (str): The playlist to be appended.
+        """
         self.playlist_panels[playlist] = ttk.Button(self.playlist_panel, image=self.icons['playlist'][0],
                                                     text=self.playlists[playlist]['Name'], compound='left', command=lambda: self.add_to_playlist(playlist))
         self.playlist_panels[playlist].pack(
             side='top', fill='x', padx=5, pady=(0, 5))
 
     def remove(self: object, playlist: str) -> None:
+        """
+        Remove a playlist button from the SongMenu window.
+
+        Parameters:
+            playlist (str): The playlist to be removed.
+        """
         if playlist in self.playlist_panels:
             self.playlist_panels[playlist].destroy()
             del self.playlist_panels[playlist]
@@ -122,9 +160,17 @@ class SongMenu(Toplevel):
             self.disabled_playlists.remove(playlist)
 
     def rename(self: object, playlist: str, name: str) -> None:
+        """
+        Rename a playlist button in the playlist panel.
+
+        Args:
+            playlist (str): The name of the playlist to be renamed.
+            name (str): The new name for the playlist.
+        """
         self.playlist_panels[playlist]['text'] = name
 
     def remove_from_playlist(self: object) -> None:
+        """Remove the current song from the selected playlist."""
         selected_playlist: str = self.playlist_menu.get()
         if selected_playlist == 'Library':
             self.parent.remove_song(self.song)

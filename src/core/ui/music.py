@@ -1077,8 +1077,21 @@ class Sounder(Frame):
             self.log(err_obj)
 
     def new_folder(self) -> None:
+        """
+        Prompts the user to select a new directory and adds it to the list of monitored folders.
+        Starts a new thread to scan the new folder and another thread to watch for changes in the folder.
+
+        Raises:
+            Exception: If there is an error while processing the new folder.
+
+        Note:
+            The new folder must not already be in the list of monitored folders for it to be added.
+        """
         try:
+            # Ask the user to select a new directory
             new_dir: str = askdirectory()
+
+            # Check if a valid directory was selected and if it is not already in the monitored folders list
             if new_dir and abspath(new_dir) not in self.settings['folders']:
                 new_dir = abspath(new_dir)
                 self.settings['folders'].append(new_dir)
@@ -1237,6 +1250,15 @@ class Sounder(Frame):
         self.settings['menu_position'] = self.menu_position.get()
 
     def change_played(self, _: Event) -> None:
+        """
+        Update the 'played_percent' setting based on the value obtained from the GUI element.
+
+        Parameters:
+            _: Event - The event triggered by the GUI element (not used).
+
+        Returns:
+            None
+        """
         self.settings['played_percent'] = self.played_percent.get()
 
     def change_compensation(self, _: Event) -> None:
@@ -1594,15 +1616,37 @@ class Sounder(Frame):
             self.log(err_obj)
 
     def mixer_pause(self) -> None:
-        mixer.music.pause()
-        self.paused = True
+        """Pause the currently playing music.
+
+        This method pauses the music using the pygame mixer and updates the state
+        to indicate that the music is paused. It also updates the active panel and
+        the play/pause button state in the user interface.
+
+        Returns:
+            None
+        """
+        mixer.music.pause()  # Pause the music
+        self.paused = True  # Update the paused flag to True
+        # Update the active panel to reflect the paused song
         self.update_active_panel(self.song)
+        # Update the play/pause button state in the user interface
         self.update_play_pause()
 
     def mixer_unpause(self) -> None:
-        mixer.music.unpause()
-        self.paused = False
+        """Unpause the previously paused music.
+
+        This method unpauses the music using the pygame mixer and updates the state
+        to indicate that the music is not paused anymore. It also updates the active
+        panel and the play/pause button state in the user interface.
+
+        Returns:
+            None
+        """
+        mixer.music.unpause()  # Unpause the music
+        self.paused = False  # Update the paused flag to False
+        # Update the active panel to reflect the resumed song
         self.update_active_panel(self.song)
+        # Update the play/pause button state in the user interface
         self.update_play_pause()
 
     def panel_play(self, song: str) -> None:
@@ -1717,7 +1761,17 @@ class Sounder(Frame):
             self.mute_button.configure(image=self.icons['speaker'][0])
 
     def set_volume(self, volume: str) -> None:
+        """
+        Set the volume level and update the corresponding speaker icon.
+
+        Parameters:
+        volume (str): The volume level as a string.
+
+        Returns:
+        None
+        """
         temp_volume: float = float(volume)
+        # Update the speaker icon based on the volume level
         if temp_volume == 0.0:
             self.mute_button.configure(image=self.icons['speaker'][0])
         elif 0.25 >= temp_volume <= 0.5:
@@ -1726,9 +1780,11 @@ class Sounder(Frame):
             self.mute_button.configure(image=self.icons['speaker'][2])
         else:
             self.mute_button.configure(image=self.icons['speaker'][3])
+        # Set the volume for the mixer
         mixer.music.set_volume(temp_volume)
+        # Update the volume setting in the settings dictionary
         self.settings['volume'] = temp_volume
-        # check if muted
+        # Unmute the audio if it was muted
         if self.muted:
             self.muted = False
 
