@@ -1,7 +1,12 @@
-import threading
 import random
 
-thoughts = ["I wonder what the weather is like today", "I should call my friend", "What should I have for dinner?", "I need to finish that project", "I want to go on a vacation"]
+thoughts = [
+    "I wonder what the weather is like today", 
+    "I should call my friend", 
+    "What should I have for dinner?", 
+    "I need to finish that project", 
+    "I want to go on a vacation"
+]
 rules = {
     "weather": ["It might rain today", "It's going to be sunny", "I hope it doesn't snow"],
     "friend": ["I miss talking to them", "We should catch up", "I wonder how they're doing"],
@@ -32,34 +37,6 @@ def add_rule(category, rule):
     else:
         rules[category] = [rule]
 
-#print(generate_random_thought())
-
 add_thought("I need to exercise more")
 add_rule("exercise", "I should go for a run")
 add_rule("exercise", "I could do some yoga")
-
-
-stop = False
-
-
-def my_function():
-    # Your code here
-    print(generate_random_thought())
-
-def run_every_3_minutes():
-    global stop
-    if not stop:
-        my_function()
-        threading.Timer(6, run_every_3_minutes).start() #180
-
-# Start the repeating function in a separate thread
-thread = threading.Thread(target=run_every_3_minutes)
-thread.start()
-
-# Your main program code here
-while True:
-    # Your code here
-    #print("Main program running")
-    # Set stop to True to stop the repeating function
-    #stop = True
-    pass

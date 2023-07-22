@@ -1,6 +1,12 @@
 import random
 
-thoughts = ["I wonder what the weather is like today", "I should call my friend", "What should I have for dinner?", "I need to finish that project", "I want to go on a vacation"]
+thoughts = [
+    "I wonder what the weather is like today", 
+    "I should call my friend", 
+    "What should I have for dinner?", 
+    "I need to finish that project", 
+    "I want to go on a vacation"
+]
 rules = {
     "weather": ["It might rain today", "It's going to be sunny", "I hope it doesn't snow"],
     "friend": ["I miss talking to them", "We should catch up", "I wonder how they're doing"],
