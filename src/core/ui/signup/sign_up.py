@@ -48,20 +48,33 @@ class SignUpApp(customtkinter.CTkToplevel):
             create_button.place(x=170, y=300)
 
     def next_page(self):
+        """Go to the next page"""
+        # Save the information from the current page before moving to the next page
         self.save_info()
+        # Increment the current_page counter to move to the next page
         self.current_page += 1
+        # Clear the existing entries from the current page
         for entry in self.entries:
             entry.destroy()
+        # Reset the entries list to prepare for the new page
         self.entries = []
+        # Create the new page with fresh entries
         self.create_page()
 
     def previous_page(self):
+        """Go back to the previous page"""
+        # Check if the current page is greater than 0 (to avoid going below the first page)
         if self.current_page > 0:
+            # Save the information from the current page before moving to the previous page
             self.save_info()
+            # Decrement the current_page counter to move back to the previous page
             self.current_page -= 1
+            # Clear the existing entries from the current page
             for entry in self.entries:
                 entry.destroy()
+            # Reset the entries list to prepare for the new page
             self.entries = []
+            # Create the new page with fresh entries
             self.create_page()
 
     def save_info(self):
