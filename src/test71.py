@@ -30,12 +30,12 @@ class AnimatedGif(ctk.CTkLabel):
 		self._num = 0
 
 	def start(self):
-		""" Starts non-threaded version that we need to manually update() """
+		"""Starts non-threaded version that we need to manually update()"""
 		self.start_time = time.perf_counter()  # Starting timer
 		self._animate()
 
 	def stop(self):
-		""" This stops the after loop that runs the animation, if we are using the after() approach """
+		"""This stops the after loop that runs the animation, if we are using the after() approach"""
 		self.stop = True
 
 	def _animate(self):
@@ -49,17 +49,17 @@ class AnimatedGif(ctk.CTkLabel):
 			self.root.after(int(100), self._animate)
 
 	def start_thread(self):
-		""" This starts the thread that runs the animation, if we are using a threaded approach """
+		"""This starts the thread that runs the animation, if we are using a threaded approach"""
 		from threading import Thread  # We only import the module if we need it
 		#self._animation_thread = Thread(daemon=True)
 		self._animation_thread = Thread(target=self._animate_thread,daemon=True).start()  # Forks a thread for the animation
 
 	def stop_thread(self):
-		""" This stops the thread that runs the animation, if we are using a threaded approach """
+		"""This stops the thread that runs the animation, if we are using a threaded approach"""
 		self.stop = True
 
 	def _animate_thread(self):
-		""" Updates animation, if it is running as a separate thread """
+		"""Updates animation, if it is running as a separate thread"""
 		while self.stop is False:  # Normally this would block mainloop(), but not here, as this runs in separate thread
 			try:
 				time.sleep(self.delay)

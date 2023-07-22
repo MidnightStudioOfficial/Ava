@@ -1,10 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize
 from nltk.probability import FreqDist
+from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
-import nltk
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+import re
+from string import punctuation
+
 
 import pyttsx3
 engine = pyttsx3.init()
@@ -30,12 +36,6 @@ def scrape_results(results):
         snippet = result.find('p').get_text()
         extracted_results.append({'title': title, 'url': url, 'snippet': snippet})
     return extracted_results
-
-import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-import re
-from string import punctuation
-from nltk.stem import WordNetLemmatizer
 
 def summarize_text(text):
     sentences = sent_tokenize(text)
@@ -92,8 +92,6 @@ def summarize_text(text):
 
     return ' '.join(clean_summary)
 
-
-
 def main():
     query = input("Enter your search query (make sure your search query has no miss spellings): ")
     search_results = search_bing(query)
@@ -104,7 +102,7 @@ def main():
     for result in extracted_results:
         print("Title:", result['title'])
         print("URL:", result['url'])
-        #print("Snippet:", result['snippet'])
+        # print("Snippet:", result['snippet'])
         print()
 
     # Combine snippets for summarization

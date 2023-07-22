@@ -12,7 +12,7 @@ input_text = "I'm feeling excited about the latest technology developments."
 news_api_url = "https://newsapi.org/v2/top-headlines"
 
 # API key for accessing news articles (replace with your own)
-api_key = "1cdb329f317c4c2ab304ceda59bac177"
+api_key = ""
 
 # Sentiment analyzer
 sia = SentimentIntensityAnalyzer()
@@ -50,7 +50,7 @@ for category in categories:
         response = requests.get(news_api_url, params=params)
         response.raise_for_status()
         articles = response.json()['articles']
-        #print(articles)
+        # print(articles)
 
         for article in articles:
             title = article['title']
@@ -63,10 +63,10 @@ for category in categories:
             
                 if article_similarity > 0.5 and article_sentiment > 0.1:
                     filtered_articles.append((title, content))
-        
+
         if filtered_articles:
             break  # Stop searching categories once we find at least one recommendation
-    
+
     except requests.exceptions.RequestException as e:
         print("Error occurred while fetching news articles:", e)
 

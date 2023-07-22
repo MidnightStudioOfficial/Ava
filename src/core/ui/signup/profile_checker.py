@@ -23,9 +23,7 @@ class ProfileChecker:
             return False
 
     def create_profile(self, root):
-        """
-        Start create a profile if no profile/profiles exist
-        """
+        """Start create a profile if no profile/profiles exist"""
         if self.check_if_profile_exists() == False:
             s = SignUpApp(root)
 

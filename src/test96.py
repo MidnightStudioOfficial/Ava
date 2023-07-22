@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 from nltk.sentiment import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
 import random
 import threading
 import tkinter as tk
@@ -153,8 +155,7 @@ def interact_with_brain(brain):
         user_text = user_entry.get()
         brain.update_mood(user_text)
         mood_label["text"] = brain.mood_as_string()
-        #print("UPDATE")
-
+        # print("UPDATE")
 
     def generate_thought():
         thought = brain.generate_thought(brain.mood_as_string())
@@ -190,9 +191,7 @@ def interact_with_brain(brain):
     mood_history_button.pack()
 
     root.mainloop()
-    
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
+
 
 class AdaptiveBrain(Brain):
     def __init__(self):
@@ -227,7 +226,6 @@ class AdaptiveBrain(Brain):
             related_thought = super().generate_personalized_thought(mood)
 
         return related_thought
-
 
 
 

@@ -19,21 +19,13 @@ def center(win):
     y = win.winfo_screenheight() // 2 - win_height // 2
     win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
     win.deiconify()
-    
+
 root = CTk()
 
 splash_screen = SplashScreen(root)
 #center(root)
 splash_screen.set_text("Initializing...")
 #splash_screen.set_progress(25)
-
-import random
-import time
-#while True:
-#    splash_screen.set_text(str(random.randint(1, 50)))
-#    splash_screen.set_progress(random.randint(1, 100))
-#    #splash_screen.sp()
-#    time.sleep(3)
 
 splash_screen.set_text("Loading data...")
 #splash_screen.set_progress(50)

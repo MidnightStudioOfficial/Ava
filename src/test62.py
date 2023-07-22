@@ -45,7 +45,6 @@ def draw_waves(wave_data):
             canvas.create_line(points, fill=color, width=2, tags="wave", capstyle='round', joinstyle='round')
             canvas.create_line(fake_points, fill="gray", width=1, tags="wave")
 
-
 # Function to read audio data and update the canvas
 def update_canvas(stream):
     try:

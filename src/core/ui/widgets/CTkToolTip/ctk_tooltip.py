@@ -9,9 +9,7 @@ import customtkinter
 from tkinter import Toplevel, Frame
 
 class CTkToolTip(Toplevel):
-    """
-    Creates a ToolTip (pop-up) widget for customtkinter.
-    """
+    """Creates a ToolTip (pop-up) widget for customtkinter."""
 
     def __init__(
         self,
@@ -103,18 +101,13 @@ class CTkToolTip(Toplevel):
             self.widget.bind("<Motion>", self.on_enter, add="+")
             self.widget.bind("<B1-Motion>", self.on_enter, add="+")
             self.widget.bind("<Destroy>", lambda _: self.hide(), add="+")
- 
+
     def show(self) -> None:
-        """
-        Enable the widget.
-        """
+        """Enable the widget."""
         self.disable = False
 
     def on_enter(self, event) -> None:
-        """
-        Processes motion within the widget including entering and moving.
-        """
-
+        """Processes motion within the widget including entering and moving."""
         if self.disable: return
         self.last_moved = time.time()
 
@@ -134,54 +127,40 @@ class CTkToolTip(Toplevel):
         self.after(int(self.delay * 1000), self._show)
 
     def on_leave(self, event=None) -> None:
-        """
-        Hides the ToolTip temporarily.
-        """
-
+        """Hides the ToolTip temporarily."""
         if self.disable: return
         self.status = "outside"
         self.withdraw()
 
     def _show(self) -> None:
-        """
-        Displays the ToolTip.
-        """
-
+        """Displays the ToolTip."""
         if not self.widget.winfo_exists():
             self.hide()
             self.destroy()
-            
+
         if self.status == "inside" and time.time() - self.last_moved >= self.delay:
             self.status = "visible"
             self.deiconify()
-        
+
     def hide(self) -> None:
-        """
-        Disable the widget from appearing.
-        """
+        """Disable the widget from appearing."""
         if not self.winfo_exists():
             return
         self.withdraw()
         self.disable = True
 
     def is_disabled(self) -> None:
-        """
-        Return the window state
-        """
+        """Return the window state"""
         return self.disable
-    
+
     def get(self) -> None:
-        """
-        Returns the text on the tooltip.
-        """  
+        """Returns the text on the tooltip."""  
         return self.messageVar.get()
-    
+
     def configure(self, message: str = None, delay: float = None, bg_color: str = None, **kwargs):
-        """
-        Set new message or configure the label parameters.
-        """
+        """Set new message or configure the label parameters."""
         if delay: self.delay = delay
         if bg_color: self.frame.configure(fg_color=bg_color)
-        
+
         self.messageVar.set(message)
         self.message_label.configure(**kwargs)

@@ -11,6 +11,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+import time
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -49,8 +50,6 @@ def filter_links(query, links, threshold=0.5):
             print(f'Error processing {link}: {e}')
     return filtered_links
 
-
-
 def search_bing(query):
     headers = {'User-Agent': 'Mozilla/5.0'}
     url = f'https://www.bing.com/search?q={query}'
@@ -59,8 +58,6 @@ def search_bing(query):
     results = soup.find_all('li', class_='b_algo')
     links = [result.find('a')['href'] for result in results]
     return links
-
-import time
 
 def search_google2(query):
     while True:
@@ -73,7 +70,6 @@ def search_google2(query):
                 time.sleep(1)
             else:
                 raise e
-
 
 def search_google(query):
     links = [j for j in search(query, num=1)] #num=10
@@ -97,7 +93,6 @@ def rank_summaries(query, summaries):
     ranked_summaries = sorted(summaries, key=lambda x: similarity(query, x), reverse=True)
     return ranked_summaries
 
-
 def main():
     query = input('Enter your search query: ')
     print(f'Query: {query}')
@@ -114,8 +109,7 @@ def main():
         else:
            # print(str(i))
             all_links.append(str(i))
-            
-            
+
     print(f'All links: {all_links}')
     print(f'Found {len(all_links)} links. Filtering...')
     new_links = filter_links(query, all_links)
@@ -128,4 +122,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

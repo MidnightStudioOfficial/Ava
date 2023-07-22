@@ -75,4 +75,3 @@ while True:
     X_ratings = vectorizer.transform(ratings_corpus)
     y_ratings = ratings_labels
     classifier.fit(X_ratings, y_ratings)
-

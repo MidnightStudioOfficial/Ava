@@ -14,15 +14,15 @@ class ChatSkill(BaseSkill):
             "lets chat",
             "who are you",
             "lets chat",
-            
+
             "its good that you had fun",
-            
+
             "hows it going",
             "whats your favorite hobby",
             "what can you do for me",
-            
-            
-            
+
+
+
             "hi",
             "thank you",
             "what is your name",

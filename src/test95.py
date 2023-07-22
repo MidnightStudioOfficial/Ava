@@ -5,6 +5,11 @@ from nltk.tokenize import sent_tokenize
 from nltk.probability import FreqDist
 from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import re
+from string import punctuation
+from nltk.stem import WordNetLemmatizer
 
 import pyttsx3
 engine = pyttsx3.init()
@@ -36,11 +41,7 @@ def scrape_results(results):
     return extracted_results
 
 
-import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-import re
-from string import punctuation
-from nltk.stem import WordNetLemmatizer
+
 
 def determine_summary_length(sentences, tfidf_scores):
     sentence_scores = tfidf_scores.sum(axis=1)
@@ -122,7 +123,6 @@ def determine_summary_length4(sentences, tfidf_scores, similarity_matrix):
     desired_length = min(max_sentences, len(summary_sentences))
     return desired_length
 
-
 def summarize_text(text):
     sentences = sent_tokenize(text)
 
@@ -159,10 +159,10 @@ def summarize_text(text):
 
     # Determine the summary length based on the needs of the summary
     desired_length = min(4, len(sentences))  # Set the desired length to 4 or the number of sentences, whichever is smaller
-    #desired_length = determine_summary_length(sentences, tfidf_scores)
-    #desired_length = determine_summary_length2(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
-    #desired_length = determine_summary_length3(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
-    #desired_length = determine_summary_length4(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
+    # desired_length = determine_summary_length(sentences, tfidf_scores)
+    # desired_length = determine_summary_length2(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
+    # desired_length = determine_summary_length3(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
+    # desired_length = determine_summary_length4(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
 
 
     # Get the top sentences with the highest scores
@@ -187,7 +187,6 @@ def summarize_text(text):
 
     return ' '.join(clean_summary)
 
-
 def main():
     query = input("Enter your search query (Make sure your search query has no miss spellings): ")
     search_results = search_bing(query)
@@ -198,7 +197,7 @@ def main():
     for result in extracted_results:
         print("Title:", result['title'])
         print("URL:", result['url'])
-        #print("Snippet:", result['snippet'])
+        # print("Snippet:", result['snippet'])
         print()
 
     # Combine snippets for summarization

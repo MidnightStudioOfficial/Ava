@@ -39,12 +39,12 @@ def check_accuracy(chatbot_responses, expected_responses):
             print(str(chatbot_responses[i])+" is wrong")
             incorrect += 1
     accuracy = correct / len(chatbot_responses)
-    
+
     # Plotting the results
     plt.bar(['Correct', 'Incorrect'], [correct, incorrect])
     plt.title('Accuracy Results')
     plt.show()
-    
+
     return accuracy
 
 c = ["play music", "get the weather"]

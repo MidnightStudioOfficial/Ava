@@ -6,13 +6,6 @@ from nltk.probability import FreqDist
 from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
 
-import pyttsx3
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[2].id)  # Index 1 for female voice
-engine.setProperty('rate', 150)  # Adjust rate to 150 words per minute
-engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
-engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
 
 def search_bing(query):
     url = f"https://www.bing.com/search?q={query}"
@@ -66,7 +59,6 @@ def summarize_text(text):
 
     return ' '.join(summary)
 
-
 def main():
     query = input("Enter your search query (make sure your search query has no miss spellings): ")
     search_results = search_bing(query)
@@ -77,7 +69,7 @@ def main():
     for result in extracted_results:
         print("Title:", result['title'])
         print("URL:", result['url'])
-        #print("Snippet:", result['snippet'])
+        # print("Snippet:", result['snippet'])
         print()
 
     # Combine snippets for summarization
@@ -86,8 +78,6 @@ def main():
     summary = summarize_text(combined_snippets)
     print("\nSummary:")
     print(summary)
-    engine.say(summary)
-    engine.runAndWait()
 
 if __name__ == "__main__":
     main()

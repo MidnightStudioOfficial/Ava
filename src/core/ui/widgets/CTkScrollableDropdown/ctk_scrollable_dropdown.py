@@ -81,9 +81,9 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         self.var_update = customtkinter.StringVar()
         self.appear = False
         
-        if justify.lower()=="left":
+        if justify.lower() == "left":
             self.justify = "w"
-        elif justify.lower()=="right":
+        elif justify.lower() == "right":
             self.justify = "e"
         else:
             self.justify = "c"
@@ -91,7 +91,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         self.button_height = button_height
         self.values = values
         self.button_num = len(self.values)
-        self.image_values = None if len(image_values)!=len(self.values) else image_values
+        self.image_values = None if len(image_values) != len(self.values) else image_values
         
         self.resizable(width=False, height=False)
         self.transient(self.master)

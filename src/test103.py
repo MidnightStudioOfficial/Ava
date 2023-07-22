@@ -53,5 +53,4 @@ def generate_sentence(prompt):
     
     return ' '.join(sentence)
 
-
 generate_sentence("who are you")

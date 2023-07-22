@@ -15,12 +15,12 @@ from sklearn import naive_bayes #, svm, model_selection
 class ConversationalEngine():
     # The constructor takes in several optional arguments to customize the behavior of the engine.
     def __init__(self, lemmatize_data=True, filepath=None, modelpath=None):
-        '''
+        """
         app: any object | usually the chatbot object
         lemmatize_data: bool | True includes lemmatization, False excludes it
         filepath: str | the path to the .csv file containing the training data
         modelpath str, optional | the path to the .p file containing a pickled model you wish to use. If passed, will use that model instead of retraining from the training data. This leads to faster instantiation.
-        '''
+        """
         # Read in the training data from a CSV file and sort it by intent name.
         df = read_csv(filepath)
         df.sort_values(by='intent_name')
@@ -31,7 +31,7 @@ class ConversationalEngine():
             if i not in self.labels:
                 self.labels.append(i)
                 
-        # Store the training data as a Pandas Series of strings.        
+        # Store the training data as a Pandas Series of strings.
         self.trainingData = df['sample_utterance'].apply(str)
         
         # If no model path is provided, train a new model using the training data.
@@ -57,21 +57,21 @@ class ConversationalEngine():
             self.Naive = naive_bayes.MultinomialNB()
             self.Naive.fit(Train_X_Tfidf, df['intent_name'])
         # If a model path is provided, load an existing model from a pickled file.
-        else: 
+        else:
             import pickle
             self.Naive=pickle.load( open( modelpath, "rb" ))
     
     def getIntent(self, utterance):
-        '''
+        """
         arguments:
             utterance: str | the utterance entered by the user
 
         returns: 
             a dictionary containing the following key-value pairs:
             intent: str -- the predicted intent
-            probability -- float | the probability score for that intent 
+            probability -- float | the probability score for that intent
             probability_matrix -- list | a 2-dimensional list with elements of [intent name, probability] for all intents in the training set, sorted by highest to lowest probability
-        '''
+        """
         # Vectorize the input utterance using scikit-learn's TfidfVectorizer.
         vectorizer = TfidfVectorizer(max_features=5000)
         vectorizer.fit(self.trainingData)
@@ -115,8 +115,8 @@ class ConversationalEngine():
         return str(outputList)
     
     def pickleModel(self, path):
-        '''pickles the conversation's trained model into a .p file at the defined path.
-        Path should include filename. for example: "folder\model.p"'''
+        """pickles the conversation's trained model into a .p file at the defined path.
+        Path should include filename. for example: folder\model.p"""
         import pickle
         pickle.dump(self.Naive, open( path, "wb"))
 

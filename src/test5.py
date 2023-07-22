@@ -4,7 +4,7 @@ class Importer:
     def __init__(self, modules) -> None:
         self.modules = modules
         self.threads = []
-        
+
     def import_module2(self, package_name, pack):
         import importlib
         print("Importing "+str(package_name))
@@ -31,7 +31,6 @@ modules2 = {
         "package_name": "spacy",
         "pack": "load"     
     }
-    
 }
 
 i = Importer(modules=modules2)

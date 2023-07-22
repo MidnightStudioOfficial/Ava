@@ -23,7 +23,7 @@ class Brain:
         self.mood = 0.0
         self.mood_history = []
 
-        self.thought = "" 
+        self.thought = ""
         self.thoughts = {
         "happy": ["I wonder what the weather is like today", "I should call my friend", "What should I have for dinner?"],
         "sad": ["I need to finish that project", "I want to go on a vacation"]

@@ -44,12 +44,12 @@ from core.skill.bulitin_skills import BuiltinSkills  # Custom built-in skills fo
 class Engine2():
     # The constructor takes in several optional arguments to customize the behavior of the engine.
     def __init__(self, lemmatize_data=True, filepath=None, modelpath=None):
-        '''
+        """
         app: any object | usually the chatbot object
         lemmatize_data: bool | True includes lemmatization, False excludes it
         filepath: str | the path to the .csv file containing the training data
         modelpath str, optional | the path to the .p file containing a pickled model you wish to use. If passed, will use that model instead of retraining from the training data. This leads to faster instantiation.
-        '''
+        """
         if os.path.exists('Data/sir-bot-a-lot.brain') and os.path.exists('Data/tokenizer.pickle') and os.path.exists('Data/label_encoder.pickle'):
             # Load the pre-trained model and associated objects
             self.model = keras.models.load_model('Data/sir-bot-a-lot.brain')
@@ -100,7 +100,7 @@ class Engine2():
         self.nlp = spacy.load("en_core_web_sm")
 
     def getIntent(self, utterance):
-        '''
+        """
         Predicts the intent of an utterance using the neural network.
 
         Parameters:
@@ -110,7 +110,7 @@ class Engine2():
             dict: A dictionary containing the following key-value pairs:
                   'intent' (str): The predicted intent.
                   'probability' (float): The probability score for the predicted intent.
-        '''
+        """
         # Predict the intent using the neural network model
         result = self.model.predict(
             keras.preprocessing.sequence.pad_sequences(self.tokenizer.texts_to_sequences([utterance]),
@@ -195,7 +195,7 @@ class Engine2():
         return " ".join(stemmed_sentence)
 
     def train2(self):
-        '''
+        """
         Train the neural network model for intent classification.
 
         This method performs the following steps:
@@ -207,8 +207,7 @@ class Engine2():
         6. Train the model using early stopping.
         7. Evaluate the model on the test set.
         8. Save the trained model and tokenizer for later use.
-        '''
-
+        """
         print("Loading all skills...")
         s = self.skills
 

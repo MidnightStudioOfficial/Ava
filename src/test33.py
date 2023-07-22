@@ -21,7 +21,6 @@ def foo3(n):
         n = n*5
     return n
 
-
 def foo2(n):
     for i in range(10):
         n += 4.65
@@ -37,6 +36,7 @@ def not_time():
     while n2 != 10:
         foo(n2)
         n2 += 1
+
 def is_time():
     n2 = 0
     while n2 != 10:

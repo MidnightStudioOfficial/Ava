@@ -14,13 +14,11 @@ historical_data = [
     # Add more historical data...
 ]
 
-
 def choose_window_style(time_of_day, favorite_art_style):
     # Prepare the training data
     encoder = OneHotEncoder(sparse=False, handle_unknown="ignore")
     X = encoder.fit_transform([[d["time_of_day"], d["art_style"]] for d in historical_data])
     y = [d["window_style"] for d in historical_data]
-
 
     # Split data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)

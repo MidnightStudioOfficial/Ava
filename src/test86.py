@@ -12,7 +12,6 @@ class CommandBarApp:
         self.hide_button = ctk.CTkButton(self.master, text="Hide Command Bar", command=self.hide_command_bar)
         self.hide_button.pack()
 
-
         self.frame = ctk.CTkFrame(self.master)
 
         self.output_text = ctk.CTkTextbox(self.frame)

@@ -59,7 +59,6 @@ def summarize_text(text):
 
     return ' '.join(summary)
 
-
 def main():
     query = input("Enter your search query: ")
     search_results = search_bing(query)
@@ -70,7 +69,7 @@ def main():
     for result in extracted_results:
         print("Title:", result['title'])
         print("URL:", result['url'])
-        #print("Snippet:", result['snippet'])
+        # print("Snippet:", result['snippet'])
         print()
 
     # Combine snippets for summarization

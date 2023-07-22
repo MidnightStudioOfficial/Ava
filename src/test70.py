@@ -16,7 +16,7 @@ class WelcomeApp(customtkinter.CTkToplevel):
         self.welcome_text2 = " This guide will help you get started and set up your chatbot to provide helpful and interactive text-based or voice-based conversations."
 
         self.create_page()
- 
+
     def create_page(self):
         self.frame = customtkinter.CTkFrame(master=self.l1, width=320, height=360, corner_radius=15)
         self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
@@ -28,7 +28,6 @@ class WelcomeApp(customtkinter.CTkToplevel):
 
         get_started_button = customtkinter.CTkButton(master=self.frame, width=100, text="Get Started")
         get_started_button.pack(pady=(30, 0))
-
 
     def create_profile(self):
         self.save_info()

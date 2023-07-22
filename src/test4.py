@@ -5,7 +5,6 @@ def install_and_import(package_name, pack):
         print(str(package_name))
         print("Importing packages")
         globals()[package_name] = importlib.import_module(package_name, package=pack)
-        
 
 modules = {
     "Engine": {
@@ -20,7 +19,6 @@ modules = {
         "package_name": "spacy",
         "pack": "load"     
     }
-    
 }
 
 threads = []
@@ -39,7 +37,7 @@ class Importer:
     def __init__(self, modules) -> None:
         self.modules = modules
         self.threads = []
-        
+
     def import_module(self, package_name, pack):
         import importlib
         print("Importing "+str(package_name))

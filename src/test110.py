@@ -28,5 +28,5 @@ with open("story.pkl", "wb") as file:
 t = ""
 for i in range(6):
     t += combined_model.make_sentence()
-    
+
 print(t)

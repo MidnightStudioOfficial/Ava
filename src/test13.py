@@ -48,4 +48,3 @@ def check_accuracy(chatbot_responses, expected_responses):
     plt.xlabel("False positive rate")
     plt.ylabel("True positive rate")
     plt.show()
-

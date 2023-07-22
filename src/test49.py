@@ -15,7 +15,6 @@ def print_progress_bar(iteration, total, progress_bar):
     if iteration == total:
         status_label.config(text="Task complete!")
 
-
 def calculate_estimated_time(iteration, total, average_time):
     remaining_iterations = total - iteration
     estimated_time = average_time * remaining_iterations
@@ -23,7 +22,6 @@ def calculate_estimated_time(iteration, total, average_time):
     minutes = int((estimated_time % 3600) // 60)
     seconds = int(estimated_time % 60)
     return f'{hours:02d}:{minutes:02d}:{seconds:02d}'
-
 
 def calculate_average_time(iteration):
     if iteration == 0:
@@ -33,7 +31,6 @@ def calculate_average_time(iteration):
     average_time = elapsed_time / iteration
     return average_time
 
-
 def simulate_task(total_iterations):
     for i in range(total_iterations):
         # Simulating some task
@@ -41,7 +38,6 @@ def simulate_task(total_iterations):
 
         # Update the progress bar
         print_progress_bar(i + 1, total_iterations, progress_bar)
-
 
 # Create the GUI
 root = tk.Tk()

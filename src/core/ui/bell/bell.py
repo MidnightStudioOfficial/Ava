@@ -243,7 +243,6 @@ class BellGUI(ctk.CTkToplevel):
 
     def add_notification(self, name, value) -> None:
         """Add a new notification to the list"""
-
         # Create a frame to contain the notification item
         self.item_frame[name] = ctk.CTkFrame(self.scrollable_frame)
         self.item_frame[name].pack(expand=True, fill="x", padx=5, pady=5)

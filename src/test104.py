@@ -55,7 +55,6 @@ input_sequences = tf.keras.preprocessing.sequence.pad_sequences(input_sequences,
 output_sequences = tf.keras.preprocessing.sequence.pad_sequences(output_sequences,
                                                                  maxlen=max_sequence_length,
                                                                  padding='post')
-
 vocab_size = len(vocabulary)
 embedding_dim = 50
 

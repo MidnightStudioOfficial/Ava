@@ -237,18 +237,7 @@ class smooth_frame(customtkinter.CTk):
         # Set the grid layout to 1 row and 2 columns
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
-        #self.maxsize(600, 500)
-        #self.minsize(600, 500)
 
-        # self.label1 = customtkinter.CTkLabel(self, font=('Consolas', 15), text='rounded value - 0')
-        # self.label1.place(x=300, y=470, anchor='sw')
-
-        # self.label2 = customtkinter.CTkLabel(self, font=('Consolas', 15), text='direct value  - 0.0')
-        # self.label2.place(x=300, y=490, anchor='sw')
-
-        # self.label3 = customtkinter.CTkLabel(self, font=('Consolas', 15), text='fps - 0')
-        # self.label3.place(x=300, y=450, anchor='sw')
-        # create home frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.home_frame.grid_columnconfigure(0, weight=1)
         
@@ -265,11 +254,10 @@ class smooth_frame(customtkinter.CTk):
         for widget, row in widgets:
             widget.grid(row=row, column=0, padx=20, pady=10)
 
-
-        #self.frame = customtkinter.CTkButton(self.home_frame, width=100, height=100, fg_color='black')
-        #self.frame.place(x=10, y=10)
-        #self.frame.bind('<Enter>', self._resize_frame)
-        #self.frame.bind('<Leave>', self._reduce_frame)
+        # self.frame = customtkinter.CTkButton(self.home_frame, width=100, height=100, fg_color='black')
+        # self.frame.place(x=10, y=10)
+        # self.frame.bind('<Enter>', self._resize_frame)
+        # self.frame.bind('<Leave>', self._reduce_frame)
 
     def _resize_frame(self, event):
         speed = 60

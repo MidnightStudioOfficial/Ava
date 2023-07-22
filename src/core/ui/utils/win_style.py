@@ -26,7 +26,7 @@ class WINDOW_COMPOSITION_ATTRIBUTES(Structure):
         ]
 
 class apply_style():
-    """ different styles for windows """
+    """different styles for windows"""
     def __init__(self,
                  window,
                  style: str):
@@ -73,7 +73,7 @@ class apply_style():
             ChangeDWMAccent(self.HWND, 19, 4, color=0)
 
 class change_header_color():
-    """ change the titlebar background color """
+    """change the titlebar background color"""
     def __init__(self,
                  window,
                  color):
@@ -93,7 +93,7 @@ class change_header_color():
 
 
 class change_border_color():
-    """ change the window border color """
+    """change the window border color"""
     def __init__(self,
                  window,
                  color):
@@ -105,7 +105,7 @@ class change_border_color():
         ChangeDWMAttrib(self.HWND, self.attrib, self.color)
 
 class change_title_color():
-    """ change the title color """
+    """change the title color"""
     def __init__(self,
                  window,
                  color):
@@ -134,7 +134,7 @@ def ChangeDWMAccent(hWnd: int, attrib: int, state: int, color=None):
     windll.user32.SetWindowCompositionAttribute(hWnd, pointer(winCompAttrData))
 
 def convert_color(color_name: str):
-    """ convert colors to the required API """
+    """convert colors to the required API"""
     NAMES_TO_HEX = {
         "aliceblue": "#f0f8ff",
         "antiquewhite": "#faebd7",
