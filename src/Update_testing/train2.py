@@ -38,23 +38,6 @@ def preprocess_sentence(sentence):
 
     return " ".join(lemmatized_sentence)
 
-class EarlyStoppingByLossVal(Callback):
-    def __init__(self, monitor='val_loss', value=0.00001, verbose=0):
-        super(Callback, self).__init__()
-        self.monitor = monitor
-        self.value = value
-        self.verbose = verbose
-
-    def on_epoch_end(self, epoch, logs={}):
-        val_loss = logs.get(self.monitor)
-        accuracy = logs.get('accuracy')
-
-        if val_loss == 0.0100:
-            print("loss")
-            if accuracy == 1.0000:
-                if self.verbose > 0:
-                    print("Epoch %05d: early stopping THR" % epoch)
-                self.model.stop_training = True
 
 if __name__ == '__main__':
     print("Loading all skills...")

@@ -82,10 +82,6 @@ class Sounder(Frame):
                        command=self.exit_app).pack(side='top', pady=(50, 0), padx=10)
             ttk.Button(error_content, text='Ignore', style='third.TButton',
                        command=lambda: self.error_panel.lower()).pack(side='top', pady=(10, 0), padx=10)
-            ttk.Button(error_content, text='Open Logs', style='third.TButton',
-                       command=self.open_logs).pack(side='top', pady=(10, 0), padx=10)
-            ttk.Button(error_content, text='Report an issue', style='third.TButton',
-                       command=self.open_logs).pack(side='top', pady=(10, 0), padx=10)
             error_content.place(relx=.5, rely=.5, anchor='center')
             ttk.Label(self.error_panel, text=f'version: {self.version[0]} [build: {self.version[1]}]', style='third.TLabel').pack(
                 side='bottom', anchor='w', padx=10, pady=5)
@@ -944,11 +940,6 @@ class Sounder(Frame):
             self.last_panel = panel
         except Exception as err_obj:
             self.log(err_obj)
-
-    def open_logs(self) -> None:
-        if isfile(r'Data\\Dumps\\sounder_dump.txt'):
-            startfile(r'Data\\Dumps\\sounder_dump.txt')
-            self.exit_app()
 
     def on_wheel(self, event: Event) -> None:
         self.player_canvas.yview_scroll(

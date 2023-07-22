@@ -20,7 +20,7 @@ class Trainer(object):
     def __init__(self, chatbot, **kwargs):
         self.chatbot = chatbot
 
-        environment_default = os.getenv('CHATTERBOT_SHOW_TRAINING_PROGRESS', True)
+        environment_default = True
         self.show_training_progress = kwargs.get(
             'show_training_progress',
             environment_default
@@ -165,7 +165,6 @@ class ChatterBotCorpusTrainer(Trainer):
                     previous_statement_search_text = statement_search_text
 
                     statements_to_create.append(statement)
-                    #statements_to_create.extend(statement)
 
             if statements_to_create:
                 self.chatbot.storage.create_many(statements_to_create)
