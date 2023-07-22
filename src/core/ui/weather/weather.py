@@ -83,7 +83,7 @@ class WeatherGUI(ctk.CTkFrame):
                                                 width = 280, height=40, font = ('Arial', 14)).place(x=46, y=25)
 
         self.searchBtn = ctk.CTkButton(parent, command = self.showWeather, text = "Check Weather", font = ('Arial', 12), hover= True, 
-                                                hover_color= "black", height=40, width= 130, border_width=2, corner_radius=10).place(x=46, y=83) #border_color= "#c75d55", fg_color= "#262626"  text_color="#c75d55",
+                                                hover_color= "black", height=40, width= 130, border_width=2, corner_radius=10).place(x=46, y=83) # border_color= "#c75d55", fg_color= "#262626"  text_color="#c75d55",
 
         self.left_frame = ctk.CTkFrame(parent, width=300, height=300, corner_radius=5)
         self.left_frame.grid(row=0, column=0, sticky="nsew", padx=(25, 345), pady=(200, 350))
@@ -179,7 +179,7 @@ class WeatherGUI(ctk.CTkFrame):
             coordinatesLong = _info[0]['lon']
             coordinatesLat = _info[0]['lat']
 
-            infostring = {"place_id": place_id,"units": "metric"}
+            infostring = {"place_id": place_id, "units": "metric"}
 
             weather_response = requests.request("GET", weather_url, headers=headers, params=infostring)
             weather_info = weather_response.json()

@@ -33,7 +33,7 @@ class CTkXYFrame(customtkinter.CTkFrame):
 
         self.xy_canvas.configure(yscrollcommand=lambda x, y: self.dynamic_scrollbar_vsb(x, y),
                                  xscrollcommand=lambda x, y: self.dynamic_scrollbar_hsb(x, y))
-        self.xy_canvas.grid(row=0, column=0, sticky="nsew", padx=(7, 0), pady=(7, 0)) #padx=(7,0), pady=(7,0)
+        self.xy_canvas.grid(row=0, column=0, sticky="nsew", padx=(7, 0), pady=(7, 0)) # padx=(7,0), pady=(7,0)
 
         self.bind("<Configure>", lambda event, canvas=self.xy_canvas: self.onFrameConfigure(canvas))
         self.xy_canvas.bind_all("<MouseWheel>", lambda e: self._on_mousewheel(e.delta))

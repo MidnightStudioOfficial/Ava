@@ -1372,7 +1372,7 @@ class Sounder(Frame):
     def sort_songs(self, song: str) -> str:
         if song in self.songs_cache:
             return self.songs_cache[song]['title'][:2].lower()
-        
+
         return ''
 
     def toggle_shuffle(self) -> None:
