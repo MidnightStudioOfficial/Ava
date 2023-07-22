@@ -2,7 +2,6 @@ import tracemalloc
 
 # Start tracing memory allocations
 tracemalloc.start()
-import os
 
 # Get a snapshot of the current memory usage
 snapshot = tracemalloc.take_snapshot()
@@ -16,7 +15,6 @@ for i, block in enumerate(top_blocks[:5], start=1):
 
 # Start tracing memory allocations
 tracemalloc.start()
-import logger
 
 # Stop tracing memory allocations
 tracemalloc.stop()

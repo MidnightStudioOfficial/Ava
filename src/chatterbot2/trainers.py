@@ -5,7 +5,6 @@ from time import time
 from dateutil import parser as date_parser
 from chatterbot2.conversation import Statement
 from chatterbot2.tagging import PosLemmaTagger
-from chatterbot2 import utils
 import tqdm
 
 class Trainer(object):
@@ -213,7 +212,6 @@ class UbuntuCorpusTrainer(Trainer):
         """
         Check if the data file is already extracted.
         """
-
         if os.path.isdir(file_path):
             self.chatbot.logger.info('File is already extracted')
             return True

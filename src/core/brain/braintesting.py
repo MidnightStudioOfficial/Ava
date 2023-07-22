@@ -39,7 +39,6 @@ add_rule("exercise", "I could do some yoga")
 
 print(generate_random_thought())
 
-import random
 
 templates = [
     "I wonder if {weather}. Maybe I should {activity}.",
@@ -65,8 +64,6 @@ def generate_random_sentence():
 
 print(generate_random_sentence())
 
-
-import random
 
 thoughts = {
     "happy": ["I wonder what the weather is like today", "I should call my friend", "What should I have for dinner?"],

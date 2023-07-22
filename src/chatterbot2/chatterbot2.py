@@ -6,9 +6,7 @@ from chatterbot2 import utils
 
 
 class ChatBot(object):
-    """
-    A conversational dialog chat bot.
-    """
+    """A conversational dialog chat bot."""
 
     def __init__(self, name, **kwargs):
         self.name = name
@@ -208,9 +206,7 @@ class ChatBot(object):
         return response
 
     def learn_response(self, statement, previous_statement=None):
-        """
-        Learn that the statement provided is a valid response.
-        """
+        """Learn that the statement provided is a valid response."""
         if not previous_statement:
             previous_statement = statement.in_response_to
 

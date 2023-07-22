@@ -34,23 +34,23 @@ class ChatBotGUI:
         # set grid layout 1x2
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(1, weight=1)
-        
+
         self.min_w = 50 # Minimum width of the frame
         self.max_w = 200 # Maximum width of the frame
         self.cur_width = self.min_w # Increasing width of the frame
         self.expanded = False # Check if it is completely exanded
-        
+
         image_path = join(dirname(realpath(__file__)), "Data/assets")
         self.logo_image = ctk.CTkImage(Image.open(join(image_path, "my-Ava.png")), size=(26, 26))
         self.large_test_image = ctk.CTkImage(Image.open(join(image_path, "text.png")), size=(290, 118)) #size=(500, 150)
         self.image_icon_image = ctk.CTkImage(Image.open(join(image_path, "home.png")), size=(20, 20))
-        
+
         self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
         self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
         self.add_user_image = ctk.CTkImage(light_image=Image.open(join(image_path, "settings.png")), dark_image=Image.open(join(image_path, "settings.png")), size=(20, 20))
         self.add_DNA_image = ctk.CTkImage(light_image=Image.open(join(image_path, "DNA.png")), dark_image=Image.open(join(image_path, "DNA.png")), size=(20, 20))
         
-        
+
         # create navigation frame
         self.navigation_frame = ctk.CTkFrame(master, corner_radius=0)
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
@@ -79,7 +79,7 @@ class ChatBotGUI:
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.add_DNA_image, anchor="w", command=self.frame_DNA_button_event)
         self.frame_DNA_button.grid(row=4, column=0, sticky="ew")
-        
+
         self.frame_profile_button = ctk.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Profile",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.add_DNA_image, anchor="w", command=self.frame_profile_button_event)

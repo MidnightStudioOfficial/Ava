@@ -86,15 +86,13 @@ class ChatBotGUI:
         self.image_news_icon_image = ctk.CTkImage(Image.open(join(image_path, "news.png")), size=(20, 20))
         self.image_fire_icon_image = ctk.CTkImage(Image.open(join(image_path, "fire.png")), size=(20, 20))
 
-        
         self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
         self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
         self.add_user_image = ctk.CTkImage(light_image=Image.open(join(image_path, "settings.png")), dark_image=Image.open(join(image_path, "settings.png")), size=(20, 20))
         self.add_DNA_image = ctk.CTkImage(light_image=Image.open(join(image_path, "DNA.png")), dark_image=Image.open(join(image_path, "DNA.png")), size=(20, 20))
         self.add_profile_image = ctk.CTkImage(Image.open(join(image_path, "profile.png")))
         self.add_skills_image = ctk.CTkImage(Image.open(join(image_path, "box.png")))
-        
-        
+
         # create navigation frame
         splash_screen.set_text("Creating gui")
         self.navigation_frame = ctk.CTkFrame(master, corner_radius=7) # corner_radius=0
@@ -127,7 +125,7 @@ class ChatBotGUI:
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.add_DNA_image, anchor="w", command=self.frame_DNA_button_event)
         self.frame_DNA_button.grid(row=4, column=0, sticky="ew")
-        
+
         self.frame_profile_button = ctk.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Profile",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.add_profile_image, anchor="w", command=self.frame_profile_button_event)

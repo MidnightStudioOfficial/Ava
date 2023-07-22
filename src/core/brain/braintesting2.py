@@ -1,5 +1,4 @@
 import threading
-
 import random
 
 thoughts = ["I wonder what the weather is like today", "I should call my friend", "What should I have for dinner?", "I need to finish that project", "I want to go on a vacation"]

@@ -1,7 +1,6 @@
 from core.skill.skill import Skills
 
 
-
 s = Skills("Data")
 
 # load skill sample data

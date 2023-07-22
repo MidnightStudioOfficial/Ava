@@ -17,7 +17,6 @@ if __name__ == '__main__':
     This script creates a GUI for the Ava Chatbot application with a splash screen that shows a loading progress.
     """
     image_path = join(dirname(realpath(__file__)), "Data/assets")
-    
 
     print('Creating GUI')
 
