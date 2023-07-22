@@ -7,6 +7,7 @@ class ProfileChecker:
         self.checker_data = None
 
     def check_if_profile_exists(self):
+        """Check if a profile exists"""
         try:
             if os.path.exists("Data/profiles_metadata.json"):
                 with open("Data/profiles_metadata.json", 'r') as file:
@@ -28,6 +29,7 @@ class ProfileChecker:
             s = SignUpApp(root)
 
     def __create_default_file(self):
+        """Create a profile metadata when it does not exist"""
         try:
             with open("Data/profiles_metadata.json", 'w') as file:
                 self.checker_data = {
