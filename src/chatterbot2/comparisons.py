@@ -6,7 +6,6 @@ from chatterbot2.exceptions import OptionalDependencyImportError
 from difflib import SequenceMatcher
 
 from sklearn.metrics.pairwise import cosine_similarity
-from difflib import SequenceMatcher
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 

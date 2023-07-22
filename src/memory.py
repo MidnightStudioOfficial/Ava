@@ -13,7 +13,6 @@ for i, block in enumerate(top_blocks[:5], start=1):
     print(f"#{i}: {block.size / (1024 * 1024)} MB")
     print(block.traceback.format())
     print()
-import tracemalloc
 
 # Start tracing memory allocations
 tracemalloc.start()

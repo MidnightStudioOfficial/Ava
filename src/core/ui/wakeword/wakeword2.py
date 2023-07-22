@@ -4,7 +4,6 @@ from core.AudioStream.output2 import AudioPlayer
 import speech_recognition as sr
 import threading
 import whisper
-import numpy as np
 import wave
 import os
 
@@ -38,7 +37,7 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.cbl.pack(pady=17)
 
         # Create a CTkLabel object with the text 'Offline', font size 16 and foreground color '#203647'
-        self.AITaskStatusLbl = ctk.CTkLabel(self.VoiceFrame, text='    Listening', font=('montserrat', 16), fg_color="#203647")
+        self.AITaskStatusLbl = ctk.CTkLabel(self.VoiceFrame, text='    Offline', font=('montserrat', 16), fg_color="#203647")
 
         # Place the AI task status label at position (165, 32) in its parent widget
         self.AITaskStatusLbl.place(x=165, y=32)
@@ -65,11 +64,14 @@ class WakeWordGUI(ctk.CTkToplevel):
         
 
     def close_window(self):
+        self.audio.set_file("Data/back.wav")
+        self.audio.play()
         print("closing")
         self.end_callback()
         self.destroy()
 
     def mic_click(self):
+        self.audio.play_audio()
         if self.listening == False:
             # Start the speech recognition process in a new thread
             threading.Thread(target=self.mic_click2, daemon=True).start()
@@ -78,12 +80,13 @@ class WakeWordGUI(ctk.CTkToplevel):
         if self.listening == False:
             with sr.Microphone() as source:
                 print("Speak something...")
+                self.AITaskStatusLbl.configure(text="Listening..")
                 #self.recognizer.adjust_for_ambient_noise(source)
                 audio = self.recognizer.listen(source,timeout=7)
                 print("DONE")
 
             try:
-                #self.AITaskStatusLbl.configure(text="Thinking..")
+                self.AITaskStatusLbl.configure(text="Thinking..")
                 wav_filename = "audio.wav"
                 with wave.open(wav_filename, 'wb') as wf:
                     wf.setnchannels(1)
@@ -101,9 +104,11 @@ class WakeWordGUI(ctk.CTkToplevel):
                 text = result["text"]
                 print("You said:", text)
                 os.remove(wav_filename)
+                self.AITaskStatusLbl.configure(text="Recognized: " + text)
+                return str(text)
             except Exception as e:
                 print("", e)
 
             # Update the status label with the recognized text
-            #self.AITaskStatusLbl.configure(text="Recognized: " + text)
+            self.AITaskStatusLbl.configure(text="Recognized: " + text)
         
