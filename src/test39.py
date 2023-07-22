@@ -7,20 +7,6 @@ import subprocess
 import sys
 import copy
 
-"""
-Author: Akash Bora (Akascape)
-License: MIT
-Quick Guide:
-This program can be used to create custom themes for customtkinter.
-You can easily create and edit themes for your applications.
-Customtkinter themefiles are .json files that can be used with customtkinter using the 'set_default_color_theme' method.
-Example: customtkinter.set_default_color_theme("Path//my_theme.json")
-A customtkinter theme has one dark and one light color attribute for each widget type and you have to choose the 2 colors for each widget type.
-(You can switch between them with the 'set_appearance_mode' method)
-Currently it is not possible to switch themes, so only appearance_mode can be changed.
-Default reset color is "transparent" which has no color, means it take the color from the background instead.
-(transparent is not supported in all widgets)
-"""
 
 class App(customtkinter.CTk):
 
@@ -182,9 +168,6 @@ class App(customtkinter.CTk):
                   }
                 }
 
-
-    #--------------------Widget Type and Content--------------------#
-
     widgets = {'CTk':['fg_color'],
              'CTkToplevel':['fg_color'],
              'CTkFrame':['fg_color', 'top_fg_color', 'border_color'],
@@ -215,12 +198,10 @@ class App(customtkinter.CTk):
 
     for i in json_data:
         for key, value in json_data.get(i).items():
-            if value=="transparent":
+            if value == "transparent":
                 json_data[i][key] = ["transparent", "transparent"]
 
     def __init__(self):
-
-        #--------------------Main root Window--------------------#
         super().__init__()
         customtkinter.set_default_color_theme("blue")
         self.title("CustomTkinter ThemeMaker")
@@ -275,10 +256,8 @@ class App(customtkinter.CTk):
 
         self.update(None)
 
-    #--------------------App Functions--------------------#
-
     def change_mode_right(self):
-        """ changing current widget type wih right button """
+        """changing current widget type wih right button"""
         self.widgetlist.append(self.widgetlist.pop(0))
         self.current = self.widgetlist[0]
         self.widget_type.configure(text=self.current)
@@ -287,7 +266,7 @@ class App(customtkinter.CTk):
         self.update(self.menu.get())
 
     def change_mode_left(self):
-        """ changing current widget type with left button  """
+        """changing current widget type with left button"""
         self.widgetlist.insert(0, self.widgetlist.pop())
         self.current = self.widgetlist[0]
         self.widget_type.configure(text=self.current)
@@ -296,7 +275,7 @@ class App(customtkinter.CTk):
         self.update(self.menu.get())
 
     def update(self, value):
-        """ updating the widgets and their colors """
+        """updating the widgets and their colors"""
         for i in self.json_data[self.current]:
             if i == self.menu.get():
                 if (self.json_data[self.current][i])[0] != "transparent":
@@ -309,7 +288,7 @@ class App(customtkinter.CTk):
                     self.button_dark.configure(fg_color="transparent")
 
     def change_color_light(self):
-        """ choosing the color for Light mode of the theme """
+        """choosing the color for Light mode of the theme"""
         default = self.button_light._apply_appearance_mode(self.button_light._fg_color)
         if default == "transparent":
             default = "white"
@@ -322,7 +301,7 @@ class App(customtkinter.CTk):
                     (self.json_data[self.current][i])[0] = color1[1]
 
     def change_color_dark(self):
-        """ choosing the color for Dark mode of the theme """
+        """choosing the color for Dark mode of the theme"""
         default = self.button_dark._apply_appearance_mode(self.button_dark._fg_color)
         if default == "transparent":
             default = "white"      
@@ -335,7 +314,7 @@ class App(customtkinter.CTk):
                     (self.json_data[self.current][i])[1] = color2[1]
 
     def save(self):
-        """ exporting the theme file """
+        """exporting the theme file"""
         save_file = tkinter.filedialog.asksaveasfilename(initialfile="Untitled.json", defaultextension=".json",
                                                          filetypes=[('json', ['*.json']),('All Files', '*.*')])
         try:
@@ -353,7 +332,7 @@ class App(customtkinter.CTk):
             tkinter.messagebox.showerror("Error!","Something went wrong!")
      
     def load(self):
-        """ load any theme file """
+        """load any theme file"""
         global json_data
         open_json = tkinter.filedialog.askopenfilename(filetypes=[('json', ['*.json']),('All Files', '*.*')])
         try:
@@ -404,7 +383,7 @@ class App(customtkinter.CTk):
             subprocess.run(["python3", program])
      
     def replace_color(self, color, button, mode):
-        """replace a specific color"""      
+        """replace a specific color"""
         if color == "transparent":
             default = "white"
         else:

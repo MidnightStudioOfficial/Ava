@@ -50,6 +50,7 @@ def filter_links(query, links, threshold=0.5):
             print(f'Error processing {link}: {e}')
     return filtered_links
 
+
 def search_bing(query):
     headers = {'User-Agent': 'Mozilla/5.0'}
     url = f'https://www.bing.com/search?q={query}'
@@ -71,8 +72,9 @@ def search_google2(query):
             else:
                 raise e
 
+
 def search_google(query):
-    links = [j for j in search(query, num=1)] #num=10
+    links = [j for j in search(query, num=1)]  # num=10
     return links
 
 def summarize(url):
@@ -93,13 +95,14 @@ def rank_summaries(query, summaries):
     ranked_summaries = sorted(summaries, key=lambda x: similarity(query, x), reverse=True)
     return ranked_summaries
 
+
 def main():
     query = input('Enter your search query: ')
     print(f'Query: {query}')
     bing_links = search_bing(query)
     print(f'Bing links: {bing_links}')
-    #google_links = search_google2(query)
-    #print(f'Google links: {google_links}')
+    # google_links = search_google2(query)
+    # print(f'Google links: {google_links}')
     all_links_OLD = list(set(bing_links)) # + google_links list(set(bing_links))
     all_links = []
     for i in all_links_OLD:

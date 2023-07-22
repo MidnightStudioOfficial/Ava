@@ -254,11 +254,6 @@ class smooth_frame(customtkinter.CTk):
         for widget, row in widgets:
             widget.grid(row=row, column=0, padx=20, pady=10)
 
-        # self.frame = customtkinter.CTkButton(self.home_frame, width=100, height=100, fg_color='black')
-        # self.frame.place(x=10, y=10)
-        # self.frame.bind('<Enter>', self._resize_frame)
-        # self.frame.bind('<Leave>', self._reduce_frame)
-
     def _resize_frame(self, event):
         speed = 60
         animator = Animator(200, 480, 1.2, 60, 'ease-in-out')

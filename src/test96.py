@@ -227,8 +227,6 @@ class AdaptiveBrain(Brain):
 
         return related_thought
 
-
-
 if __name__ == '__main__':
     b = Brain()
     b.start()

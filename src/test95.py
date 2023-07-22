@@ -40,9 +40,6 @@ def scrape_results(results):
         extracted_results.append({'title': title, 'url': url, 'snippet': snippet})
     return extracted_results
 
-
-
-
 def determine_summary_length(sentences, tfidf_scores):
     sentence_scores = tfidf_scores.sum(axis=1)
     avg_score = sentence_scores.mean()
@@ -76,7 +73,6 @@ def determine_summary_length2(sentences, tfidf_scores, similarity_matrix):
 
     desired_length = min(4, len(summary_sentences))  # Set the desired length to 4 or the number of selected sentences, whichever is smaller
     return desired_length
-
 
 def determine_summary_length3(sentences, tfidf_scores, similarity_matrix):
     sentence_scores = tfidf_scores.sum(axis=1)
@@ -163,7 +159,6 @@ def summarize_text(text):
     # desired_length = determine_summary_length2(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
     # desired_length = determine_summary_length3(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
     # desired_length = determine_summary_length4(sentences, tfidf_scores, cosine_similarity(tfidf_scores, tfidf_scores))
-
 
     # Get the top sentences with the highest scores
     summary_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)[:desired_length]
