@@ -1,7 +1,7 @@
 import time
 import numpy
 from scipy.optimize import root_scalar, _zeros_py
-from typing import Union, Tuple, Literal, List, Any
+from typing import Union, Tuple, Literal, List
 
 
 _COLOR = 'color'

@@ -7,7 +7,7 @@ try:
     from json import load
     from json.decoder import JSONDecodeError
 except ImportError as err:
-    exit(err)
+    raise ImportError(err)
 
 
 class SSetup(Toplevel):

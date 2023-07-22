@@ -114,13 +114,13 @@ class DebugGUI(ctk.CTkToplevel):
             return 
         elif type_ == "memory":
             self.clear_list()
-            for i in self.layout.keys():
+            for i in self.layout:
                 if self.layout[i]["type"] == "memory":
                     self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
             return
         elif type_ == "other":
             self.clear_list()
-            for i in self.layout.keys():
+            for i in self.layout:
                 if self.layout[i]["type"] == "other":
                     self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
             return

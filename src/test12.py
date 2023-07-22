@@ -1,4 +1,4 @@
-from core.chatbot.chatbot import Chatbot, ChatbotProfile
+from core.chatbot.chatbot import Chatbot
 chatbot = Chatbot()
 chatbot.train_bot()
 

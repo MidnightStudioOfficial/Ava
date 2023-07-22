@@ -15,7 +15,6 @@ try:
     from core.Components.SystemTheme import get_theme
     from core.Components.SongMenu import SongMenu
     from core.Components.DirWatcher import DirWatcher
-    #from requests import get
     from threading import Thread
     from mutagen.mp3 import MP3
     from mutagen.flac import FLAC
@@ -25,10 +24,9 @@ try:
     from pygame import mixer
     from win10toast import ToastNotifier
     from typing import Union
-    #import ctypes
     from time import sleep
 except ImportError as err:
-    exit(err)
+    raise ImportError(err)
 
 
 class Sounder(Frame):

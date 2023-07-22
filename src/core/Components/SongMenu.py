@@ -2,7 +2,7 @@ try:
     from tkinter import Toplevel, ttk
     from time import sleep
 except ImportError as err:
-    exit(err)
+    raise ImportError(err)
 
 
 class SongMenu(Toplevel):
