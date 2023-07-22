@@ -7,6 +7,7 @@ except ImportError as err:
 
 class SongMenu(Toplevel):
     """A custom tkinter Toplevel window for managing playlists and songs."""
+
     def __init__(self: object, parent: object) -> None:
         """
         Initialize the SongMenu window.
@@ -69,15 +70,11 @@ class SongMenu(Toplevel):
         self.focus_set()
 
     def hide(self: object) -> None:
-        """
-        Hide the SongMenu window.
-        """
+        """Hide the SongMenu window."""
         self.after(50, self.withdraw)
 
     def update_options(self: object) -> None:
-        """
-        Update the options of the SongMenu window based on the selected playlist.
-        """
+        """Update the options of the SongMenu window based on the selected playlist."""
         selected_playlist: str = self.playlist_menu.get()
         # block playlists
         for playlist in self.playlists:
@@ -118,9 +115,7 @@ class SongMenu(Toplevel):
             self.geometry(f'+{mouse_pos[0]}+{mouse_pos[1]}')
 
     def animate(self: object) -> None:
-        """
-        Animate the SongMenu window with a smooth expansion effect.
-        """
+        """Animate the SongMenu window with a smooth expansion effect."""
         # get window dimensions
         dimensions: tuple = (self.winfo_width(), self.winfo_height())
         num_of_panels: int = len(self.playlists) + 1

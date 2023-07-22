@@ -64,7 +64,7 @@ class SignUpApp(customtkinter.CTkToplevel):
 
     def previous_page(self):
         """Go back to the previous page"""
-        # Check if the current page is greater than 0 
+        # Check if the current page is greater than 0
         # (to avoid going below the first page)
         if self.current_page > 0:
             # Save the information from the current page before moving to the previous page
