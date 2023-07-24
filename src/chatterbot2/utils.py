@@ -1,6 +1,4 @@
-"""
-ChatterBot utility functions
-"""
+"""ChatterBot utility functions"""
 
 
 def import_module(dotted_path):
@@ -18,9 +16,7 @@ def import_module(dotted_path):
 
 
 def initialize_class(data, *args, **kwargs):
-    """
-    :param data: A string or dictionary containing a import_path attribute.
-    """
+    """:param data: A string or dictionary containing a import_path attribute."""
     if isinstance(data, dict):
         import_path = data.get('import_path')
         data.update(kwargs)

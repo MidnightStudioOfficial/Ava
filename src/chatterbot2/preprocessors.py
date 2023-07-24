@@ -1,12 +1,8 @@
-"""
-Statement pre-processors.
-"""
+"""Statement pre-processors."""
 
 
 def clean_whitespace(statement):
-    """
-    Remove any consecutive whitespace characters from the statement text.
-    """
+    """Remove any consecutive whitespace characters from the statement text."""
     import re
 
     # Replace linebreaks and tabs with spaces

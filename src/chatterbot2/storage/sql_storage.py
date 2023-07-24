@@ -50,16 +50,12 @@ class SQLStorageAdapter(StorageAdapter):
         self.Session = sessionmaker(bind=self.engine, expire_on_commit=True)
 
     def get_statement_model(self):
-        """
-        Return the statement model.
-        """
+        """Return the statement model."""
         from chatterbot2.ext.sqlalchemy_app.models import Statement
         return Statement
 
     def get_tag_model(self):
-        """
-        Return the conversation model.
-        """
+        """Return the conversation model."""
         from chatterbot2.ext.sqlalchemy_app.models import Tag
         return Tag
 
@@ -218,9 +214,7 @@ class SQLStorageAdapter(StorageAdapter):
         return statement_object
 
     def create_many(self, statements):
-        """
-        Creates multiple statement entries.
-        """
+        """Creates multiple statement entries."""
         Statement = self.get_model('statement')
         Tag = self.get_model('tag')
 
@@ -340,9 +334,7 @@ class SQLStorageAdapter(StorageAdapter):
         return statement
 
     def drop(self):
-        """
-        Drop the database.
-        """
+        """Drop the database."""
         Statement = self.get_model('statement')
         Tag = self.get_model('tag')
 

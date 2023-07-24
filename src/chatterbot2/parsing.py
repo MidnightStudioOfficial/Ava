@@ -683,9 +683,7 @@ def date_from_duration(base_date, number_as_string, unit, duration, base_time=No
 
 
 def this_week_day(base_date, weekday):
-    """
-    Finds coming weekday
-    """
+    """Finds coming weekday"""
     day_of_week = base_date.weekday()
     # If today is Tuesday and the query is `this monday`
     # We should output the next_week monday
@@ -699,9 +697,7 @@ def this_week_day(base_date, weekday):
 
 
 def previous_week_day(base_date, weekday):
-    """
-    Finds previous weekday
-    """
+    """Finds previous weekday"""
     day = base_date - timedelta(days=1)
     while day.weekday() != weekday:
         day = day - timedelta(days=1)

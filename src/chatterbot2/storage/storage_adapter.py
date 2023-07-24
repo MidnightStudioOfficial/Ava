@@ -156,9 +156,7 @@ class StorageAdapter(object):
         )
 
     def drop(self):
-        """
-        Drop the database attached to a given adapter.
-        """
+        """Drop the database attached to a given adapter."""
         raise self.AdapterMethodNotImplementedError(
             'The `drop` method is not implemented by this adapter.'
         )

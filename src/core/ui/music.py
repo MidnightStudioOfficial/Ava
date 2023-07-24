@@ -1158,8 +1158,12 @@ class Sounder(Frame):
             self.log(err_obj)
 
     def refresh_ui(self) -> None:
+        """Refreshes the user interface by updating various elements."""
+        # Update the info panel with an empty string
         self.update_info_panel('')
+        # Set the time passed label to '0:00'
         self.time_passed['text'] = '0:00'
+        # Set the song length label to '0:00'
         self.song_length['text'] = '0:00'
         self.progress_bar.configure(value=0, maximum=100)
 

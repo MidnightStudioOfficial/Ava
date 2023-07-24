@@ -63,9 +63,7 @@ class TimeLogicAdapter(LogicAdapter):
         self.classifier = NaiveBayesClassifier.train(train_set)
 
     def time_question_features(self, text):
-        """
-        Provide an analysis of significant features in the string.
-        """
+        """Provide an analysis of significant features in the string."""
         features = {}
 
         # A list of all words from the known sentences
