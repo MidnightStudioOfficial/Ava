@@ -588,7 +588,7 @@ class ChatBotGUI:
     def wake_word_callback_END(self, user_input):
         """
         Callback function triggered when the user input for wake word processing is completed.
-        
+
         Parameters:
             user_input (str): The user input recognized after the wake word is detected.
         """

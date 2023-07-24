@@ -22,7 +22,6 @@ try:
     from mutagen.wave import WAVE
     from difflib import SequenceMatcher
     from pygame import mixer
-    from win10toast import ToastNotifier
     from typing import Union
     from time import sleep
 except ImportError as err:
@@ -41,8 +40,6 @@ class Sounder(Frame):
         parent.master.protocol('WM_DELETE_WINDOW', self.exit_app)
         # self.bind('<F12>', lambda _: Debugger(self))
         # self.attributes('-alpha', 0.9)
-        # init notifications
-        Thread(target=self.init_notifications, daemon=True).start()
         # init settings
         self.init_settings()
         self.apply_settings()
@@ -104,9 +101,6 @@ class Sounder(Frame):
             mixer.music.stop()
         except Exception as _:
             pass
-
-    def init_notifications(self) -> None:
-        self.toaster = ToastNotifier()
 
     def init_settings(self) -> None:
         try:

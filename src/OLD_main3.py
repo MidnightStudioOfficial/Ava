@@ -40,6 +40,7 @@ if __name__ == '__main__':
 
     # Destroy the splash screen
     splash_screen.destroy()
+    del splash_screen
 
     # Start the main event loop
     root.mainloop()

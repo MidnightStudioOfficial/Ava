@@ -17,11 +17,11 @@ import os  # For interacting with the operating system (e.g., checking file exis
 import pickle  # For pickling (serializing) Python objects
 
 # Third-party libraries
-import numpy as np  # NumPy for numerical operations and array handling
-import nltk  # Natural Language Toolkit for NLP functionalities
+from numpy import max, argmax, array as np_max, argmax, array  # NumPy for numerical operations and array handling
+from nltk import word_tokenize  # Natural Language Toolkit for NLP functionalities
 from nltk.corpus import stopwords  # NLTK's stopwords for filtering common words
 from nltk.stem import WordNetLemmatizer  # WordNetLemmatizer for word lemmatization
-from spacy import load as spacy_load # spaCy for advanced natural language processing
+from spacy import load as spacy_load  # spaCy for advanced natural language processing
 
 # TensorFlow and Keras libraries
 from tensorflow import keras  # TensorFlow library for deep learning
@@ -117,7 +117,7 @@ class Engine2():
                                 truncating='post', maxlen=self.max_len))
 
         # Convert prediction to human-readable intent
-        tag = self.label_encoder.inverse_transform([np.argmax(result)])
+        tag = self.label_encoder.inverse_transform([argmax(result)])
         # TODO: Only the max probability intent is returned. It may be wise to have a skill 'unknown' based on some probability.
 
         # Initialize standard set of parameters for skill parsing
@@ -136,13 +136,13 @@ class Engine2():
         # Return the predicted intent and associated probabilities.
         return {
             'intent': response,
-            'probability': np.max(result)
+            'probability': np_max(result)
         }
 
     def preprocess_sentence(self, sentence):
         sentence = sentence.lower()
         punctuations = "?:!.,;'`´"
-        sentence_words = nltk.word_tokenize(sentence)
+        sentence_words = word_tokenize(sentence)
         lemmatized_sentence = []
 
         for word in sentence_words:
@@ -172,7 +172,7 @@ class Engine2():
         punctuations = "?:!.,;'`´"
 
         # Tokenize the sentence into individual words
-        sentence_words = nltk.word_tokenize(sentence)
+        sentence_words = word_tokenize(sentence)
 
         # Initialize a list to store stemmed words
         stemmed_sentence = []
@@ -254,7 +254,7 @@ class Engine2():
         padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)
 
         # Split data into training, validation, and test sets
-        X_train, X_temp, y_train, y_temp = train_test_split(padded_sequences, np.array(training_labels), test_size=0.2, random_state=42)
+        X_train, X_temp, y_train, y_temp = train_test_split(padded_sequences, array(training_labels), test_size=0.2, random_state=42)
         X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
 
         # Define model architecture
@@ -304,7 +304,7 @@ class Engine2():
         for s in self.testing2:
             preprocessed_s = self.preprocess_sentence2(s)
             result = self.model.predict(pad_sequences(self.tokenizer.texts_to_sequences([preprocessed_s]), truncating='post', maxlen=max_len))
-            intent = self.label_encoder.inverse_transform([np.argmax(result)])
+            intent = self.label_encoder.inverse_transform([argmax(result)])
             print(s + " --> " + str(intent[0]))
 
     def train(self):
@@ -361,7 +361,7 @@ class Engine2():
         #early_stopping = EarlyStoppingByLossVal(monitor='val_loss', value=0.0090, verbose=1)
         #early_stopping = EarlyStopping(monitor='val_loss', patience=156, restore_best_weights=True, min_delta=0.001, mode='max')
         history = model.fit(
-            padded_sequences, np.array(training_labels),
+            padded_sequences, array(training_labels),
             verbose=1,
             batch_size=32,
             validation_split=0.1, epochs=epochs,
@@ -387,5 +387,5 @@ class Engine2():
         for s in self.testing:
             preprocessed_s = self.preprocess_sentence(s)
             result = self.model.predict(pad_sequences(self.tokenizer.texts_to_sequences([preprocessed_s]), truncating='post', maxlen=max_len))
-            intent = self.label_encoder.inverse_transform([np.argmax(result)])
+            intent = self.label_encoder.inverse_transform([argmax(result)])
             print(s + " --> " + str(intent[0]))
