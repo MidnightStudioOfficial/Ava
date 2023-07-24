@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from PIL import Image, ImageTk, ImageDraw
+from PIL import Image
 from core.AudioStream.output2 import AudioPlayer
 import speech_recognition as sr
 import threading
@@ -9,27 +9,34 @@ import os
 
 
 class WakeWordGUI(ctk.CTkToplevel):
+    """Graphical User Interface (GUI) window for the Wake Word application."""
+
     def __init__(self, parent, end_callback) -> None:
+        """
+        Initialize the GUI window.
+
+        Args:
+            parent: The parent widget.
+            end_callback: A function to call when the window is closed.
+        """
         super().__init__(parent)
         self.title("Ava Screen")
         self.end_callback = end_callback
         self.protocol("WM_DELETE_WINDOW", self.close_window)
         self.geometry("400x400")
         #self.overrideredirect(True)
-        #self.configure(background="#2c3e50")
-        photo = ctk.CTkImage(Image.open("Data/assets/ava_t.png"), size=(90, 90))
+
+        self.photo = ctk.CTkImage(Image.open("Data/assets/ava_t.png"), size=(90, 90))
         self.pre_button_photo = Image.open("Data/images/centralButton1.png")
         self.button_photo = ctk.CTkImage(self.pre_button_photo, size=(self.pre_button_photo.width, self.pre_button_photo.height))
         self.pre_mic_button_photo = Image.open("Data/images/mic.png")
         self.mic_photo = ctk.CTkImage(self.pre_mic_button_photo, size=(50, 50))
         self.MainFrame = ctk.CTkFrame(self, fg_color="transparent")
         self.MainFrame.pack(fill=ctk.BOTH)
-        self.center_image = ctk.CTkLabel(self.MainFrame, text='', image=photo, height=90,  width=90)
+        self.center_image = ctk.CTkLabel(self.MainFrame, text='', image=self.photo, height=90,  width=90)
         self.center_image.pack(pady=10, anchor='n')
         self.VoiceFrame = ctk.CTkFrame(self.MainFrame, fg_color="transparent")
         self.VoiceFrame.pack(fill=ctk.BOTH)
-        #self.center_label = ctk.CTkLabel(self.VoiceFrame, text='Starting')
-        #self.center_label.pack(pady=10)
         # Create a CTkLabel object with the central button image and transparent foreground color
         self.cbl = ctk.CTkLabel(self.VoiceFrame, image=self.button_photo, fg_color="transparent")
 
@@ -45,8 +52,10 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.center_image2 = ctk.CTkButton(self.MainFrame, text='', image=self.mic_photo, height=50, width=50, command=self.mic_click)
         self.center_image2.pack(pady=10)
 
+        # Initialize the audio player for sound feedback
         self.audio = AudioPlayer("Data/start.wav")
-        # Create a recognizer object
+
+        # Create a recognizer object for speech recognition
         self.recognizer = sr.Recognizer()
         self.listening = False
 
@@ -58,9 +67,11 @@ class WakeWordGUI(ctk.CTkToplevel):
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f"+{x}+{y}")
 
+        # Load the Whisper speech recognition model
         self.model = whisper.load_model("tiny")
 
     def close_window(self):
+        """Callback function for closing the GUI window."""
         self.audio.set_file("Data/back.wav")
         self.audio.play()
         print("closing")
@@ -68,17 +79,22 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.destroy()
 
     def mic_click(self):
+        """Callback function for the microphone button click."""
         self.audio.play_audio()
         if self.listening == False:
             # Start the speech recognition process in a new thread
             threading.Thread(target=self.mic_click2, daemon=True).start()
 
     def mic_click2(self):
+        """
+        Handle speech recognition when the microphone button is clicked.
+
+        Uses the microphone to listen for speech and performs speech recognition.
+        """
         if self.listening == False:
             with sr.Microphone() as source:
                 print("Speak something...")
                 self.AITaskStatusLbl.configure(text="Listening..")
-                #self.recognizer.adjust_for_ambient_noise(source)
                 audio = self.recognizer.listen(source, timeout=7)
                 print("DONE")
 
@@ -90,10 +106,6 @@ class WakeWordGUI(ctk.CTkToplevel):
                     wf.setsampwidth(2)
                     wf.setframerate(audio.sample_rate)
                     wf.writeframes(audio.get_wav_data())
-
-                # Load the saved WAV file using Whisper
-                #audio_data, sample_rate = whisper.load_audio(wav_filename)
-                #audio_data = whisper.pad_or_trim(whisper.load_audio(wav_filename))
 
                 # Use Whisper for speech recognition with numpy array
                 print("transcribeing")

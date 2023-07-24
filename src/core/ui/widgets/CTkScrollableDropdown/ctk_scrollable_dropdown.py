@@ -321,5 +321,5 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
             for key in self.widgets.keys():
                 self.widgets[key].configure(fg_color=kwargs.pop("button_color"))
 
-        for key in self.widgets.keys():
+        for key in self.widgets:
             self.widgets[key].configure(**kwargs)

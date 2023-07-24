@@ -27,6 +27,7 @@ class WINDOW_COMPOSITION_ATTRIBUTES(Structure):
 
 class apply_style():
     """different styles for windows"""
+
     def __init__(self,
                  window,
                  style: str):
@@ -74,6 +75,7 @@ class apply_style():
 
 class change_header_color():
     """change the titlebar background color"""
+
     def __init__(self,
                  window,
                  color):
@@ -94,6 +96,7 @@ class change_header_color():
 
 class change_border_color():
     """change the window border color"""
+
     def __init__(self,
                  window,
                  color):
@@ -106,6 +109,7 @@ class change_border_color():
 
 class change_title_color():
     """change the title color"""
+
     def __init__(self,
                  window,
                  color):

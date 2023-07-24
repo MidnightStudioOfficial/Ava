@@ -1,6 +1,5 @@
 import customtkinter as ctk
 from PIL import Image, ImageTk, ImageDraw
-#import json
 from core.controllers.profile.profile import Profile
 
 
