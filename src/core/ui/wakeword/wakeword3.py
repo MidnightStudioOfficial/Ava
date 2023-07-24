@@ -24,7 +24,7 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.end_callback = end_callback
         self.protocol("WM_DELETE_WINDOW", self.close_window)
         self.geometry("400x400")
-        #self.overrideredirect(True)
+        # self.overrideredirect(True)
 
         # Load images for the GUI elements
         self.photo = ctk.CTkImage(Image.open("Data/assets/ava_t.png"), size=(90, 90))
@@ -53,7 +53,14 @@ class WakeWordGUI(ctk.CTkToplevel):
         # Place the AI task status label at position (165, 32) in its parent widget
         self.AITaskStatusLbl.place(x=165, y=32)
 
-        self.center_image2 = ctk.CTkButton(self.MainFrame, text='', image=self.mic_photo, height=50, width=50, command=self.mic_click)
+        self.center_image2 = ctk.CTkButton(
+            self.MainFrame,
+            text='',
+            image=self.mic_photo,
+            height=50,
+            width=50,
+            command=self.mic_click
+        )
         self.center_image2.pack(pady=10)
 
         # Initialize the audio player for sound feedback
@@ -126,13 +133,17 @@ class WakeWordGUI(ctk.CTkToplevel):
             except sr.WaitTimeoutError:
                 # Handle microphone timeout error
                 self.AITaskStatusLbl.configure(text="Listening timeout. Please try again.")
+                return
             except sr.UnknownValueError:
                 # Handle speech not recognized error
                 self.AITaskStatusLbl.configure(text="Sorry, I could not understand what you said.")
+                return
             except sr.RequestError as e:
                 # Handle speech recognition API request error
                 self.AITaskStatusLbl.configure(text="Error during recognition. Please check your internet connection.")
+                return
             except Exception as e:
                 # Handle any other unexpected errors
                 print("Error:", e)
                 self.AITaskStatusLbl.configure(text="Error during recognition. Please try again later.")
+                return
