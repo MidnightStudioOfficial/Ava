@@ -1002,11 +1002,11 @@ class Sounder(Frame):
                     playlist_list.remove(selected_playlist)
                     # selects last playlist
                     self.menu_playlist.set(
-                        playlist_list[len(playlist_list) - 1])
+                        playlist_list[-1])
                     self.show_playlist()
                     # update active playlist
                     if selected_playlist == self.playlist:
-                        self.playlist = playlist_list[len(playlist_list) - 1]
+                        self.playlist = playlist_list[-1]
                     # removes playlist button
                     self.get_playlist_button(selected_playlist).destroy()
                     self.song_menu.remove(selected_playlist)
