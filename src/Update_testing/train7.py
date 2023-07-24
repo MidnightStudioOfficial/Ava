@@ -10,7 +10,6 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.callbacks import EarlyStopping
-#from tensorflow.random import set_seed
 
 wordnet_lemmatizer = WordNetLemmatizer()
 stop_words_eng = set(stopwords.words('english'))
@@ -24,9 +23,6 @@ testing = [
     "can you get the weather"
 ]
 
-# Set random seeds for reproducibility (optional)
-#np.random.seed(42)
-#set_seed(42)
 
 def preprocess_sentence(sentence):
     sentence = sentence.lower()
@@ -36,7 +32,7 @@ def preprocess_sentence(sentence):
 
     for word in sentence_words:
         if word in stop_words_eng:
-             continue
+            continue
         if word in punctuations:
             continue
         lemmatized_word = wordnet_lemmatizer.lemmatize(word, pos="v")
@@ -72,8 +68,8 @@ if __name__ == '__main__':
     lbl_encoder.fit(training_labels)
     training_labels = lbl_encoder.transform(training_labels)
 
-    vocab_size = 2000 #2000
-    embedding_dim = 62 #32
+    vocab_size = 2000  # 2000
+    embedding_dim = 62  # 32
     max_len = 25
     oov_token = "<OOV>"
 
@@ -87,17 +83,17 @@ if __name__ == '__main__':
     model = Sequential()
     model.add(Embedding(vocab_size, embedding_dim, input_length=max_len))
     model.add(GlobalAveragePooling1D())
-    model.add(Dense(64, activation='relu')) #32
-    model.add(Dense(32, activation='relu')) #16
+    model.add(Dense(64, activation='relu'))  # 32
+    model.add(Dense(32, activation='relu'))  # 16
     model.add(Dense(num_classes, activation='softmax'))
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     model.summary()
 
     # Train the model with early stopping
     epochs = 5000
-    early_stopping = EarlyStopping(monitor='val_loss', patience=100, restore_best_weights=True) # patience=10 30
-    early_stopping = EarlyStopping(monitor='val_accuracy', patience=156, restore_best_weights=True, mode="max") # , patience=100, mode="min"
-    early_stopping = EarlyStopping(monitor='val_accuracy', patience=230, restore_best_weights=True, mode="max") # , patience=100, mode="min"
+    early_stopping = EarlyStopping(monitor='val_loss', patience=100, restore_best_weights=True)  # patience=10 30
+    early_stopping = EarlyStopping(monitor='val_accuracy', patience=156, restore_best_weights=True, mode="max")  # , patience=100, mode="min"
+    early_stopping = EarlyStopping(monitor='val_accuracy', patience=230, restore_best_weights=True, mode="max")  # , patience=100, mode="min"
     #early_stopping = EarlyStopping(monitor='loss', mode='min', verbose=0, patience=20, min_delta=0.01)
     #early_stopping = EarlyStoppingByLossVal(monitor='val_loss', value=0.0090, verbose=1)
     #early_stopping = EarlyStopping(monitor='val_loss', patience=156, restore_best_weights=True, min_delta=0.001, mode='max')
