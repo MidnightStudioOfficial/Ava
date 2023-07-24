@@ -8,7 +8,7 @@ class SkillsManager:
         self.training_labels = []
         self.labels = []
         self.responses = []
-    
+
     def get_skills_intent(self):
         for intent, skill in self.skills.skills.items():
             for sample in skill.samples:
@@ -17,7 +17,7 @@ class SkillsManager:
             if intent not in self.labels:
                 self.labels.append(intent)
         return self.training_sentences, self.training_labels
-    
+
     def get_skills(self):
         for intent, skill in self.skills.skills.items():
             for sample in skill.samples:

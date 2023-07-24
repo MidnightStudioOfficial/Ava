@@ -1,14 +1,12 @@
 from tkinter import *
 import tkinter as tk
-#from tkinter import ttk
-#from tkinter.scrolledtext import ScrolledText
 import customtkinter as ctk
 from os.path import join, dirname, realpath
 import logging
 from PIL import Image
 from threading import Thread
 
-DEBUG_CHATBOT = None #None
+DEBUG_CHATBOT = None # None
 DEBUG_GUI = None
 PEODUCTION = None
 
@@ -67,7 +65,7 @@ class ChatBotGUI:
         # Set the grid layout to 1 row and 2 columns
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(1, weight=1)
-        
+
         self.min_w = 50 # Minimum width of the frame
         self.max_w = 200 # Maximum width of the frame
         self.cur_width = self.min_w # Increasing width of the frame
@@ -220,7 +218,6 @@ class ChatBotGUI:
 
         # Place the AI task status label at position (165, 32) in its parent widget
         self.AITaskStatusLbl.place(x=165, y=32)
-
         
         # Keyboard Button
         self.kbphLight = PhotoImage(file="Data/images/keyboard.png")
@@ -245,11 +242,10 @@ class ChatBotGUI:
         )
         self.kbBtn.place(x=25, y=30)
 
-
         # Mic
-        self.micImg = PhotoImage(file = "Data/images/mic.png")
+        self.micImg = PhotoImage(file="Data/images/mic.png")
         self.micImg = self.micImg.subsample(2, 2)
-        self.micBtn = ctk.CTkButton(self.TextModeFrame,text='',image=self.micImg,height=30,width=30,fg_color="transparent", command=self.changeChatMode) #, bg_color='#dfdfdf'
+        self.micBtn = ctk.CTkButton(self.TextModeFrame,text='',image=self.micImg,height=30,width=30,fg_color="transparent", command=self.changeChatMode)
         self.micBtn.place(relx=1.0, y=30, x=-20, anchor="ne")    
         
         # Text Field
@@ -261,21 +257,6 @@ class ChatBotGUI:
         self.UserField.insert(0, "Ask me anything...")
         self.UserField.bind('<Return>', lambda event: self.send_message(None))
         raise_frame(self.root1)
-        
-        # Create chat history display
-        #self.chat_history = ctk.CTkTextbox(self.second_frame, state='disabled', wrap='word', font=('Arial', 12)) #ScrolledText
-        #self.chat_history.place(relx=0.5, rely=0.2, relwidth=0.95, relheight=0.6, anchor='n')
-
-        # Create input field for user messages
-        #self.user_input = ctk.CTkEntry(self.second_frame, font=('Arial', 12))
-        #self.user_input.place(relx=0.5, rely=0.85, relwidth=0.7, relheight=0.1, anchor='n')
-
-        # Create send button
-        #self.send_button = ctk.CTkButton(self.second_frame, text="Send", command=self.send_message)
-        #self.send_button.place(relx=0.85, rely=0.85, relwidth=0.15, relheight=0.1, anchor='n')
-
-        # Bind enter key to send message
-        #self.user_input.bind('<Return>', lambda event: self.send_message())
 
         # create third frame
         self.third_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
@@ -291,18 +272,18 @@ class ChatBotGUI:
         self.DNA_label_gender.place(relx=0.5, rely=0.16666, anchor=tk.CENTER)
         self.DNA_combobox_gender = ctk.CTkOptionMenu(self.DNA_frame, values=["Male", "Female"])
         self.DNA_combobox_gender.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
-        
+
         # create the profile frame
         self.profile_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         user_profile.ProfileClass(self.profile_frame, self)
-        
+
         # create the skills frame
         self.skills_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         SkillGUI(self.skills_frame)
-        
+
         # select default frame
         self.select_frame_by_name("home")
-        
+
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
          # Set up voice
          splash_screen.set_text("Set up voice")
@@ -330,8 +311,6 @@ class ChatBotGUI:
          # Initialize chatbot
          self.chatbot = Chatbot()
          self.chatbot.train_bot() # Train the chatbot
-
-  
 
     def select_frame_by_name(self, name):
         # set button color for selected button
@@ -370,7 +349,7 @@ class ChatBotGUI:
 
     def debug_click(self):
         DebugGUI(self.master)
-        
+
     def record(self, clearChat=True, iconDisplay=True):
         import speech_recognition as sr
         print('\nListening...')
@@ -390,6 +369,7 @@ class ChatBotGUI:
                 print(e)
                 return 'None'
         return said.lower()
+
     def voiceMedium(self):
         while True:
           if chatMode == 0:

@@ -4,7 +4,7 @@ import json
 class Profile:
     def __init__(self) -> None:
         self.profile_data = None
-   
+
     def list_profiles(self):
         new_profile_list = []
         profile_list = os.listdir("Data/profile")

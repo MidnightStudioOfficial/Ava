@@ -47,7 +47,7 @@ class Voice:
              self.engine.stop()
          del self.engine
          del self.voices
-  
+
      def say(self, text) -> None:
         """
         Speak out the provided text.
@@ -66,7 +66,7 @@ class Voice:
          new_voice (int): The index corresponding to the desired voice. (Use index of self.voices list)
          """
          self.engine.setProperty('voice', self.voices[new_voice].id)
-    
+
      def change_rate(self, new_rate: int) -> None:
          """
          Adjust the speech rate to words per minute.

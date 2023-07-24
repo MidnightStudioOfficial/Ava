@@ -37,11 +37,11 @@ def generate_sentence(prompt):
     # Tokenize prompt
     prompt = tokenizer.texts_to_sequences([prompt])[0]
     prompt = pad_sequences([prompt], maxlen=X.shape[1])
-    
+
     # Generate next word
     next_word = model.predict_classes(prompt)[0]
     next_word = tokenizer.index_word[next_word]
-    
+
     # Add next word to prompt and repeat until end of sentence
     sentence = [next_word]
     while next_word != '.':
@@ -50,7 +50,7 @@ def generate_sentence(prompt):
         next_word = model.predict_classes(prompt)[0]
         next_word = tokenizer.index_word[next_word]
         sentence.append(next_word)
-    
+
     return ' '.join(sentence)
 
 generate_sentence("who are you")

@@ -49,7 +49,7 @@ if __name__ == '__main__':
         if intent not in labels:
             labels.append(intent)
 
-    
+
     num_classes = len(labels)
 
     # Lemmatization for training data

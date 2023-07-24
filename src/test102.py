@@ -65,7 +65,7 @@ def generate_response(prompt):
 
     predicted_sequence = model.predict(input_sequence)
     predicted_token = tokenizer.index_word[np.argmax(predicted_sequence)]
-    
+
     return predicted_token
 
 # Example usage

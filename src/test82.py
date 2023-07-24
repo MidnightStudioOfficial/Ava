@@ -120,7 +120,7 @@ class MeditationApp:
 
     def reset_visualization(self, canvas):
         canvas.delete("all")
-        
+
 
 if __name__ == '__main__':
     root = ctk.CTk()

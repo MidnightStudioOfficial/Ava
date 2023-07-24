@@ -5,7 +5,7 @@ from ctypes import WinDLL
 class Control:
     def __init__(self):
         pass
-    
+
     def open_app(self, app):
         try:
             if sys.platform.startswith("win"):
@@ -23,18 +23,18 @@ class Control:
                     subprocess.run("mspaint.exe", shell=True)
                 else:
                     raise ValueError("Unsupported application: " + app)
-            
+
                 return True  # Indicate successful operation
             else:
                 print("Unsupported operating system. Only Windows is supported.")
-        
+
         except subprocess.SubprocessError as e:
             print("Error opening the application:", str(e))
         except Exception as e:
             print("Error opening the application:", str(e))
-        
+
         return False  # Indicate failure
-    
+
     def change_volume(self, volume: int):
         """
         Change the system volume in Windows.
@@ -62,7 +62,7 @@ class Control:
                 return True  # Indicate successful operation
             else:
                 print("Unsupported operating system. Only Windows is supported.")
-        
+
         except OSError as e:
             print("OS Error:", str(e))
         except ValueError as e:

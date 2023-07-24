@@ -40,7 +40,7 @@ class Animator:
             reverse (bool, optional): Reverse the direction of the animation. but will use the same easing function. Defaults to False.
             accurate_duration (bool, optional): Method makes the duration of each frame little more accurately, but uses more resources. Defaults to False.
         """
-        
+
         self.duration = duration
         self.fps = fps
         self.wait_time = round(1 / fps, 4)
@@ -63,7 +63,7 @@ class Animator:
                     _, redt1, redt2, greent1, greent2, bluet1, bluet2 = target_value
                     alphac = None
                     alphat = None
-                    
+
                 elif len(current_value) == 9:  # with alpha
                     _, redc1, redc2, greenc1, greenc2, bluec1, bluec2, alphac1, alphac2 = current_value
                     _, redt1, redt2, greent1, greent2, bluet1, bluet2, alphat1, alphat2 = target_value
@@ -83,7 +83,7 @@ class Animator:
 
             else:  # string values
                 pass
-        
+
         else:
             raise ValueError("The argument passed to the current_value or target_value is invalid.")
 
@@ -172,11 +172,11 @@ class Animator:
                 self.current_value = [self.current_value]
                 for animator in self._animators:
                     self.current_value.append(animator.values[self.frame_count])
-                    
+
             return self.current_value
         else:
             raise StopIteration
-        
+
     def _animation_value(self, time, p0, p1, p2, p3) -> float:
         time_value: _zeros_py.RootResults = root_scalar(lambda x: self._cubic_bezier(x, p0, p1, p2, p3)[1] - time, bracket=[0, 1])
         return self._cubic_bezier(time_value.root, p0, p1, p2, p3)[0]
@@ -261,7 +261,7 @@ class smooth_frame(customtkinter.CTk):
             #print(value)
             self.frame.pack(padx=(value, 0),pady=(0,value))
             self.update()
-        
+
 
 
 if __name__ == "__main__":

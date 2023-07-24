@@ -1,7 +1,5 @@
 import pickle
 from time import gmtime, strftime
-#import gzip
-#import lzma
 
 
 class Metadata:
@@ -14,22 +12,24 @@ class Package:
           self.metadata = Metadata()
           self.data = {}
           self.images = {}
-          
+
       def add_data(self, key, value):
           self.data[key] = value
-          
+
       def get_data(self, key):
         return self.data.get(key)
 
       def remove_data(self, key):
         if key in self.data:
             del self.data[key]
+
       def update_data(self, key, new_value):
           if key in self.data:
              self.data[key] = new_value
+
       def key_exists(self, key):
           return key in self.data
-      
+
       def add_image(self, key, image_data):
         self.images[key] = image_data
 
@@ -46,7 +46,7 @@ class Package:
 
       def image_key_exists(self, key):
         return key in self.images
-      
+
       def save(self, filename: str) -> None:
         with open(filename, 'wb') as f:
             pickle.dump(self, f)
@@ -55,7 +55,6 @@ class Package:
       def load(cls, filename: str) -> 'Package':
         with open(filename, 'rb') as f:
             return pickle.load(f)
-        
 
 
 # # create a Package object

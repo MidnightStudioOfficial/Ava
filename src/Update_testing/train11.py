@@ -25,14 +25,13 @@ testing = [
     "hi",
     "can you tell me a joke",
     "can you get the weather",
-    
+
     "can you play me some music"
 ]
 
 # Set random seeds for reproducibility (optional)
 #np.random.seed(42)
 #set_seed(42)
-
 
 
 # Initialize the Porter Stemmer
@@ -77,7 +76,7 @@ if __name__ == '__main__':
         if intent not in labels:
             labels.append(intent)
 
-    
+
     num_classes = len(labels)
 
     # Lemmatization for training data
@@ -87,7 +86,7 @@ if __name__ == '__main__':
     lbl_encoder = LabelEncoder()
     lbl_encoder.fit(training_labels)
     training_labels = lbl_encoder.transform(training_labels)
- 
+
     vocab_size = 2000 #2000
     embedding_dim = 62 #32
     max_len = 25
@@ -98,7 +97,7 @@ if __name__ == '__main__':
     word_index = tokenizer.word_index
     sequences = tokenizer.texts_to_sequences(lemmatized_training_sentences)
     padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)
-    
+
     X_train, X_temp, y_train, y_temp = train_test_split(padded_sequences, np.array(training_labels), test_size=0.2, random_state=42)
     X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
 

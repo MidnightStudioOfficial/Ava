@@ -68,7 +68,7 @@ class ChatBotGUI:
         # Set the grid layout to 1 row and 2 columns
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(1, weight=1)
-        
+
         self.min_w = 50 # Minimum width of the frame
         self.max_w = 200 # Maximum width of the frame
         self.cur_width = self.min_w # Increasing width of the frame

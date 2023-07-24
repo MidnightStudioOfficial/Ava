@@ -1,7 +1,7 @@
-'''
+"""
 Advanced Scrollable Dropdown Frame class for customtkinter widgets
 Author: Akash Bora
-'''
+"""
 
 import customtkinter
 import sys
@@ -16,7 +16,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                  text_color=None, autocomplete=False, **button_kwargs):
 
         super().__init__(master=attach.winfo_toplevel(), bg_color=attach.cget("bg_color"))
-        
+
         self.attach = attach
         self.corner = 11 if frame_corner_radius else 0
         self.padding = 0
@@ -27,7 +27,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         self.attach.winfo_toplevel().bind("<Triple-Button-1>", lambda e: self._withdraw() if not self.disable else None, add="+")
         self.attach.winfo_toplevel().bind("<Button-3>", lambda e: self._withdraw() if not self.disable else None, add="+")
         self.attach.winfo_toplevel().bind("<Button-2>", lambda e: self._withdraw() if not self.disable else None, add="+")
-        
+
         self.disable = False
         self.fg_color = customtkinter.ThemeManager.theme["CTkFrame"]["fg_color"] if fg_color is None else fg_color
         self.scroll_button_color = customtkinter.ThemeManager.theme["CTkScrollbar"]["button_color"] if scrollbar_button_color is None else scrollbar_button_color
@@ -35,11 +35,11 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         self.frame_border_color = customtkinter.ThemeManager.theme["CTkFrame"]["border_color"] if frame_border_color is None else frame_border_color
         self.button_color = customtkinter.ThemeManager.theme["CTkFrame"]["top_fg_color"] if button_color is None else button_color
         self.text_color = customtkinter.ThemeManager.theme["CTkLabel"]["text_color"] if text_color is None else text_color
-        
+
         if scrollbar is False:
             self.scroll_button_color = self.fg_color
             self.scroll_hover_color = self.fg_color
-            
+
         self.frame = customtkinter.CTkScrollableFrame(self, fg_color=self.fg_color, bg_color=attach.cget("bg_color"),
                                         scrollbar_button_hover_color=self.scroll_hover_color,
                                         corner_radius=self.corner, border_width=frame_border_width,
@@ -47,10 +47,10 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                                         border_color=self.frame_border_color)
         self.frame._scrollbar.grid_configure(padx=3)
         self.frame.pack(expand=True, fill="both")
-        
-        if self.corner==0:
+
+        if self.corner == 0:
             self.corner = 21
-            
+
         self.dummy_entry = customtkinter.CTkEntry(self.frame, fg_color="transparent", border_width=0, height=1, width=1)
         self.no_match = customtkinter.CTkLabel(self.frame, text="No Match")
         self.height = height
@@ -62,19 +62,19 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         self.autocomplete = autocomplete
         self.var_update = customtkinter.StringVar()
         self.appear = False
-        
+
         if justify.lower() == "left":
             self.justify = "w"
         elif justify.lower() == "right":
             self.justify = "e"
         else:
             self.justify = "c"
-            
+
         self.button_height = button_height
         self.values = values
         self.button_num = len(self.values)
         self.image_values = None if len(image_values)!=len(self.values) else image_values
-        
+
         self._init_buttons(**button_kwargs)
 
         # Add binding for different ctk widgets
@@ -87,33 +87,33 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         if self.attach.winfo_name().startswith("!ctkcombobox"):
             self.attach._canvas.tag_bind("right_parts", "<Button-1>", lambda e: self._iconify())
             self.attach._canvas.tag_bind("dropdown_arrow", "<Button-1>", lambda e: self._iconify())
-      
+
             if self.command is None:
                 self.command = self.attach.set
-              
+
         if self.attach.winfo_name().startswith("!ctkoptionmenu"):
             self.attach._canvas.bind("<Button-1>", lambda e: self._iconify())
             self.attach._text_label.bind("<Button-1>", lambda e: self._iconify())
             if self.command is None:
                 self.command = self.attach.set
-        
+
         self.x = x
         self.y = y
 
         if self.autocomplete:
             self.bind_autocomplete()
-        
+
     def _withdraw(self):
         if self.hide is False: self.place_forget()
         self.hide = True
 
     def _update(self, a, b, c):
         self.live_update(self.attach._entry.get())
-        
+
     def bind_autocomplete(self, ):
         def appear(x):
             self.appear = True
-            
+
         if self.attach.winfo_name().startswith("!ctkcombobox"):
             self.attach._entry.configure(textvariable=self.var_update)
             self.attach.set(self.values[0])
@@ -124,7 +124,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
             self.attach.configure(textvariable=self.var_update)
             self.attach.bind("<Key>", appear)
             self.var_update.trace_add('write', self._update)
-            
+
     def _init_buttons(self, **button_kwargs):
         self.i = 0
         self.widgets = {}
@@ -141,7 +141,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
             self.i += 1
              
         self.hide = False
-            
+
     def destroy_popup(self):
         self.destroy()
         self.disable = True
@@ -185,7 +185,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         self.fade = False
         self.place_forget()
         self.hide = True
-            
+
     def live_update(self, string=None):
         if not self.appear: return
         if self.disable: return
@@ -203,14 +203,14 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                 else:
                     self.widgets[key].pack(fill="x", pady=2, padx=(self.padding, 0))
                     i += 1
-                    
+
             if i == 1:
                 self.no_match.pack(fill="x", pady=2, padx=(self.padding, 0))
             else:
                 self.no_match.pack_forget()
             self.button_num = i
             self.place_dropdown()
-            
+
         else:
             self.no_match.pack_forget()
             self.button_num = len(self.values)
@@ -221,7 +221,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
             
         self.frame._parent_canvas.yview_moveto(0.0)
         self.appear = False
-        
+
     def insert(self, value, **kwargs):
         self.widgets[self.i] = customtkinter.CTkButton(self.frame,
                                                        text=value,
@@ -231,9 +231,9 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                                                        anchor=self.justify,
                                                        command=lambda k=value: self._attach_key_press(k), **kwargs)
         self.widgets[self.i].pack(fill="x", pady=2, padx=(self.padding, 0))
-        self.i+=1
+        self.i += 1
         self.values.append(value)
-        
+
     def _deiconify(self):
         if len(self.values) > 0:
             self.pack_forget()
@@ -243,28 +243,28 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         self.y = y
         self.hide = True
         self._iconify()
-        
+
     def configure(self, **kwargs):
         if "height" in kwargs:
             self.height = kwargs.pop("height")
             self.height_new = self.height
-            
+
         if "alpha" in kwargs:
             self.alpha = kwargs.pop("alpha")
-            
+
         if "width" in kwargs:
             self.width = kwargs.pop("width")
-            
+
         if "fg_color" in kwargs:
             self.frame.configure(fg_color=kwargs.pop("fg_color"))
-            
+
         if "values" in kwargs:
             self.values = kwargs.pop("values")
             self.image_values = None
             for key in self.widgets:
                 self.widgets[key].destroy()
             self._init_buttons()
-            
+
         if "image_values" in kwargs:
             self.image_values = kwargs.pop("image_values")
             self.image_values = None if len(self.image_values)!=len(self.values) else self.image_values
@@ -273,10 +273,10 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                 for key in self.widgets.keys():
                     self.widgets[key].configure(image=self.image_values[i])
                     i += 1
-                    
+
         if "button_color" in kwargs:
             for key in self.widgets:
                 self.widgets[key].configure(fg_color=kwargs.pop("button_color"))
-                
+
         for key in self.widgets:
             self.widgets[key].configure(**kwargs)

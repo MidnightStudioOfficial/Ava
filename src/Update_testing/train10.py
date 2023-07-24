@@ -34,8 +34,6 @@ testing = [
 #set_seed(42)
 
 
-# ... (existing code)
-
 # Initialize the Porter Stemmer
 porter_stemmer = PorterStemmer()
 
@@ -60,8 +58,6 @@ def preprocess_sentence(sentence):
     #print(stemmed_sentence)
     return " ".join(stemmed_sentence)
 
-# ... (rest of the code, including model training and testing)
-
 
 if __name__ == '__main__':
     print("Loading all skills...")
@@ -79,7 +75,7 @@ if __name__ == '__main__':
         if intent not in labels:
             labels.append(intent)
 
-    
+
     num_classes = len(labels)
 
     # Lemmatization for training data
@@ -100,7 +96,7 @@ if __name__ == '__main__':
     word_index = tokenizer.word_index
     sequences = tokenizer.texts_to_sequences(lemmatized_training_sentences)
     padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)
-    
+
     X_train, X_temp, y_train, y_temp = train_test_split(padded_sequences, np.array(training_labels), test_size=0.2, random_state=42)
     X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
 

@@ -35,7 +35,7 @@ class WelcomeApp(customtkinter.CTkToplevel):
         print(self.get_started_info)
 
         self.destroy()  # Destroy current window and create new one
-        
+
 
 if __name__ == '__main__':
     root = customtkinter.CTk()

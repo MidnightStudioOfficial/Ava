@@ -8,7 +8,7 @@ class WakeWord:
     def start(self):
         print("starting wakeword")
         self.detecter.start_listening()
- 
+
     def pause(self):
         self.detecter.stop_listening()
         #self.detecter.recognize_thread2.join()

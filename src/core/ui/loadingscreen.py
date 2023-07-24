@@ -1,4 +1,3 @@
-import tkinter as tk
 from customtkinter import CTkLabel, CTkProgressBar, CTkToplevel, CTk
 
 class SplashScreen(CTkToplevel):
@@ -7,14 +6,14 @@ class SplashScreen(CTkToplevel):
         self.title("Splash Screen")
         self.geometry("300x200")
         self.configure(background="white")
-        
+
         # Create the widgets
         self.text_label = CTkLabel(self, text="Loading...", font=("Arial", 16))
         self.text_label.pack(pady=(50, 10))
-        
+
         self.progressbar = CTkProgressBar(self, orientation="horizontal", mode="determinate", width=250)
         self.progressbar.pack(pady=10)
-        
+
         # Center the window on the screen
         self.update_idletasks()
         width = self.winfo_width()
@@ -22,19 +21,20 @@ class SplashScreen(CTkToplevel):
         x = (self.winfo_screenwidth() // 2) - (width // 2)
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f"+{x}+{y}")
-        
+
     def set_text(self, text):
         self.text_label.configure(text=text)
         self.update()
-    #@profile    
+  
     def set_progress(self, value):
         self.progressbar.step()
         self.update()
+
     def set_progress2(self, value):
         for i in range(value):
             self.progressbar.step()
         self.update()
-        
+
 if __name__ == '__main__':
     # Example usage
     root = CTk()

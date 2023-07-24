@@ -9,7 +9,7 @@ from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
-from tensorflow.keras.callbacks import EarlyStopping, Callback
+from tensorflow.keras.callbacks import EarlyStopping,
 #from tensorflow.random import set_seed
 
 wordnet_lemmatizer = WordNetLemmatizer()
@@ -44,23 +44,6 @@ def preprocess_sentence(sentence):
 
     return " ".join(lemmatized_sentence)
 
-class EarlyStoppingByLossVal(Callback):
-    def __init__(self, monitor='val_loss', value=0.00001, verbose=0):
-        super(Callback, self).__init__()
-        self.monitor = monitor
-        self.value = value
-        self.verbose = verbose
-
-    def on_epoch_end(self, epoch, logs={}):
-        val_loss = logs.get(self.monitor)
-        accuracy = logs.get('accuracy')
-
-        if val_loss == 0.0100:
-            print("loss")
-            if accuracy == 1.0000:
-                if self.verbose > 0:
-                    print("Epoch %05d: early stopping THR" % epoch)
-                self.model.stop_training = True
 
 if __name__ == '__main__':
     print("Loading all skills...")
@@ -78,7 +61,7 @@ if __name__ == '__main__':
         if intent not in labels:
             labels.append(intent)
 
-    
+
     num_classes = len(labels)
 
     # Lemmatization for training data
@@ -88,7 +71,7 @@ if __name__ == '__main__':
     lbl_encoder = LabelEncoder()
     lbl_encoder.fit(training_labels)
     training_labels = lbl_encoder.transform(training_labels)
- 
+
     vocab_size = 2000 #2000
     embedding_dim = 62 #32
     max_len = 25

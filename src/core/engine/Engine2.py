@@ -73,7 +73,7 @@ class Engine2():
                 "hi",
                 "can you tell me a joke",
                 "can you get the weather",
-                
+
                 "can you play me some music"
             ]
             # WordNetLemmatizer is used to reduce words to their base or root form (lemmas).

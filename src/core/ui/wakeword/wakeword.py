@@ -2,7 +2,6 @@ import customtkinter as ctk
 from PIL import Image, ImageTk, ImageDraw
 from core.AudioStream.output2 import AudioPlayer
 import speech_recognition as sr
-import threading
 
 
 class WakeWordGUI(ctk.CTkToplevel):
@@ -21,7 +20,7 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.mic_photo = ctk.CTkImage(self.pre_mic_button_photo, size=(50, 50))
         self.MainFrame = ctk.CTkFrame(self, fg_color="transparent")
         self.MainFrame.pack(fill=ctk.BOTH)
-        self.center_image = ctk.CTkLabel(self.MainFrame, text='',image=photo, height=90,  width=90)
+        self.center_image = ctk.CTkLabel(self.MainFrame, text='', image=photo, height=90,  width=90)
         self.center_image.pack(pady=10, anchor='n')
         self.VoiceFrame = ctk.CTkFrame(self.MainFrame, fg_color="transparent")
         self.VoiceFrame.pack(fill=ctk.BOTH)
@@ -39,16 +38,14 @@ class WakeWordGUI(ctk.CTkToplevel):
         # Place the AI task status label at position (165, 32) in its parent widget
         self.AITaskStatusLbl.place(x=165, y=32)
 
-
-        self.center_image2 = ctk.CTkButton(self.MainFrame, text='',image=self.mic_photo, height=50, width=50, command=self.mic_click)
+        self.center_image2 = ctk.CTkButton(self.MainFrame, text='', image=self.mic_photo, height=50, width=50, command=self.mic_click)
         self.center_image2.pack(pady=10)
-        
-        
+
         self.audio = AudioPlayer("Data/start.wav")
         # Create a recognizer object
         self.recognizer = sr.Recognizer()
         self.listening = False
-        
+
         # Center the window on the screen
         self.update_idletasks()
         width = self.winfo_width()
@@ -61,7 +58,7 @@ class WakeWordGUI(ctk.CTkToplevel):
         print("closeing")
         self.end_callback()
         self.destroy()
-        
+
     def mic_click(self):
         #self.audio.play_audio()
         if self.listening == False:

@@ -675,18 +675,11 @@ class ChatBotGUI:
             self.engine.say(bot_response)
             self.engine.runAndWait()
             self.AITaskStatusLbl.configure(text="    Offline")
-          
-    def get_next_row(self):
-     if not hasattr(self, '_row_index'):
-        self._row_index = 0
 
-     row = self._row_index
-     self._row_index += 1
-     return row
     def clearChatScreen(self):
         for wid in self.chat_frame.winfo_children():
             wid.destroy()
-        
+
     def attach_to_frame(self, text, bot=False):
         """
         Attaches a chat message to the chat frame.
@@ -754,7 +747,7 @@ class ChatBotGUI:
                 anchor="s"
             )
         chat.pack(anchor='w', padx=5, pady=5)
-        
+
     def _add_to_chat_history(self, message, bot=False):
         """
         Adds new text to the chat history

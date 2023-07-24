@@ -7,7 +7,7 @@ import random
 FORMAT = pyaudio.paInt16
 CHANNELS = 2  # Number of audio channels
 RATE = 44100
-CHUNK =  1096 #1024
+CHUNK = 1096  # 1024
 
 # Create the Tkinter application window
 window = tk.Tk()

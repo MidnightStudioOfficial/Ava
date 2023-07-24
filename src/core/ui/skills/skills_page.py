@@ -1,7 +1,5 @@
 import customtkinter as ctk
 import tkinter as tk
-#import threading
-#import time
 
 from core.skill.skill import Skills
 
@@ -107,7 +105,7 @@ class SkillGUI(ctk.CTkFrame):
         self.layout[key]["value"] = value
         self.clear_list()
         self.create_list()
-        
+
     def filter_list(self, type_):
         """Filters the list of items based on type"""
         if type_ == "All":
@@ -126,14 +124,13 @@ class SkillGUI(ctk.CTkFrame):
                 if self.layout[i]["type"] == "other":
                     self.item_frame[i].pack(expand=True, fill="x", padx=5, pady=5)
             return
-            
+
         self.clear_list()
 
     def add_item(self, name, value):
         """add new package to the list"""
         self.item_frame[name] = ctk.CTkFrame(self.scrollable_frame)
         self.item_frame[name].pack(expand=True, fill="x", padx=5, pady=5)
-        
 
         self.item_frame[name].columnconfigure(0, weight=1)
         item_name = ctk.CTkButton(self.item_frame[name], fg_color="transparent",
@@ -141,10 +138,10 @@ class SkillGUI(ctk.CTkFrame):
                                             height=50, anchor="w", font=(self.font, 15, "bold"), width=500,
                                             text=name, hover=False)
         item_name.grid(row=0, column=0, sticky="ew", pady=5, padx=5)
-        
+
         item_label = ctk.CTkLabel(self.item_frame[name], width=250, justify="left", text=value, anchor="w", wraplength=250)
         item_label.grid(row=0, column=1, padx=5)
-        
+
     def create_list(self):
         for key in self.layout:
             value = self.layout[key]["value"]

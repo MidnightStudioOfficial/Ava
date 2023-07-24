@@ -22,7 +22,7 @@ stream = p.open(format=FORMAT,
 # Create the figure and axis
 fig, ax = plt.subplots(figsize=(8, 6))
 x = np.arange(0, CHUNK_SIZE//2, 1)
-line, = ax.plot(x, np.zeros(CHUNK_SIZE//2), color='lightblue', lw=1) #lw=2
+line, = ax.plot(x, np.zeros(CHUNK_SIZE//2), color='lightblue', lw=1) # lw=2
 
 # Function to update the plot
 def update_plot(frame):

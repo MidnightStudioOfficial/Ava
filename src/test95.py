@@ -177,7 +177,7 @@ def summarize_text(text):
     for sentence in rearranged_summary:
         # Remove leading/trailing whitespaces and punctuation
         sentence = sentence.strip(punctuation + " ")
-        
+
         clean_summary.append(sentence)
 
     return ' '.join(clean_summary)

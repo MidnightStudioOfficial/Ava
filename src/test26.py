@@ -34,7 +34,7 @@ def update(frame):
     # Update the line data
     line.set_data(x, audio)
 
-    return line,
+    return line
 
 # Set up the plot
 ax.set_xlim(0, CHUNK)

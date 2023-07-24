@@ -83,7 +83,7 @@ class ChatBotGUI:
         # Set the grid layout to 1 row and 2 columns
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(1, weight=1)
-        
+
         self.min_w = 50 # Minimum width of the frame
         self.max_w = 200 # Maximum width of the frame
         self.cur_width = self.min_w # Increasing width of the frame
@@ -110,7 +110,7 @@ class ChatBotGUI:
         for attribute, data in image_data.items():
             image = Image.open(join(image_path, data["name"]))  # Open the image file
             setattr(self, attribute, ctk.CTkImage(image, size=data["size"]))  # Assign the image to an attribute with specified size
-              
+
         self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
         self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
         self.add_user_image = ctk.CTkImage(light_image=Image.open(join(image_path, "settings.png")), dark_image=Image.open(join(image_path, "settings.png")), size=(20, 20))
@@ -118,7 +118,7 @@ class ChatBotGUI:
         self.add_profile_image = ctk.CTkImage(Image.open(join(image_path, "profile.png")))
         self.add_profile_image2 = ctk.CTkImage(Image.open(join(image_path, "profile.png")),size=(40,40))
         self.add_skills_image = ctk.CTkImage(Image.open(join(image_path, "box.png")))
-        
+
         # create navigation frame
         splash_screen.set_text("Creating gui")
 
@@ -136,12 +136,12 @@ class ChatBotGUI:
             {"attribute": "frame_profile_button", "text": "Profile", "image": self.add_profile_image, "command": self.frame_profile_button_event},
             {"attribute": "frame_skills_button", "text": "Skills", "image": self.add_skills_image, "command": self.frame_skills_button_event}
         ]
-        
+
         # Create the navigation frame label
         self.navigation_frame_label = ctk.CTkLabel(self.navigation_frame, text="  Ava", image=self.logo_image,
                                                 compound="left", font=ctk.CTkFont(size=15, weight="bold"))
         self.navigation_frame_label.grid(row=0, column=0, padx=20, pady=20)
-        
+
         # Create navigation buttons and assign attributes to self
         for index, nav_button in enumerate(navigation_buttons, start=1):
             button = ctk.CTkButton(
@@ -170,13 +170,13 @@ class ChatBotGUI:
         self.home_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         self.home_frame.grid(row=0, column=0, sticky="w")
         self.home_frame.grid_columnconfigure(0, weight=1)
-        
+
         self.profile_button = ctk.CTkButton(self.home_frame, text="", image=self.add_profile_image2, fg_color="transparent", corner_radius=0, width=40, height=40, border_width=0, border_spacing=0, compound="left")
         self.profile_button.grid(row=0, column=0, sticky="nw")
         CTkScrollableDropdown(self.profile_button, values=global_vars.STYLES_LIST, height=270, resize=False, button_height=30,
                       scrollbar=True, width=100)
         self.profile_button_tooltip = CTkToolTip(self.profile_button, delay=0.8, message=str(global_vars.TOOLTIP_MESSAGES["profile_button"]))
-        
+
         self.mail_button = ctk.CTkButton(self.home_frame, text="", image=self.image_bell_icon_image, fg_color="transparent")
         self.mail_button.grid(row=0, column=0, sticky="ne", padx=5, pady=5)  # Adding some padding for aesthetics
         self.mail_button.configure(width=30, height=30)
@@ -197,9 +197,9 @@ class ChatBotGUI:
 
         version_button = ctk.CTkButton(master, text="V1.0", width=96, command=self.debug_click)
         version_button.grid(sticky="se", column=1)
-        
+
         self.current_chat_bubble = False
-        
+
         # create second frame
         splash_screen.set_text("Creating chat page")
         self.second_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
@@ -213,7 +213,7 @@ class ChatBotGUI:
         # This will cause the frames to overlap each other
         for f in (self.root1, self.root2, self.root3):
             f.grid(row=0, column=0, sticky='news')
-        
+
         if self.current_chat_bubble == False:
            self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
         else:
@@ -339,23 +339,8 @@ class ChatBotGUI:
         self.botBtn = ctk.CTkButton(self.VoiceModeFrame, image=photo, height=30,
                                     width=30, border_width=0, text="", fg_color="transparent", corner_radius=400)
         self.botBtn.place(relx=1.0, y=30, x=-20, anchor="ne")
-        
+
         raise_frame(self.root1)
-        
-        # Create chat history display
-        #self.chat_history = ctk.CTkTextbox(self.second_frame, state='disabled', wrap='word', font=('Arial', 12)) #ScrolledText
-        #self.chat_history.place(relx=0.5, rely=0.2, relwidth=0.95, relheight=0.6, anchor='n')
-
-        # Create input field for user messages
-        #self.user_input = ctk.CTkEntry(self.second_frame, font=('Arial', 12))
-        #self.user_input.place(relx=0.5, rely=0.85, relwidth=0.7, relheight=0.1, anchor='n')
-
-        # Create send button
-        #self.send_button = ctk.CTkButton(self.second_frame, text="Send", command=self.send_message)
-        #self.send_button.place(relx=0.85, rely=0.85, relwidth=0.15, relheight=0.1, anchor='n')
-
-        # Bind enter key to send message
-        #self.user_input.bind('<Return>', lambda event: self.send_message())
 
         # create third frame
         splash_screen.set_text("Creating settings page")
@@ -397,7 +382,7 @@ class ChatBotGUI:
         self.reset_train_button.pack()
         self.entry = ctk.CTkEntry(self.frame_3, width=240, placeholder_text="Window Style")
         self.entry.pack(fill='x', padx=10, pady=10)
-        
+
         self.style_dropdown = CTkScrollableDropdown(self.entry, values=global_vars.STYLES_LIST, command=self.style_dropdown_click,
                             autocomplete=True) # Using autocomplete
         self.style_dropdown_tooltip = CTkToolTip(self.entry, delay=0.7, message=str(global_vars.TOOLTIP_MESSAGES["style_dropdown"]))
@@ -406,32 +391,32 @@ class ChatBotGUI:
         label.pack(ipady=2)
         self.slider_1 = ctk.CTkSlider(master=self.frame_1, from_=0, to=100)
         self.slider_1.pack(padx=10)#pady=10, 
- 
+
         # create the DNA frame
         self.DNA_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
-        
+
         self.DNA_frame_large_label = ctk.CTkLabel(self.DNA_frame, text="DNA: Create A new chatbot!", font=ctk.CTkFont(family='Lucida Console', size=15, weight="bold")) #, font=ctk.CTkFont(size=15, weight="bold")
         self.DNA_frame_large_label.grid(row=0, column=0, padx=20, pady=10)
         self.DNA_frame_large_label.place(relx=0.5, rely=0.07, anchor=tk.CENTER)
-        
+
         self.DNA_label_gender = ctk.CTkLabel(self.DNA_frame, text="Gender") #, font=('MV Boli', 12)
         self.DNA_label_gender.place(relx=0.5, rely=0.16666, anchor=tk.CENTER)
         self.DNA_combobox_gender = ctk.CTkOptionMenu(self.DNA_frame, values=["Male", "Female"])
         self.DNA_combobox_gender.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
-        
+
         # create the profile frame
         splash_screen.set_text("Creating profile page")
         self.profile_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         ProfileClass(self.profile_frame)
-        
+
         # create the skills frame
         splash_screen.set_text("Creating skills page")
         self.skills_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
         SkillGUI(self.skills_frame)
-        
+
         # select default frame
         self.select_frame_by_name("home")
-        
+
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
          # Set up voice
          splash_screen.set_text("Set up voice")
@@ -451,11 +436,11 @@ class ChatBotGUI:
         del self.chat_image
         del self.add_user_image
         #del self.logo_image
-        
+
         self.recognize_thread = None
         self.stoped_lisening = False
         self.message_count = 0
-        
+
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
          # Initialize chatbot
          splash_screen.set_text("Training the chatbot")
@@ -485,11 +470,11 @@ class ChatBotGUI:
 
     def debug_click(self):
         DebugGUI(self.master)
-        
+
     def style_dropdown_click(self, event):
         self.entry.insert(1, event)
         apply_style(self.master, event)
-    
+
     def chat_bubble_enable_event(self):
         print(self.chat_bubble_switch_var.get())
         print(self.current_chat_bubble)
@@ -505,7 +490,7 @@ class ChatBotGUI:
             self.chat_frame.destroy()
             self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
             self.chat_frame.pack(padx=10)
-        
+
     def record(self, clear_chat=True, icon_display=True):
         """
         Records audio from the microphone and converts it to text using Google Speech Recognition.
@@ -518,7 +503,7 @@ class ChatBotGUI:
             str: The recognized speech as lowercase text, or 'None' if an error occurred during speech recognition.
         """
         import speech_recognition as sr
-        
+
         # Display status message
         print('\nListening...')
         self.AITaskStatusLbl.configure(text="Listening...")
@@ -583,7 +568,6 @@ class ChatBotGUI:
             self.TextModeFrame.pack_forget()
             self.VoiceModeFrame.pack(fill=BOTH)
 
-
             # Set focus to the root window (commented out)
             # self.root.focus()
 
@@ -601,25 +585,23 @@ class ChatBotGUI:
 
     def frame_2_button_event(self):
         self.select_frame_by_name("frame_2")
-    
+
     def frame_3_button_event(self):
         self.select_frame_by_name("frame_3")
-        
+
     def frame_DNA_button_event(self):
          self.select_frame_by_name("frame_DNA")
-        
+
     def frame_profile_button_event(self):
          self.select_frame_by_name("frame_profile")
-    
+
     def frame_skills_button_event(self):
         self.select_frame_by_name("frame_skills")
 
     def change_appearance_mode_event(self, new_appearance_mode):
-        """
-        Change the GUI appearance mode
-        """
+        """Change the GUI appearance mode"""
         ctk.set_appearance_mode(new_appearance_mode)  
-        
+
     def send_message(self, text: None):
         """
         Sends a message from the user to the chatbot and displays the bot's response.
@@ -647,18 +629,11 @@ class ChatBotGUI:
             self.engine.say(bot_response)
             self.engine.runAndWait()
             self.AITaskStatusLbl.configure(text="    Offline")
-          
-    def get_next_row(self):
-     if not hasattr(self, '_row_index'):
-        self._row_index = 0
 
-     row = self._row_index
-     self._row_index += 1
-     return row
     def clearChatScreen(self):
         for wid in self.chat_frame.winfo_children():
             wid.destroy()
-        
+
     def attach_to_frame(self, text, bot=False):
         """
         Attaches a chat message to the chat frame.

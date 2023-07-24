@@ -28,7 +28,7 @@ class ChatbotApp(ctk.CTk):
     def add_page(self, page_name, page_class):
         page = page_class(self.container, self)
         self.pages[page_name] = page
-        
+
         # Adjust grid for the page
         page.grid(row=0, column=0, sticky="nsew")
 

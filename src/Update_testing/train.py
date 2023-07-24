@@ -46,7 +46,7 @@ if __name__ == '__main__':
     training_labels = []
     labels = []
     responses = []
-    
+
     for intent, skill in s.skills.items():
         for sample in skill.samples:
             training_sentences.append(sample)
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     word_index = tokenizer.word_index
     sequences = tokenizer.texts_to_sequences(training_sentences)
     padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)
-    
+
 
     # Define model
     model = Sequential()
@@ -126,7 +126,7 @@ if __name__ == '__main__':
         pickle.dump(lbl_encoder, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
 
     print("done")
-    
+
     print("Validation: ")
     for s in training_sentences:
         preprocessed_s = preprocess_sentence(s)
@@ -140,9 +140,6 @@ if __name__ == '__main__':
         result = model.predict(pad_sequences(tokenizer.texts_to_sequences([preprocessed_s]), truncating='post', maxlen=max_len))
         intent = lbl_encoder.inverse_transform([np.argmax(result)])
         print(s + " --> " + str(intent[0]))
-        
-    
-
 
     # print("Validation: ")
     # for s in training_sentences:

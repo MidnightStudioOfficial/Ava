@@ -138,23 +138,15 @@ class DebugGUI(ctk.CTkToplevel):
                                             height=50, anchor="w", font=(self.font, 15, "bold"), width=500,
                                             text=name, hover=False)
         item_name.grid(row=0, column=0, sticky="ew", pady=5, padx=5)
-        
-        #if self.data[name]["name"] in self.modules:
-             #version = pkg_resources.get_distribution(self.data[name]["name"]).version
-        #     desc = f"{self.data[name]['desc']}"
-             #self.data[name]["installation"] = f"{self.data[name]['installation']} --upgrade"
-        #else:
-        #     self.item_frame[name].configure(fg_color=ctk.ThemeManager.theme["CTkButton"]["fg_color"])
-        #     desc = f"{self.data[name]['desc']} "
-        #desc = f"{name} " 
+
         item_label = ctk.CTkLabel(self.item_frame[name], width=250, justify="left", text=value, anchor="w", wraplength=250)
         item_label.grid(row=0, column=1, padx=5)
-        
+
     def create_list(self):
         for key in self.layout:
             value = self.layout[key]["value"]
             self.add_item(str(key), str(value))
-            
+
     def display_debug_info(self):
         while True:
             self.debug.update_debug_info_DEBUG()
@@ -163,9 +155,9 @@ class DebugGUI(ctk.CTkToplevel):
                 value = new_info[key]
                 self.update_debug_info(str(key), str(value))
                 self.filter_list(self.option_type.get())
-                
+
             #print(self.debug.get_debug_info())
-            time.sleep(3) #1
+            time.sleep(3) # 1
 
 class App(ctk.CTk):
     def __init__(self, *args, **kwargs):
@@ -192,4 +184,3 @@ if __name__ == '__main__':
 
  #t = threading.Thread(target=debug_gui.display_debug_info)
  #t.start()
- 

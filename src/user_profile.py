@@ -5,16 +5,16 @@ class ProfileClass(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
-        
+
         self.profile_data = None
-        
+
         self.canvas = ctk.CTkCanvas(parent, width=500, height=150)
         self.canvas.pack()
 
         #self.profile_icon = ctk.CTkImage()
         self.profile_label = ctk.CTkLabel(parent)
         self.profile_label.place(x=30, y=60)
-        
+
         self.name_frame = ctk.CTkFrame(parent, width=400, height=100, fg_color="#333333")
         self.name_frame.pack()
         self.first_name_label = ctk.CTkLabel(self.name_frame, text="John", font=("Segoe UI", 20), fg_color="#333333")
@@ -49,7 +49,7 @@ class ProfileClass(ctk.CTkFrame):
         #self.skill1_label.pack(side="left", padx=10)
         self._load_profile()
         self._set_profile()
-            
+
     def _load_profile(self):
         # Open the JSON file
         try:
@@ -61,13 +61,9 @@ class ProfileClass(ctk.CTkFrame):
            print("File not found")
         except json.JSONDecodeError:
            print("Invalid JSON syntax")
-           
+
     def _set_profile(self):
         interests = self.profile_data["interests"]
         for interest in interests:
             interest_label = ctk.CTkLabel(self.skills_frame, text="- " + interest, font=("Segoe UI", 12))
             interest_label.pack()
-        
-
-        
-        

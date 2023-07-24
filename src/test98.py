@@ -60,7 +60,7 @@ for category in categories:
                 article_vector = vectorizer.transform([processed_content])
                 article_similarity = cosine_similarity(user_preference_vector, article_vector)[0][0]
                 article_sentiment = sia.polarity_scores(content)['compound']
-            
+
                 if article_similarity > 0.5 and article_sentiment > 0.1:
                     filtered_articles.append((title, content))
 

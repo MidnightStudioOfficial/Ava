@@ -30,7 +30,7 @@ class apply_style():
     def __init__(self,
                  window,
                  style: str):
-        
+
         styles = ["dark", "mica", "aero", "transparent", "acrylic", "win7",
                   "inverse", "popup", "native", "optimised", "light"]
 
@@ -109,7 +109,7 @@ class change_title_color():
     def __init__(self,
                  window,
                  color):
-        
+
         window.update()
         self.HWND = windll.user32.GetParent(window.winfo_id())
         self.color = DWORD(int(convert_color(color), base=16))

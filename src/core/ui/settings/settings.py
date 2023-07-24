@@ -6,20 +6,19 @@ from core.controllers.settings.settings_controller import SettingsController
 
 
 
-        # self.root1 = ctk.CTkFrame(parent, fg_color="transparent")
-        # self.root2 = ctk.CTkFrame(parent)
-        # self.root3 = ctk.CTkFrame(parent)
+# self.root1 = ctk.CTkFrame(parent, fg_color="transparent")
+# self.root2 = ctk.CTkFrame(parent)
+# self.root3 = ctk.CTkFrame(parent)
 
-        # # Grid all frames to the same cell in the grid layout
-        # # This will cause the frames to overlap each other
-        # for f in (self.root1, self.root2, self.root3):
-        #     f.grid(row=0, column=0, sticky='news')
-        # self.settings_frame = ctk.CTkFrame(self.root1, height=100, fg_color="transparent", bg_color='#dfdfdf')
+# # Grid all frames to the same cell in the grid layout
+# # This will cause the frames to overlap each other
+# for f in (self.root1, self.root2, self.root3):
+#     f.grid(row=0, column=0, sticky='news')
+# self.settings_frame = ctk.CTkFrame(self.root1, height=100, fg_color="transparent", bg_color='#dfdfdf')
 
+# self.settings_frame.pack(expand=False)
 
-        # self.settings_frame.pack(expand=False)
-                
-        #self.root1.tkraise()
+#self.root1.tkraise()
 
 class SettingsUI(ctk.CTkFrame):
     def __init__(self, parent) -> None:
@@ -35,20 +34,20 @@ class SettingsUI(ctk.CTkFrame):
             ("frame_4", "Other")
         ]
         self.__create_widgets()
-    
+
     def __create_widgets(self):
         self.main_settings_frame = ctk.CTkFrame(self.parent, fg_color="transparent", bg_color='#dfdfdf')
         self.main_settings_frame.pack(expand=True)
-        
+
         self.tab_view = ctk.CTkTabview(master=self.main_settings_frame)
         self.tab_view.pack(side=ctk.TOP)
         self.tab_view.add("Chat")
         self.tab_view.add("Model")
         self.tab_view.add("Theme")
         self.tab_view.add("Other")
-        
+
         self.tab_view.set("Chat")  # set currently visible tab
-        
+
         # Create frames and labels using loops
         for frame_name, label_text in self.frames:
             frame = ctk.CTkFrame(master=self.tab_view.tab(str(label_text)))
@@ -59,11 +58,10 @@ class SettingsUI(ctk.CTkFrame):
 
             # Assign the created frame to an attribute with the corresponding frame name
             setattr(self, frame_name, frame)
-        
 
         self.chat_bubble_enable = ctk.CTkSwitch(self.frame_1, text="New chat bubble", command=self.chat_bubble_enable_event,
                                  variable=self.chat_bubble_switch_var, onvalue="on", offvalue="off")
-        self.chat_bubble_enable.pack() #ipady=10
+        self.chat_bubble_enable.pack() # ipady=10
 
         # Initialize a StringVar to hold the state of the segmented button
         self.segemented_button_var = ctk.StringVar(value="blue")
@@ -92,7 +90,7 @@ class SettingsUI(ctk.CTkFrame):
         # Create a slider widget with a range from 0 to 100
         self.slider_1 = ctk.CTkSlider(master=self.frame_1, from_=0, to=100)
 
-        self.slider_1.pack(padx=10) #pady=10,
+        self.slider_1.pack(padx=10) # pady=10,
 
         self.bottomFrame1 = ctk.CTkFrame(self.main_settings_frame, height=100, fg_color="transparent", bg_color='#dfdfdf')
 
@@ -101,9 +99,9 @@ class SettingsUI(ctk.CTkFrame):
 
         #self.top_buttons = ctk.CTkSegmentedButton(self.main_settings_frame, values=["Chat", "Model", "Theme", "Other"], variable=self.top_buttons_var)
         #self.top_buttons.pack()
-        
+
     def chat_bubble_enable_event(self):
         pass
-    
+
     def style_dropdown_click(self):
         pass

@@ -38,7 +38,6 @@ class Brain:
         self.traits = []
         self.memory = {}
 
-
         # Create an instance of the SentimentIntensityAnalyzer
         self.sentiment_analyzer = SentimentIntensityAnalyzer()
 
@@ -85,7 +84,7 @@ class Brain:
         plt.xlabel("Time")
         plt.ylabel("Mood")
         plt.show()
-    
+
     def add_thought(self, mood, thought):
      if mood in self.thoughts:
         self.thoughts[mood].append(thought)
@@ -97,7 +96,7 @@ class Brain:
         self.rules[category].append(rule)
      else:
         self.rules[category] = [rule]
-        
+
     def generate_thought(self, mood):
         if mood == "Very sad":
             mood = "sad"
@@ -120,11 +119,11 @@ class Brain:
          return thought + ". " + random.choice(self.rules["project"])
         else:
          return thought + ". " + random.choice(self.rules["vacation"])
-     
+
     def do_tick(self):
         self.thought = self.generate_thought(self.mood_as_string())
         print(self.thought)
-        
+
     def run_every_3_minutes(self):
      global stop
      if not stop:
@@ -132,7 +131,7 @@ class Brain:
         self.timer = threading.Timer(180, self.run_every_3_minutes) #180
         self.timer.daemon = True
         self.timer.start()
-    
+
     def start(self):
         # Start the repeating function in a separate thread
         thread = threading.Thread(target=self.run_every_3_minutes)

@@ -75,7 +75,7 @@ model.eval()
 with torch.no_grad():
     mood_prediction = model(test_inputs)
     print("Predicted mood:", mood_prediction.item())
-    
+
 # Function to plot the neural network architecture
 # def plot_model(model):
 #     plt.figure(figsize=(10, 5))

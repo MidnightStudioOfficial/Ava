@@ -8,15 +8,11 @@ class ChatBotTestCase(TestCase):
         self.chatbot = ChatBot('Test Bot', **self.get_kwargs())
 
     def tearDown(self):
-        """
-        Remove the test database.
-        """
+        """Remove the test database."""
         self.chatbot.storage.drop()
 
     def assertIsLength(self, item, length):
-        """
-        Assert that an iterable has the given length.
-        """
+        """Assert that an iterable has the given length."""
         if len(item) != length:
             raise AssertionError(
                 'Length {} is not equal to {}'.format(len(item), length)

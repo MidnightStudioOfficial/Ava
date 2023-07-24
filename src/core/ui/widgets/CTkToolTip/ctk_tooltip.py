@@ -34,7 +34,7 @@ class CTkToolTip(Toplevel):
         self.withdraw()
         # Disable ToolTip's title bar
         self.overrideredirect(True)
-  
+
         if sys.platform.startswith("win"):
             self.transparent_color = self.widget._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkToplevel"]["fg_color"])
             self.attributes("-transparentcolor", self.transparent_color)

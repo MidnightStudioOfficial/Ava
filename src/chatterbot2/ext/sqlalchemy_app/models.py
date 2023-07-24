@@ -92,15 +92,11 @@ class Statement(Base, StatementMixin):
     )
 
     def get_tags(self):
-        """
-        Return a list of tags for this statement.
-        """
+        """Return a list of tags for this statement."""
         return [tag.name for tag in self.tags]
 
     def add_tags(self, *tags):
-        """
-        Add a list of strings to the statement as tags.
-        """
+        """Add a list of strings to the statement as tags."""
         self.tags.extend([
             Tag(name=tag) for tag in tags
         ])

@@ -5,7 +5,7 @@ class ProgressBar:
     def __init__(self, data_file_paths):
         self.data_file_paths = data_file_paths
         self.total_files = len(data_file_paths)
-    
+
     def get_file_size(self, file_path):
         return os.path.getsize(file_path)
 

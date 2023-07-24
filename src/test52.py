@@ -18,10 +18,10 @@ lemmatizer = WordNetLemmatizer()
 def preprocess(text):
     # Tokenize the text
     words = text.split()
-    
+
     # Remove stop words and lemmatize the words
     words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
-    
+
     # Rejoin the words into a single string
     return ' '.join(words)
 

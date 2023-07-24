@@ -86,7 +86,7 @@ class ChatBotGUI:
         # Set the grid layout to 1 row and 2 columns
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(1, weight=1)
-        
+
         self.min_w = 50 # Minimum width of the frame
         self.max_w = 200 # Maximum width of the frame
         self.cur_width = self.min_w # Increasing width of the frame
@@ -113,7 +113,7 @@ class ChatBotGUI:
         for attribute, data in image_data.items():
             image = Image.open(join(image_path, data["name"]))  # Open the image file
             setattr(self, attribute, ctk.CTkImage(image, size=data["size"]))  # Assign the image to an attribute with specified size
-              
+
         self.home_image = ctk.CTkImage(light_image=Image.open(join(image_path, "home.png")), dark_image=Image.open(join(image_path, "home.png")), size=(20, 20))
         self.chat_image = ctk.CTkImage(light_image=Image.open(join(image_path, "chat.png")), dark_image=Image.open(join(image_path, "chat.png")), size=(20, 20))
         self.add_user_image = ctk.CTkImage(light_image=Image.open(join(image_path, "settings.png")), dark_image=Image.open(join(image_path, "settings.png")), size=(20, 20))
@@ -291,7 +291,7 @@ class ChatBotGUI:
         self.kbBtn.place(x=25, y=30)
 
         # Mic
-        self.micImg = PhotoImage(file = "Data/images/mic.png")
+        self.micImg = PhotoImage(file="Data/images/mic.png")
         self.micImg = self.micImg.subsample(2, 2)
         self.micBtn = ctk.CTkButton(self.TextModeFrame, text='', image=self.micImg, height=30,
                                     width=30, fg_color="transparent", command=self.changeChatMode)  # , bg_color='#dfdfdf'
@@ -606,25 +606,23 @@ class ChatBotGUI:
 
     def frame_2_button_event(self):
         self.select_frame_by_name("frame_2")
-    
+
     def frame_3_button_event(self):
         self.select_frame_by_name("frame_3")
-        
+
     def frame_DNA_button_event(self):
          self.select_frame_by_name("frame_DNA")
-        
+
     def frame_profile_button_event(self):
          self.select_frame_by_name("frame_profile")
-    
+
     def frame_skills_button_event(self):
         self.select_frame_by_name("frame_skills")
 
     def change_appearance_mode_event(self, new_appearance_mode):
-        """
-        Change the GUI appearance mode
-        """
+        """Change the GUI appearance mode"""
         ctk.set_appearance_mode(new_appearance_mode)  
-        
+
     def send_message(self, text: None):
         """
         Sends a message from the user to the chatbot and displays the bot's response.
@@ -652,18 +650,11 @@ class ChatBotGUI:
             self.engine.say(bot_response)
             self.engine.runAndWait()
             self.AITaskStatusLbl.configure(text="    Offline")
-          
-    def get_next_row(self):
-     if not hasattr(self, '_row_index'):
-        self._row_index = 0
 
-     row = self._row_index
-     self._row_index += 1
-     return row
     def clearChatScreen(self):
         for wid in self.chat_frame.winfo_children():
             wid.destroy()
-        
+
     def attach_to_frame(self, text, bot=False):
         """
         Attaches a chat message to the chat frame.
@@ -733,9 +724,7 @@ class ChatBotGUI:
         chat.pack(anchor='w', padx=5, pady=5)
         
     def _add_to_chat_history(self, message, bot=False):
-        """
-        Adds new text to the chat history
-        """
+        """Adds new text to the chat history"""
         if self.current_chat_bubble == True:
          if bot is True:
             ctk.CTkLabel(self.chat_frame, image=self.logo_image, text="").pack(anchor='w', pady=0) #, bg=chatBgColor

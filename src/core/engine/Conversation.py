@@ -31,7 +31,7 @@ class Conversation():
     def interact(self, utterance: str, returnPayload = False):
         """
         Processes an utterance from the user and returns a response.
-        
+
         arguments:
         utterance -- str | the input utterance from the user
         returnPayload -- bool | True if desired return value is conversation payload, False if desired return value is just articulation string. Default is False.
@@ -57,7 +57,7 @@ class Conversation():
         if response.get('probability') > 0.3:
             # Get an articulation from the articMapper object using its get method with the intent value from the response dictionary and set it to an articulation variable
             articulation = self.articMapper.get(response.get('intent'))
-            
+
             # Check if articulation is None
             if articulation == None:
                 # Get an articulation for 'no_articulation' from the articMapper object using its get method and set it to an articulation variable

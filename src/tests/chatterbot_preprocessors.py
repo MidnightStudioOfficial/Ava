@@ -4,9 +4,7 @@ from chatterbot2 import preprocessors
 
 
 class PreprocessorIntegrationTestCase(ChatBotTestCase):
-    """
-    Make sure that preprocessors work with the chat bot.
-    """
+    """Make sure that preprocessors work with the chat bot."""
 
     def test_clean_whitespace(self):
         self.chatbot.preprocessors = [preprocessors.clean_whitespace]

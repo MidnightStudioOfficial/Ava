@@ -62,7 +62,7 @@ def ease_out_bounce(t):
     else:
         t -= 2.625 / 2.75
         return 7.5625 * t * t + 0.984375
-    
+
 def create_window(x, y):
     window = tk.Toplevel()
     window.geometry(f"300x200+{x}+{y}")

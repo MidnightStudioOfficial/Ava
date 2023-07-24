@@ -47,7 +47,7 @@ def summarize_text(text):
                     position_weight = 1.0
                     if i == 0 or i == len(sentences) - 1:
                         position_weight = 1.5
-                    
+
                     if i in sentence_scores.keys():
                         sentence_scores[i] += tfidf_scores[i, tfidf.vocabulary_[word]] * position_weight
                     else:
