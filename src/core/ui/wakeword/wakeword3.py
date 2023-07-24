@@ -57,7 +57,7 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.center_image2.pack(pady=10)
 
         # Initialize the audio player for sound feedback
-        self.audio = AudioPlayer("Data/start.wav")
+        self.audio_player = AudioPlayer("Data/start.wav")
 
         # Create a recognizer object for speech recognition
         self.recognizer = sr.Recognizer()
@@ -76,8 +76,8 @@ class WakeWordGUI(ctk.CTkToplevel):
 
     def close_window(self):
         """Callback function for closing the GUI window."""
-        self.audio.set_file("Data/back.wav")
-        self.audio.play()
+        self.audio_player.set_file("Data/back.wav")
+        self.audio_player.play()
         print("closing")
         self.end_callback()
         self.destroy()
@@ -85,7 +85,7 @@ class WakeWordGUI(ctk.CTkToplevel):
     def mic_click(self):
         """Callback function for the microphone button click."""
         # Play the microphone click sound
-        self.audio.play_audio()
+        self.audio_player.play_audio()
         if self.listening == False:
             # Start the speech recognition process in a new thread
             threading.Thread(target=self.mic_click2, daemon=True).start()
@@ -97,14 +97,14 @@ class WakeWordGUI(ctk.CTkToplevel):
         Uses the microphone to listen for speech and performs speech recognition.
         """
         if self.listening == False:
-            # Start listening for speech using the microphone
-            with sr.Microphone() as source:
-                print("Speak something...")
-                self.AITaskStatusLbl.configure(text="Listening..")
-                audio = self.recognizer.listen(source, timeout=7)
-                print("DONE")
-
             try:
+                # Start listening for speech using the microphone
+                with sr.Microphone() as source:
+                    print("Speak something...")
+                    self.AITaskStatusLbl.configure(text="Listening..")
+                    audio = self.recognizer.listen(source, timeout=7)
+                    print("DONE")
+
                 self.AITaskStatusLbl.configure(text="Thinking..")
                 wav_filename = "TEMP_speech_audio.wav"
                 with wave.open(wav_filename, 'wb') as wf:
@@ -114,18 +114,25 @@ class WakeWordGUI(ctk.CTkToplevel):
                     wf.writeframes(audio.get_wav_data())
 
                 # Use Whisper for speech recognition with numpy array
-                print("transcribeing")
-                result = self.model.transcribe(wav_filename) #audio=audio_data, sample_rate=sample_rate
+                print("transcribing")
+                result = self.model.transcribe(wav_filename)
                 text = result["text"]
                 print("You said:", text)
                 # Remove the temporary WAV file
                 os.remove(wav_filename)
                 self.AITaskStatusLbl.configure(text="Recognized: " + text)
                 return str(text)
-            except Exception as e:
-                # Handle any exceptions that may occur during speech recognition
-                print("Error:", e)
-                self.AITaskStatusLbl.configure(text="Error during recognition")
 
-            # Update the status label with the recognized text
-            self.AITaskStatusLbl.configure(text="Recognized: " + text)
+            except sr.WaitTimeoutError:
+                # Handle microphone timeout error
+                self.AITaskStatusLbl.configure(text="Listening timeout. Please try again.")
+            except sr.UnknownValueError:
+                # Handle speech not recognized error
+                self.AITaskStatusLbl.configure(text="Sorry, I could not understand what you said.")
+            except sr.RequestError as e:
+                # Handle speech recognition API request error
+                self.AITaskStatusLbl.configure(text="Error during recognition. Please check your internet connection.")
+            except Exception as e:
+                # Handle any other unexpected errors
+                print("Error:", e)
+                self.AITaskStatusLbl.configure(text="Error during recognition. Please try again later.")
