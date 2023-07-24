@@ -8,15 +8,11 @@ from chatterbot2 import constants
 
 
 class ModelBase(object):
-    """
-    An augmented base class for SqlAlchemy models.
-    """
+    """An augmented base class for SqlAlchemy models."""
 
     @declared_attr
     def __tablename__(cls):
-        """
-        Return the lowercase class name as the name of the table.
-        """
+        """Return the lowercase class name as the name of the table."""
         return cls.__name__.lower()
 
     id = Column(
@@ -38,9 +34,7 @@ tag_association_table = Table(
 
 
 class Tag(Base):
-    """
-    A tag that describes a statement.
-    """
+    """A tag that describes a statement."""
 
     name = Column(
         String(constants.TAG_NAME_MAX_LENGTH),
@@ -49,9 +43,7 @@ class Tag(Base):
 
 
 class Statement(Base, StatementMixin):
-    """
-    A Statement represents a sentence or phrase.
-    """
+    """A Statement represents a sentence or phrase."""
 
     confidence = 0
 

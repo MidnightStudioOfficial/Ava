@@ -747,9 +747,7 @@ class ChatBotGUI:
         self.select_frame_by_name("frame_more_music")
 
     def change_appearance_mode_event(self, new_appearance_mode):
-        """
-        Change the GUI appearance mode
-        """
+        """Change the GUI appearance mode"""
         ctk.set_appearance_mode(new_appearance_mode)  
 
     def send_message(self, text: None):

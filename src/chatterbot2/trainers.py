@@ -27,18 +27,14 @@ class Trainer(object):
         )
 
     def get_preprocessed_statement(self, input_statement):
-        """
-        Preprocess the input statement.
-        """
+        """Preprocess the input statement."""
         for preprocessor in self.chatbot.preprocessors:
             input_statement = preprocessor(input_statement)
 
         return input_statement
 
     def train(self, *args, **kwargs):
-        """
-        This method must be overridden by a child class.
-        """
+        """This method must be overridden by a child class."""
         raise self.TrainerInitializationException()
 
     class TrainerInitializationException(Exception):
@@ -171,9 +167,7 @@ class ChatterBotCorpusTrainer(Trainer):
 
 
 class UbuntuCorpusTrainer(Trainer):
-    """
-    Allow chatbots to be trained with the data from the Ubuntu Dialog Corpus.
-    """
+    """Allow chatbots to be trained with the data from the Ubuntu Dialog Corpus."""
 
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
@@ -198,9 +192,7 @@ class UbuntuCorpusTrainer(Trainer):
             os.makedirs(self.data_directory)
 
     def is_downloaded(self, file_path):
-        """
-        Check if the data file is already downloaded.
-        """
+        """Check if the data file is already downloaded."""
         if os.path.exists(file_path):
             self.chatbot.logger.info('File is already downloaded')
             return True
@@ -208,9 +200,7 @@ class UbuntuCorpusTrainer(Trainer):
         return False
 
     def is_extracted(self, file_path):
-        """
-        Check if the data file is already extracted.
-        """
+        """Check if the data file is already extracted."""
         if os.path.isdir(file_path):
             self.chatbot.logger.info('File is already extracted')
             return True
@@ -257,9 +247,7 @@ class UbuntuCorpusTrainer(Trainer):
         return file_path
 
     def extract(self, file_path):
-        """
-        Extract a tar file at the specified file path.
-        """
+        """Extract a tar file at the specified file path."""
         import tarfile
 
         print('Extracting {}'.format(file_path))

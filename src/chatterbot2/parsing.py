@@ -705,9 +705,7 @@ def previous_week_day(base_date, weekday):
 
 
 def next_week_day(base_date, weekday):
-    """
-    Finds next weekday
-    """
+    """Finds next weekday"""
     day_of_week = base_date.weekday()
     end_of_this_week = base_date + timedelta(days=6 - day_of_week)
     day = end_of_this_week + timedelta(days=1)
@@ -717,9 +715,7 @@ def next_week_day(base_date, weekday):
 
 
 def datetime_parsing(text, base_date=datetime.now()):
-    """
-    Extract datetime objects from a string of text.
-    """
+    """Extract datetime objects from a string of text."""
     matches = []
     found_array = []
 

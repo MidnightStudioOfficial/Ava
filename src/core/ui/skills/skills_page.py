@@ -130,7 +130,7 @@ class SkillGUI(ctk.CTkFrame):
         self.clear_list()
 
     def add_item(self, name, value):
-        """ add new package to the list """
+        """add new package to the list"""
         self.item_frame[name] = ctk.CTkFrame(self.scrollable_frame)
         self.item_frame[name].pack(expand=True, fill="x", padx=5, pady=5)
         

@@ -24,21 +24,15 @@ class StatementMixin(object):
     extra_statement_field_names = []
 
     def get_statement_field_names(self):
-        """
-        Return the list of field names for the statement.
-        """
+        """Return the list of field names for the statement."""
         return self.statement_field_names + self.extra_statement_field_names
 
     def get_tags(self):
-        """
-        Return the list of tags for this statement.
-        """
+        """Return the list of tags for this statement."""
         return self.tags
 
     def add_tags(self, *tags):
-        """
-        Add a list of strings to the statement as tags.
-        """
+        """Add a list of strings to the statement as tags."""
         self.tags.extend(tags)
 
     def serialize(self):
@@ -114,7 +108,5 @@ class Statement(StatementMixin):
         return '<Statement text:%s>' % (self.text)
 
     def save(self):
-        """
-        Save the statement in the database.
-        """
+        """Save the statement in the database."""
         self.storage.update(self)

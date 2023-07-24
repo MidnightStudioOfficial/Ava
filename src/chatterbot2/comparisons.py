@@ -62,9 +62,7 @@ class LevenshteinDistance(Comparator):
 
 
 class SpacySimilarity(Comparator):
-    """
-    Calculate the similarity of two statements using Spacy models.
-    """
+    """Calculate the similarity of two statements using Spacy models."""
 
     def __init__(self, language):
         super().__init__(language)

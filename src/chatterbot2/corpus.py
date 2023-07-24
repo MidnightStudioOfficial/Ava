@@ -17,9 +17,7 @@ except (ImportError, ModuleNotFoundError):
 CORPUS_EXTENSION = 'yml'
 
 def get_file_path(dotted_path, extension='json'):
-    """
-    Reads a dotted file path and returns the file path.
-    """
+    """Reads a dotted file path and returns the file path."""
     # If the operating system's file path seperator character is in the string
     if os.sep in dotted_path or '/' in dotted_path:
         # Assume the path is a valid file path
@@ -39,9 +37,7 @@ def get_file_path(dotted_path, extension='json'):
     return corpus_path
 
 def read_corpus(file_name):
-    """
-    Read and return the data from a corpus json file.
-    """
+    """Read and return the data from a corpus json file."""
     try:
         import yaml
     except ImportError:
@@ -56,9 +52,7 @@ def read_corpus(file_name):
         return yaml.safe_load(data_file)
 
 def list_corpus_files(dotted_path):
-    """
-    Return a list of file paths to each data file in the specified corpus.
-    """
+    """Return a list of file paths to each data file in the specified corpus."""
     corpus_path = get_file_path(dotted_path, extension=CORPUS_EXTENSION)
     paths = []
 
@@ -71,9 +65,7 @@ def list_corpus_files(dotted_path):
     return paths
 
 def load_corpus(*data_file_paths):
-    """
-    Return the data contained within a specified corpus.
-    """
+    """Return the data contained within a specified corpus."""
     for file_path in data_file_paths:
         corpus = []
         corpus_data = read_corpus(file_path)
