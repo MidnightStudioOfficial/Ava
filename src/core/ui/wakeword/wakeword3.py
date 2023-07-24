@@ -59,7 +59,7 @@ class WakeWordGUI(ctk.CTkToplevel):
             image=self.mic_photo,
             height=50,
             width=50,
-            command=self.mic_click
+            command=self.on_mic_button_click
         )
         self.center_image2.pack(pady=10)
 
@@ -89,15 +89,15 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.end_callback()
         self.destroy()
 
-    def mic_click(self):
+    def on_mic_button_click(self):
         """Callback function for the microphone button click."""
         # Play the microphone click sound
         self.audio_player.play_audio()
         if self.listening == False:
             # Start the speech recognition process in a new thread
-            threading.Thread(target=self.mic_click2, daemon=True).start()
+            threading.Thread(target=self.listen_and_recognize, daemon=True).start()
 
-    def mic_click2(self):
+    def listen_and_recognize(self):
         """
         Handle speech recognition when the microphone button is clicked.
 

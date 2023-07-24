@@ -3,7 +3,7 @@
   License: MIT
   Description: This is the main script that loads and connects everything
 """
-from core.ui.ui5 import ChatBotGUI
+from core.ui.ui import ChatBotGUI
 import customtkinter as ctk
 from os.path import join, dirname, realpath
 
@@ -11,6 +11,7 @@ print("Importing loadingscreen")
 from core.ui.loadingscreen2 import SplashScreen
 
 if __name__ == '__main__':
+
     """
     Main entry point of the program.
     This script creates a GUI for the Ava Chatbot application with a splash screen that shows a loading progress.
@@ -25,10 +26,10 @@ if __name__ == '__main__':
     # Create and configure the splash screen
     splash_screen = SplashScreen(root)
     splash_screen.overrideredirect(True)
-    splash_screen.set_text("Creating Ava and training")
+    splash_screen.set_text("Creating Ava Chatbot and training")
     splash_screen.set_progress(50)
 
-    print('Creating Ava and training')
+    print('Creating Ava Chatbot and training')
 
     # Create the ChatBotGUI object
     gui = ChatBotGUI(root, splash_screen, image_path)
