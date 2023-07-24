@@ -50,11 +50,11 @@ print("Importing debugergui")
 from core.TkDeb.TkDeb import Debugger
 
 if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True: 
- print('Importing pyttsx3')
- from pyttsx3 import init as pyttsx3_init
+    print('Importing pyttsx3')
+    from pyttsx3 import init as pyttsx3_init
 
- print("Importing chatbot")
- from core.chatbot.chatbot import Chatbot
+    print("Importing chatbot")
+    from core.chatbot.chatbot import Chatbot
 
 print("Importing DONE")
 
