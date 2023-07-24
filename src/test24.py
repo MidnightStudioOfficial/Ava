@@ -35,7 +35,7 @@ def update_plot(frame):
     # Update the line data
     line.set_ydata(power_spectrum)
 
-    return (line,)
+    return line
 
 # Set up the animation
 ani = animation.FuncAnimation(fig, update_plot, interval=0)
