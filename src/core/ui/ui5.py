@@ -1,7 +1,7 @@
 from tkinter import *
 import tkinter as tk
 import customtkinter as ctk
-from os.path import join, dirname, realpath
+from os.path import join
 import logging
 from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
@@ -44,7 +44,7 @@ print("Importing wake_word")
 from core.voice.wake_word import WakeWord
 
 print("Importing WakeWordGUI")
-from core.ui.wakeword.wakeword import WakeWordGUI
+from core.ui.wakeword.wakeword3 import WakeWordGUI
 
 print("Importing debugergui")
 from core.TkDeb.TkDeb import Debugger
@@ -379,21 +379,6 @@ class ChatBotGUI:
 
         raise_frame(self.root1)
 
-        # Create chat history display
-        #self.chat_history = ctk.CTkTextbox(self.second_frame, state='disabled', wrap='word', font=('Arial', 12)) #ScrolledText
-        #self.chat_history.place(relx=0.5, rely=0.2, relwidth=0.95, relheight=0.6, anchor='n')
-
-        # Create input field for user messages
-        #self.user_input = ctk.CTkEntry(self.second_frame, font=('Arial', 12))
-        #self.user_input.place(relx=0.5, rely=0.85, relwidth=0.7, relheight=0.1, anchor='n')
-
-        # Create send button
-        #self.send_button = ctk.CTkButton(self.second_frame, text="Send", command=self.send_message)
-        #self.send_button.place(relx=0.85, rely=0.85, relwidth=0.15, relheight=0.1, anchor='n')
-
-        # Bind enter key to send message
-        #self.user_input.bind('<Return>', lambda event: self.send_message())
-
         # create third frame
         splash_screen.set_text("Creating settings page")
         self.third_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
@@ -425,7 +410,7 @@ class ChatBotGUI:
 
         self.chat_bubble_enable = ctk.CTkSwitch(self.frame_1, text="New chat bubble", command=self.chat_bubble_enable_event,
                                  variable=self.chat_bubble_switch_var, onvalue="on", offvalue="off")
-        self.chat_bubble_enable.pack() #ipady=10
+        self.chat_bubble_enable.pack()
 
         # Initialize a StringVar to hold the state of the segmented button
         self.segemented_button_var = ctk.StringVar(value="blue")
@@ -454,7 +439,7 @@ class ChatBotGUI:
         # Create a slider widget with a range from 0 to 100
         self.slider_1 = ctk.CTkSlider(master=self.frame_1, from_=0, to=100)
 
-        self.slider_1.pack(padx=10) #pady=10,
+        self.slider_1.pack(padx=10)
 
         # create the DNA frame
         self.DNA_frame = ctk.CTkFrame(master, corner_radius=0, fg_color="transparent")
@@ -535,15 +520,15 @@ class ChatBotGUI:
         self.select_frame_by_name("home")
 
         if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
-         # Set up voice
-         splash_screen.set_text("Set up voice")
-         self.engine = pyttsx3_init()
-         self.voices = self.engine.getProperty('voices')
-         self.engine.setProperty('voice', self.voices[2].id)  # Index 1 for female voice
-         self.engine.setProperty('rate', 150)  # Adjust rate to 150 words per minute
-         self.engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
-         self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
-         del self.voices
+            # Set up voice
+            splash_screen.set_text("Set up voice")
+            self.engine = pyttsx3_init()
+            self.voices = self.engine.getProperty('voices')
+            self.engine.setProperty('voice', self.voices[2].id)  # Index 1 for female voice
+            self.engine.setProperty('rate', 150)  # Adjust rate to 150 words per minute
+            self.engine.setProperty('volume', 0.7)  # Adjust volume to 70% of maximum
+            self.engine.setProperty('pitch', 110)  # Adjust pitch to 110% of default
+            del self.voices
 
         # Delete useless stuff
         splash_screen.set_text("Deleting useless stuff")
@@ -600,17 +585,25 @@ class ChatBotGUI:
         self.entry.insert(1, event)
         apply_style(self.master, event)
 
-    def wake_word_callback_END(self):
+    def wake_word_callback_END(self, user_input):
+        """
+        Callback function triggered when the user input for wake word processing is completed.
+        
+        Parameters:
+            user_input (str): The user input recognized after the wake word is detected.
+        """
         self.is_lisening_wakeword = False
+        del self.w_gui
+        self.frame_2_button_event()
+        self.send_message(text=user_input)
         self.wake_word_detecter.unpause()
 
     def wake_word_callback(self, text):
+        """Callback function triggered when the wake word is detected."""
         if self.is_lisening_wakeword == False:
          self.is_lisening_wakeword = True
          self.wake_word_detecter.pause()
          self.w_gui = WakeWordGUI(self.master, self.wake_word_callback_END)
-         #self.select_frame_by_name("frame_2")
-         print(str(text))
 
     def chat_bubble_enable_event(self):
         print(self.chat_bubble_switch_var.get())
@@ -619,7 +612,7 @@ class ChatBotGUI:
         if value == "on":
             self.current_chat_bubble = True
             self.chat_frame.destroy()
-            self.chat_frame = CTkXYFrame(self.root1, width=380, height=551, fg_color=chatBgColor, scrollbar_button_color='white')  #ctk.CTkScrollableFrame
+            self.chat_frame = CTkXYFrame(self.root1, width=380, height=551, fg_color=chatBgColor, scrollbar_button_color='white')
             self.chat_frame.pack(padx=10)  #,fill="both", expand=False)
             #self.chat_frame.configure(width=380, height=551)
             #self.chat_frame.pack_propagate(0)

@@ -21,7 +21,7 @@ import numpy as np  # NumPy for numerical operations and array handling
 import nltk  # Natural Language Toolkit for NLP functionalities
 from nltk.corpus import stopwords  # NLTK's stopwords for filtering common words
 from nltk.stem import WordNetLemmatizer  # WordNetLemmatizer for word lemmatization
-import spacy  # spaCy for advanced natural language processing
+from spacy import load as spacy_load # spaCy for advanced natural language processing
 
 # TensorFlow and Keras libraries
 from tensorflow import keras  # TensorFlow library for deep learning
@@ -97,7 +97,7 @@ class Engine2():
         self.skills = BuiltinSkills()
 
         # Load the spaCy language model for natural language processing
-        self.nlp = spacy.load("en_core_web_sm")
+        self.nlp = spacy_load("en_core_web_sm")
 
     def getIntent(self, utterance):
         """

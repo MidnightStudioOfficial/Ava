@@ -3,8 +3,7 @@ from PIL import Image
 from core.AudioStream.output2 import AudioPlayer
 import speech_recognition as sr
 import threading
-import whisper
-import wave
+from wave import open as wav_open
 import os
 
 
@@ -20,6 +19,7 @@ class WakeWordGUI(ctk.CTkToplevel):
             end_callback: A function to call when the window is closed.
         """
         super().__init__(parent)
+        from whisper import load_model
         self.title("Ava Screen")
         self.end_callback = end_callback
         self.protocol("WM_DELETE_WINDOW", self.close_window)
@@ -69,6 +69,7 @@ class WakeWordGUI(ctk.CTkToplevel):
         # Create a recognizer object for speech recognition
         self.recognizer = sr.Recognizer()
         self.listening = False
+        self.user_input = ""
 
         # Center the window on the screen
         self.update_idletasks()
@@ -79,15 +80,16 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.geometry(f"+{x}+{y}")
 
         # Load the Whisper speech recognition model
-        self.model = whisper.load_model("tiny")
+        self.model = load_model("tiny")
 
     def close_window(self):
         """Callback function for closing the GUI window."""
+        del self.model
         self.audio_player.set_file("Data/back.wav")
         self.audio_player.play()
         print("closing")
-        self.end_callback()
         self.destroy()
+        self.end_callback(self.user_input)
 
     def on_mic_button_click(self):
         """Callback function for the microphone button click."""
@@ -114,7 +116,7 @@ class WakeWordGUI(ctk.CTkToplevel):
 
                 self.AITaskStatusLbl.configure(text="Thinking..")
                 wav_filename = "TEMP_speech_audio.wav"
-                with wave.open(wav_filename, 'wb') as wf:
+                with wav_open(wav_filename, 'wb') as wf:
                     wf.setnchannels(1)  # Mono channel
                     wf.setsampwidth(2)  # 2 bytes per sample
                     wf.setframerate(audio.sample_rate)  # Sample rate of the audio
@@ -128,7 +130,9 @@ class WakeWordGUI(ctk.CTkToplevel):
                 # Remove the temporary WAV file
                 os.remove(wav_filename)
                 self.AITaskStatusLbl.configure(text="Recognized: " + text)
-                return str(text)
+                self.user_input = str(text)
+                self.close_window()
+                return
 
             except sr.WaitTimeoutError:
                 # Handle microphone timeout error
