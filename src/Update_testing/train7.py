@@ -9,7 +9,7 @@ from tensorflow.keras.layers import Dense, Embedding, GlobalAveragePooling1D
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
-from tensorflow.keras.callbacks import EarlyStopping,
+from tensorflow.keras.callbacks import EarlyStopping
 #from tensorflow.random import set_seed
 
 wordnet_lemmatizer = WordNetLemmatizer()

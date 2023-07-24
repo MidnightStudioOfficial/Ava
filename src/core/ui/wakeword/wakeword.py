@@ -20,7 +20,13 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.mic_photo = ctk.CTkImage(self.pre_mic_button_photo, size=(50, 50))
         self.MainFrame = ctk.CTkFrame(self, fg_color="transparent")
         self.MainFrame.pack(fill=ctk.BOTH)
-        self.center_image = ctk.CTkLabel(self.MainFrame, text='', image=photo, height=90,  width=90)
+        self.center_image = ctk.CTkLabel(
+            self.MainFrame,
+            text='',
+            image=photo,
+            height=90,
+            width=90
+        )
         self.center_image.pack(pady=10, anchor='n')
         self.VoiceFrame = ctk.CTkFrame(self.MainFrame, fg_color="transparent")
         self.VoiceFrame.pack(fill=ctk.BOTH)
