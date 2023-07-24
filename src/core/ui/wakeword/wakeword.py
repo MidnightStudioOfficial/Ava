@@ -12,7 +12,6 @@ class WakeWordGUI(ctk.CTkToplevel):
         self.protocol("WM_DELETE_WINDOW", self.close_window)
         self.geometry("400x400")
         #self.overrideredirect(True)
-        #self.configure(background="#2c3e50")
         photo = ctk.CTkImage(Image.open("Data/assets/ava_t.png"), size=(90,90))
         self.pre_button_photo = Image.open("Data/images/centralButton1.png")
         self.button_photo = ctk.CTkImage(self.pre_button_photo, size=(self.pre_button_photo.width, self.pre_button_photo.height))
