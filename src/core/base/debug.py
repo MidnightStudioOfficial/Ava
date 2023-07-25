@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import tkinter as tk
 import threading
 import gc
 import time
@@ -156,7 +155,6 @@ class DebugGUI(ctk.CTkToplevel):
                 self.update_debug_info(str(key), str(value))
                 self.filter_list(self.option_type.get())
 
-            #print(self.debug.get_debug_info())
             time.sleep(3)  # 1
 
 class App(ctk.CTk):
@@ -181,6 +179,3 @@ if __name__ == '__main__':
  app.mainloop()
  debug = Debug()
  debug_gui = DebugGUI(debug)
-
- #t = threading.Thread(target=debug_gui.display_debug_info)
- #t.start()

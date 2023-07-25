@@ -121,9 +121,7 @@ class DjangoStorageAdapter(StorageAdapter):
         return statement
 
     def create_many(self, statements):
-        """
-        Creates multiple statement entries.
-        """
+        """Creates multiple statement entries."""
         Statement = self.get_model('statement')
         Tag = self.get_model('tag')
 
@@ -157,9 +155,7 @@ class DjangoStorageAdapter(StorageAdapter):
             statement_model_object.tags.add(*tags_to_add)
 
     def update(self, statement):
-        """
-        Update the provided statement.
-        """
+        """Update the provided statement."""
         Statement = self.get_model('statement')
         Tag = self.get_model('tag')
 
@@ -183,9 +179,7 @@ class DjangoStorageAdapter(StorageAdapter):
         return statement
 
     def get_random(self):
-        """
-        Returns a random statement from the database
-        """
+        """Returns a random statement from the database"""
         Statement = self.get_model('statement')
 
         statement = Statement.objects.order_by('?').first()
@@ -208,9 +202,7 @@ class DjangoStorageAdapter(StorageAdapter):
         statements.delete()
 
     def drop(self):
-        """
-        Remove all data from the database.
-        """
+        """Remove all data from the database."""
         Statement = self.get_model('statement')
         Tag = self.get_model('tag')
 

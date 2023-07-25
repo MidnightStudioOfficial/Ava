@@ -28,20 +28,20 @@ print("Importing DONE")
 
 
 if Debug != True:
- trainingdata = 'Data/training.csv'
- articulationdata = 'Data/articulations.csv'
+    trainingdata = 'Data/training.csv'
+    articulationdata = 'Data/articulations.csv'
 else:
- trainingdata = 'Data/training_dev.csv'
- articulationdata = 'Data/articulations_dev.csv'
+    trainingdata = 'Data/training_dev.csv'
+    articulationdata = 'Data/articulations_dev.csv'
 
 logging.basicConfig(level=logging.INFO)
 
 
 class ChatbotProfile:
       def __init__(self) -> None:
-          print("Importing brain (This may take a while!)")
-          from core.brain.brain import Brain
-          self.profile_data = {
+        print("Importing brain (This may take a while!)")
+        from core.brain.brain import Brain
+        self.profile_data = {
               "name": None,
               "gender": None,
               "brain": {
@@ -50,11 +50,11 @@ class ChatbotProfile:
                    "thought": None,
                    "memory": {}
               }
-          }
-          self.brain = Brain()
-          self.brain.start()
+        }
+        self.brain = Brain()
+        self.brain.start()
 
-      def update_profile(self): #, key, value
+      def update_profile(self):
           self.profile_data["brain"]["mood"] = self.brain.mood
           self.profile_data["brain"]["thought"] = self.brain.thought
 

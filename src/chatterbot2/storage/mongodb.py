@@ -42,9 +42,7 @@ class MongoDatabaseAdapter(StorageAdapter):
         self.statements = self.database['statements']
 
     def get_statement_model(self):
-        """
-        Return the class for the statement model.
-        """
+        """Return the class for the statement model."""
         from chatterbot2.conversation import Statement
 
         # Create a storage-aware statement
@@ -172,9 +170,7 @@ class MongoDatabaseAdapter(StorageAdapter):
         return Statement(**kwargs)
 
     def create_many(self, statements):
-        """
-        Creates multiple statement entries.
-        """
+        """Creates multiple statement entries."""
         create_statements = []
 
         for statement in statements:
@@ -233,9 +229,7 @@ class MongoDatabaseAdapter(StorageAdapter):
         return statement
 
     def get_random(self):
-        """
-        Returns a random statement from the database
-        """
+        """Returns a random statement from the database"""
         from random import randint
 
         count = self.count()
@@ -250,13 +244,9 @@ class MongoDatabaseAdapter(StorageAdapter):
         return self.mongo_to_object(list(statements)[0])
 
     def remove(self, statement_text):
-        """
-        Removes the statement that matches the input text.
-        """
+        """Removes the statement that matches the input text."""
         self.statements.delete_one({'text': statement_text})
 
     def drop(self):
-        """
-        Remove the database.
-        """
+        """Remove the database."""
         self.client.drop_database(self.database.name)

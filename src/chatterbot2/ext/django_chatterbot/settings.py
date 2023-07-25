@@ -1,6 +1,4 @@
-"""
-Default ChatterBot settings for Django.
-"""
+"""Default ChatterBot settings for Django."""
 from django.conf import settings
 from chatterbot2 import constants
 

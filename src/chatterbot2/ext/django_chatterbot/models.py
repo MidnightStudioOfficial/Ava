@@ -10,7 +10,5 @@ class Statement(AbstractBaseStatement):
 
 
 class Tag(AbstractBaseTag):
-    """
-    A label that categorizes a statement.
-    """
+    """A label that categorizes a statement."""
     pass
