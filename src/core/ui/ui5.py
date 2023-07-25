@@ -613,23 +613,43 @@ class ChatBotGUI:
             self.w_gui = WakeWordGUI(self.master, self.wake_word_callback_END)
 
     def chat_bubble_enable_event(self):
+        """
+        Enables or disables the chat bubble feature based on the user's selection.
+        When chat bubble is enabled, the chat messages will be displayed in a custom frame.
+        When chat bubble is disabled, the chat messages will be displayed in a regular text box.
+
+        This method retrieves the value of the chat bubble switch, destroys the existing chat frame,
+        and creates a new frame based on the selected chat bubble mode.
+
+        Note: This method assumes the existence of `self.chat_bubble_switch_var` and `self.current_chat_bubble`.
+        """
         print(self.chat_bubble_switch_var.get())
         print(self.current_chat_bubble)
+        # Get the current value of the chat bubble switch
         value = self.chat_bubble_switch_var.get()
+
+        # Check if the chat bubble switch is set to "on"
         if value == "on":
             self.current_chat_bubble = True
+
+            # Destroy the existing chat frame and create a custom chat frame
             self.chat_frame.destroy()
             self.chat_frame = CTkXYFrame(self.root1, width=380, height=551, fg_color=chatBgColor, scrollbar_button_color='white')
             self.chat_frame.pack(padx=10)  #,fill="both", expand=False)
+
+            # Update the chat frame and chat bubble mode in MessagesController
             self.MessagesController.chat_frame = self.chat_frame
             self.MessagesController.current_chat_bubble = self.current_chat_bubble
-            #self.chat_frame.configure(width=380, height=551)
-            #self.chat_frame.pack_propagate(0)
         else:
+            # Disable chat bubble mode
             self.current_chat_bubble = False
+
+            # Destroy the existing chat frame and create a regular text box for chat messages
             self.chat_frame.destroy()
             self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
             self.chat_frame.pack(padx=10)
+
+            # Update the chat frame and chat bubble mode in MessagesController
             self.MessagesController.chat_frame = self.chat_frame
             self.MessagesController.current_chat_bubble = self.current_chat_bubble
 
@@ -675,6 +695,10 @@ class ChatBotGUI:
         return said.lower()
 
     def voiceMedium(self):
+        """
+        Continuously records voice input and sends it as a message using MessagesController.
+        This method is designed to run in a loop until the chatMode variable is set to 0.
+        """
         while True:
           if chatMode == 0:
               print("chatmode")
@@ -723,32 +747,45 @@ class ChatBotGUI:
                 pass
 
     def home_button_event(self):
+        """
+        Event handler for the home button.
+
+        This method is responsible for selecting the 'home' frame when the home button is clicked.
+        """
         self.select_frame_by_name("home")
 
     def frame_2_button_event(self):
+        """Event handler for the chat button."""
         self.select_frame_by_name("frame_2")
 
     def frame_3_button_event(self):
+        """Event handler for the settings button."""
         self.select_frame_by_name("frame_3")
 
     def frame_DNA_button_event(self):
+        """Event handler for the DNA button."""
         self.select_frame_by_name("frame_DNA")
 
     def frame_profile_button_event(self):
+        """Event handler for the profile button."""
         self.select_frame_by_name("frame_profile")
 
     def frame_skills_button_event(self):
+        """Event handler for the skills button."""
         self.select_frame_by_name("frame_skills")
 
     def frame_more_button_event(self):
+        """Event handler for the more button."""
         self.select_frame_by_name("frame_more")
 
     def frame_more_weather_button_event(self):
+        """Event handler for the weather button."""
         self.select_frame_by_name("frame_more_weather")
 
     def frame_music_button_event(self):
+        """Event handler for the music button."""
         self.select_frame_by_name("frame_more_music")
 
     def change_appearance_mode_event(self, new_appearance_mode):
         """Change the GUI appearance mode"""
-        ctk.set_appearance_mode(new_appearance_mode)  
+        ctk.set_appearance_mode(new_appearance_mode)
