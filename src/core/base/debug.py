@@ -157,7 +157,7 @@ class DebugGUI(ctk.CTkToplevel):
                 self.filter_list(self.option_type.get())
 
             #print(self.debug.get_debug_info())
-            time.sleep(3) # 1
+            time.sleep(3)  # 1
 
 class App(ctk.CTk):
     def __init__(self, *args, **kwargs):

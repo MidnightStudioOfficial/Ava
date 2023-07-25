@@ -3,12 +3,12 @@
   License: MIT
   Description: This is the main script that loads and connects everything
 """
-from core.ui.ui5 import ChatBotGUI
+from core.ui.ui6 import ChatBotGUI
 import customtkinter as ctk
 from os.path import join, dirname, realpath
 
 print("Importing loadingscreen")
-from core.ui.loadingscreen2 import SplashScreen
+from core.ui.loadingscreen import SplashScreen
 
 if __name__ == '__main__':
 

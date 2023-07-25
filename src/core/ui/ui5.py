@@ -6,10 +6,6 @@ import logging
 from PIL import Image, ImageTk, ImageDraw
 from threading import Thread
 
-DEBUG_CHATBOT = None #None
-DEBUG_GUI = None
-PEODUCTION = None
-
 print("Importing skills_page")
 from core.ui.skills.skills_page import SkillGUI
 
@@ -38,13 +34,16 @@ print("Importing weather")
 from core.ui.weather.weather import WeatherGUI
 
 print("Importing global_vars")
-import core.base.global_vars as global_vars
+from core.base.global_vars import *
 
 print("Importing wake_word")
 from core.voice.wake_word import WakeWord
 
 print("Importing WakeWordGUI")
 from core.ui.wakeword.wakeword3 import WakeWordGUI
+
+print("Importing MessagesController")
+from core.controllers.messages.messages import MessagesController
 
 print("Importing debugergui")
 from core.TkDeb.TkDeb import Debugger
@@ -60,17 +59,6 @@ print("Importing DONE")
 
 logging.basicConfig(level=logging.INFO)
 
-chatMode = 1
-
-botChatTextBg = "#007cc7"
-botChatText = "white"
-userChatTextBg = "#4da8da"
-
-chatBgColor = '#12232e'
-background = '#203647'
-textColor = 'white'
-AITaskStatusLblBG = '#203647'
-KCS_IMG = 1  # 0 for light, 1 for dark
 
 ### SWITCHING BETWEEN FRAMES ###
 def raise_frame(frame):
@@ -211,13 +199,13 @@ class ChatBotGUI:
                       scrollbar=True, width=100)
 
         # Adding a tooltip to show a message when hovering over the profile button
-        self.profile_button_tooltip = CTkToolTip(self.profile_button, delay=0.8, message=str(global_vars.TOOLTIP_MESSAGES["profile_button"]))
+        self.profile_button_tooltip = CTkToolTip(self.profile_button, delay=0.8, message=str(TOOLTIP_MESSAGES["profile_button"]))
 
         # Adding the second button for mail notifications
         self.mail_button = ctk.CTkButton(self.home_frame, text="", image=self.image_bell_icon_image, fg_color="transparent")
         self.mail_button.grid(row=0, column=0, sticky="ne", padx=5, pady=5)   # Placing the button on the top-right corner with some padding for aesthetics
         self.mail_button.configure(width=30, height=30)
-        self.mail_button_tooltip = CTkToolTip(self.mail_button, delay=0.8, message=str(global_vars.TOOLTIP_MESSAGES["mail_button"]))
+        self.mail_button_tooltip = CTkToolTip(self.mail_button, delay=0.8, message=str(TOOLTIP_MESSAGES["mail_button"]))
 
         # create welcome image
         self.home_frame_large_image_label = ctk.CTkLabel(self.home_frame, text="", image=self.large_test_image)
@@ -232,7 +220,7 @@ class ChatBotGUI:
         for widget, row in widgets:
             widget.grid(row=row, column=0, padx=20, pady=10)
 
-        version_button = ctk.CTkButton(master, text="V0.3.0", width=96, command=self.debug_click)
+        version_button = ctk.CTkButton(master, text="V0.3.1", width=96, command=self.debug_click)
         version_button.grid(sticky="se", column=1)
 
         self.current_chat_bubble = False
@@ -355,9 +343,6 @@ class ChatBotGUI:
         self.UserField.place(x=16, y=30)
         self.UserField.insert(0, "Ask me anything...")
 
-        # Bind the 'Return' key event to the send_message method
-        self.UserField.bind('<Return>', lambda event: self.send_message(None))
-
         # Load and resize the image
         image = Image.open("Data/assets/ava.jfif")
         image = image.resize((30, 30))  # Adjust the size as needed
@@ -429,9 +414,9 @@ class ChatBotGUI:
         self.entry.pack(fill='x', padx=10, pady=10)  # Pack the entry widget onto the frame
 
         # Create a scrollable dropdown widget for selecting a window style
-        self.style_dropdown = CTkScrollableDropdown(self.entry, values=global_vars.STYLES_LIST, command=self.style_dropdown_click,
+        self.style_dropdown = CTkScrollableDropdown(self.entry, values=STYLES_LIST, command=self.style_dropdown_click,
                             autocomplete=True) # Using autocomplete
-        self.style_dropdown_tooltip = CTkToolTip(self.entry, delay=0.7, message=str(global_vars.TOOLTIP_MESSAGES["style_dropdown"]))
+        self.style_dropdown_tooltip = CTkToolTip(self.entry, delay=0.7, message=str(TOOLTIP_MESSAGES["style_dropdown"]))
         self.entry.insert(0, 'Window Style')  # Insert default text to the entry widget
 
         label = ctk.CTkLabel(self.frame_1, text="Chat Bubble Corner Radius", font=ctk.CTkFont(family='Sans Serif', size=13, weight="bold"))
@@ -549,6 +534,28 @@ class ChatBotGUI:
             self.chatbot = Chatbot(splash_screen)
             self.chatbot.train_bot()  # Train the chatbot
 
+        if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
+            self.MessagesController = MessagesController(
+                voice_engine=self.engine,
+                chat_frame=self.chat_frame,
+                UserField=self.UserField,
+                AITaskStatusLbl=self.AITaskStatusLbl,
+                current_chat_bubble=self.current_chat_bubble,
+                logo_image=self.logo_image,
+                chatbot=self.chatbot
+            )
+        else:
+            self.MessagesController = MessagesController(
+                chat_frame=self.chat_frame,
+                UserField=self.UserField,
+                AITaskStatusLbl=self.AITaskStatusLbl,
+                current_chat_bubble=self.current_chat_bubble,
+                logo_image=self.logo_image
+            )
+
+        # Bind the 'Return' key event to the send_message method
+        self.UserField.bind('<Return>', lambda event: self.MessagesController.send_message(None))
+
         self.wake_word_detecter = WakeWord(gui_callback=self.wake_word_callback)
         self.wake_word_detecter.start()
 
@@ -595,7 +602,7 @@ class ChatBotGUI:
         self.is_lisening_wakeword = False
         del self.w_gui
         self.frame_2_button_event()
-        self.send_message(text=user_input)
+        self.MessagesController.send_message(text=user_input)
         self.wake_word_detecter.unpause()
 
     def wake_word_callback(self, text):
@@ -614,6 +621,8 @@ class ChatBotGUI:
             self.chat_frame.destroy()
             self.chat_frame = CTkXYFrame(self.root1, width=380, height=551, fg_color=chatBgColor, scrollbar_button_color='white')
             self.chat_frame.pack(padx=10)  #,fill="both", expand=False)
+            self.MessagesController.chat_frame = self.chat_frame
+            self.MessagesController.current_chat_bubble = self.current_chat_bubble
             #self.chat_frame.configure(width=380, height=551)
             #self.chat_frame.pack_propagate(0)
         else:
@@ -621,6 +630,8 @@ class ChatBotGUI:
             self.chat_frame.destroy()
             self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
             self.chat_frame.pack(padx=10)
+            self.MessagesController.chat_frame = self.chat_frame
+            self.MessagesController.current_chat_bubble = self.current_chat_bubble
 
     def record(self, clear_chat=True, icon_display=True):
         """
@@ -670,7 +681,7 @@ class ChatBotGUI:
               break
           query = self.record()
           if query == 'None': continue
-          self.send_message(query)
+          self.MessagesController.send_message(query)
 
     def changeChatMode(self):
         global chatMode
@@ -741,137 +752,3 @@ class ChatBotGUI:
     def change_appearance_mode_event(self, new_appearance_mode):
         """Change the GUI appearance mode"""
         ctk.set_appearance_mode(new_appearance_mode)  
-
-    def send_message(self, text: None):
-        """
-        Sends a message from the user to the chatbot and displays the bot's response.
-
-        This method gets the user input from the UserField, clears the input field, and adds the user message to the chat history.
-        If DEBUG_CHATBOT is None or True, the method gets a response from the chatbot and adds it to the chat history.
-        It also uses a text-to-speech engine to speak the bot response.
-        """
-        # Get user input and clear input field
-        if text == None:
-         user_message = self.UserField.get()
-         self.UserField.delete(0, tk.END)
-        else:
-            user_message = text
-
-        # Add user message to chat history
-        self._add_to_chat_history("You: " + user_message)
-        self.AITaskStatusLbl.configure(text="    Working")
-        if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
-            # Get response from chatbot and add to chat history
-            bot_response = self.chatbot.get_response(user_message)
-            self._add_to_chat_history("ChatBot: " + str(bot_response), True)
-
-            # Use text-to-speech engine to speak the bot response
-            self.engine.say(bot_response)
-            self.engine.runAndWait()
-            self.AITaskStatusLbl.configure(text="    Offline")
-
-    def clearChatScreen(self):
-        # Iterate through all the child widgets within the chat_frame
-        # The chat_frame is a container holding the chat messages
-        for wid in self.chat_frame.winfo_children():
-            # Destroy each widget (chat message) to clear the chat screen
-            # This effectively removes all the messages from the chat screen
-            wid.destroy()
-
-    def attach_to_frame(self, text, bot=False):
-        """
-        Attaches a chat message to the chat frame.
-
-        Args:
-            text (str): The text content of the message.
-            bot (bool, optional): Indicates if the message is from the bot. Defaults to False.
-        """
-        # if self.message_count == 8:
-        #     self.clearChatScreen()
-        #     self.message_count = 0
-
-        if bot:
-            # Create a chat label for bot message
-            chat = ctk.CTkLabel(
-                self.chat_frame,
-                text=text,
-                justify=LEFT,
-                wraplength=250,
-                font=('Montserrat', 12, 'bold'),
-                bg_color=botChatTextBg,
-                corner_radius=7,
-                anchor="s"
-            )
-            chat.pack(anchor='w', padx=5, pady=5)
-            #self.message_count += 1
-        else:
-            # Calculate the wraplength based on available space
-            frame_width = self.chat_frame.winfo_width()
-            wraplength = frame_width - 20  # Adjust wraplength dynamically based on chat_frame width and padding
-            if wraplength < 100:
-                wraplength = frame_width  # Set wraplength to frame width if it becomes too small
-
-            # Create a chat label for user message
-            chat = ctk.CTkLabel(
-                self.chat_frame,
-                text=text,
-                justify=RIGHT,
-                wraplength=wraplength,
-                font=('Montserrat', 12, 'bold'),
-                fg_color=botChatTextBg,
-                corner_radius=7,
-            )
-
-            # Update the wraplength if the text exceeds the available width
-            chat.update_idletasks()
-            text_width = chat.winfo_width()
-            if text_width > wraplength:
-                wraplength = text_width
-
-            chat.configure(wraplength=wraplength)
-            chat.pack(anchor='e', padx=2, pady=2)
-            #self.message_count += 1
-
-    def show_image(self):
-        chat = ctk.CTkLabel(
-                self.chat_frame,
-                text='',
-                image=self.logo_image,
-                justify=LEFT,
-                wraplength=250,
-                font=('Montserrat', 12, 'bold'),
-                bg_color=botChatTextBg,
-                corner_radius=7,
-                anchor="s"
-            )
-        chat.pack(anchor='w', padx=5, pady=5)
-
-    def _add_to_chat_history(self, message, bot=False):
-        """
-        Adds new text to the chat history.
-
-        Parameters:
-            message (str): The text message to be added to the chat history.
-            bot (bool): A flag indicating whether the message is from the bot or not.
-                        If True, it will be displayed with the bot's icon; otherwise, the user's icon.
-
-        Note: The chat history consists of a vertical list of messages with alternating chat bubbles
-            representing user and bot messages.
-
-        """
-        if self.current_chat_bubble == True:
-         if bot is True:
-            ctk.CTkLabel(self.chat_frame, image=self.logo_image, text="").pack(anchor='w', pady=0) #, bg=chatBgColor
-            #self.show_image()
-         else:
-            ctk.CTkLabel(self.chat_frame, text="").pack(anchor='e', pady=0) #, image=userIcon
-         self.attach_to_frame(message, bot)
-
-        elif self.current_chat_bubble == False:
-            # Enable text editing and add message to chat history
-            self.chat_frame.configure(state='normal')
-            self.chat_frame.insert(tk.END, message + "\n")
-            self.chat_frame.configure(state='disabled')
-
-            # Automatically scroll to the bottom of the chat history
-            self.chat_frame.yview(tk.END)

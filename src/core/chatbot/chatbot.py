@@ -18,8 +18,6 @@ else:
     print('Importing engine (This may take a while!)')
     from core.engine.Engine import ConversationalEngine
     from core.engine.Conversation import Conversation
-print("Importing brain (This may take a while!)")
-from core.brain.brain import Brain
 from os.path import isfile
 import logging
 import json
@@ -38,10 +36,11 @@ else:
 
 logging.basicConfig(level=logging.INFO)
 
-brain = Brain()
 
 class ChatbotProfile:
       def __init__(self) -> None:
+          print("Importing brain (This may take a while!)")
+          from core.brain.brain import Brain
           self.profile_data = {
               "name": None,
               "gender": None,
@@ -52,15 +51,16 @@ class ChatbotProfile:
                    "memory": {}
               }
           }
-          brain.start()
+          self.brain = Brain()
+          self.brain.start()
 
       def update_profile(self): #, key, value
-          self.profile_data["brain"]["mood"] = brain.mood
-          self.profile_data["brain"]["thought"] = brain.thought
+          self.profile_data["brain"]["mood"] = self.brain.mood
+          self.profile_data["brain"]["thought"] = self.brain.thought
 
       def _set_profile_data(self):
-          brain.mood = self.profile_data["brain"]["mood"]
-          brain.thought = self.profile_data["brain"]["thought"]
+          self.brain.mood = self.profile_data["brain"]["mood"]
+          self.brain.thought = self.profile_data["brain"]["thought"]
 
       def load_profile(self):
         # Open the JSON file
@@ -83,9 +83,9 @@ class ChatbotProfile:
       def save_profile(self):
        self.update_profile()
        try:
-         with open('./Data/chatbot/profile.json', 'w') as f:
-             # Load the contents of the file as a Python object
-             data = json.dump(self.profile_data, f)
+            with open('./Data/chatbot/profile.json', 'w') as f:
+                # Load the contents of the file as a Python object
+                data = json.dump(self.profile_data, f)
        except FileNotFoundError:
            print("File not found")
        except json.JSONDecodeError:

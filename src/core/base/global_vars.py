@@ -18,3 +18,21 @@ TOOLTIP_MESSAGES = {
 }
 STYLES_LIST = ["dark", "mica", "aero", "transparent", "acrylic", "win7",
           "inverse", "popup", "native", "optimised", "light"]
+
+
+DEBUG_CHATBOT = None  # None
+DEBUG_GUI = None
+PEODUCTION = None
+
+
+chatMode = 1
+
+botChatTextBg = "#007cc7"
+botChatText = "white"
+userChatTextBg = "#4da8da"
+
+chatBgColor = '#12232e'
+background = '#203647'
+textColor = 'white'
+AITaskStatusLblBG = '#203647'
+KCS_IMG = 1  # 0 for light, 1 for dark

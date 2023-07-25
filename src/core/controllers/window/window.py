@@ -6,16 +6,16 @@ class Animation:
     def __init__(self):
         self.fps = 60
 
-    def linear_ease(t):
+    def linear_ease(self, t):
         return t
 
-    def ease_in_quad(t):
+    def ease_in_quad(self, t):
         return t**2
 
-    def ease_out_quad(t):
+    def ease_out_quad(self, t):
         return t * (2 - t)
 
-    def ease_in_out_cubic(t):
+    def ease_in_out_cubic(self, t):
         return t * t * t * (t * (6 * t - 15) + 10)
 
     def animate_window_down(self, window, start_y, end_y, duration=1.0, easing_func=linear_ease):
