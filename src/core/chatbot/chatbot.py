@@ -125,7 +125,7 @@ class Chatbot:
             self.trainer.train("./Data/training/export.json")
             self.trainer.train("./Data/training/messages.json")
 
-    def get_skill(self, input) -> bool:
+    def get_skill(self, input_text) -> bool:
         """
         Check if the input is a skill.
 
@@ -135,12 +135,12 @@ class Chatbot:
         Returns:
             bool: True if the input is a skill, False otherwise.
         """
-        if input != "CHAT":
+        if input_text != "CHAT":
             return True
         else:
             return False
 
-    def get_response(self, input):
+    def get_response(self, input_text):
         """
         Get a response from the conversational engine or chatbot.
 
@@ -152,10 +152,10 @@ class Chatbot:
         """
         # Get a response from the conversational engine or chatbot
         if UseEngine2 == True:  # Checking if Engine2 is being used
-            payload = self.engine.getIntent(input) # Get the intent from Engine2 based on the input
+            payload = self.engine.getIntent(input_text) # Get the intent from Engine2 based on the input
             response = payload.get('intent') # Extract the intent from the payload
         else:
-            payload = self.currentConversation.interact(input, returnPayload=True)
+            payload = self.currentConversation.interact(input_text, returnPayload=True)
             response = payload.get('articulation')
 
         is_skill = self.get_skill(response)  # Check if the response is a skill using the get_skill method
@@ -163,6 +163,6 @@ class Chatbot:
             return response # Return the response as it is a skill
 
         # If not a skill, get a response from the chatbot
-        bot = self.chatBot.get_response(text=input, search_text=input)
+        bot = self.chatBot.get_response(text=input_text, search_text=input_text)
         print(bot.text)
         return bot.text

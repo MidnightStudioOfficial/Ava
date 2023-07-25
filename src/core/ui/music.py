@@ -2,7 +2,7 @@ try:
     from tkinter import Tk, ttk, StringVar, BooleanVar, DoubleVar, Canvas, Event, IntVar, PhotoImage, Frame
     from tkinter.filedialog import askdirectory, askopenfilename, asksaveasfile
     from tkinter.messagebox import askyesno
-    from os.path import isfile, join, isdir, basename, abspath, join, splitext, dirname, exists
+    from os.path import isfile, join, isdir, basename, abspath, splitext, dirname, exists
     from os import startfile, listdir, walk
     from json import load, dump
     from json.decoder import JSONDecodeError

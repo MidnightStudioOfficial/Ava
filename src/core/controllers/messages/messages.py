@@ -12,7 +12,7 @@ class MessagesController:
         self.current_chat_bubble = current_chat_bubble
         self.logo_image = logo_image
         self.chatbot = chatbot
-    
+
     def send_message(self, text: str):
         """
         Sends a message from the user to the chatbot and displays the bot's response.
@@ -70,7 +70,6 @@ class MessagesController:
                 anchor="s"
             )
             chat.pack(anchor='w', padx=5, pady=5)
-            #self.message_count += 1
         else:
             # Calculate the wraplength based on available space
             frame_width = self.chat_frame.winfo_width()

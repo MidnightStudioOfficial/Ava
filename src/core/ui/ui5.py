@@ -48,7 +48,7 @@ from core.controllers.messages.messages import MessagesController
 print("Importing debugergui")
 from core.TkDeb.TkDeb import Debugger
 
-if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True: 
+if DEBUG_CHATBOT is None or DEBUG_CHATBOT is True: 
     print('Importing pyttsx3')
     from pyttsx3 import init as pyttsx3_init
 
@@ -240,7 +240,7 @@ class ChatBotGUI:
             f.grid(row=0, column=0, sticky='news')
 
         if self.current_chat_bubble == False:
-           self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
+            self.chat_frame = ctk.CTkTextbox(self.root1, width=380, height=551, fg_color=chatBgColor)
         else:
             self.chat_frame = CTkXYFrame(self.root1, width=380, height=551, fg_color=chatBgColor)
             self.chat_frame.pack_propagate(0)
@@ -504,7 +504,7 @@ class ChatBotGUI:
         # select default frame
         self.select_frame_by_name("home")
 
-        if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
+        if DEBUG_CHATBOT is None or DEBUG_CHATBOT is True:
             # Set up voice
             splash_screen.set_text("Set up voice")
             self.engine = pyttsx3_init()
@@ -528,13 +528,13 @@ class ChatBotGUI:
         self.message_count = 0
         self.is_lisening_wakeword = False
 
-        if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
+        if DEBUG_CHATBOT is None or DEBUG_CHATBOT is True:
             # Initialize chatbot
             splash_screen.set_text("Training the chatbot")
             self.chatbot = Chatbot(splash_screen)
             self.chatbot.train_bot()  # Train the chatbot
 
-        if DEBUG_CHATBOT == None or DEBUG_CHATBOT == True:
+        if DEBUG_CHATBOT is None or DEBUG_CHATBOT is True:
             self.MessagesController = MessagesController(
                 voice_engine=self.engine,
                 chat_frame=self.chat_frame,
@@ -608,9 +608,9 @@ class ChatBotGUI:
     def wake_word_callback(self, text):
         """Callback function triggered when the wake word is detected."""
         if self.is_lisening_wakeword == False:
-         self.is_lisening_wakeword = True
-         self.wake_word_detecter.pause()
-         self.w_gui = WakeWordGUI(self.master, self.wake_word_callback_END)
+            self.is_lisening_wakeword = True
+            self.wake_word_detecter.pause()
+            self.w_gui = WakeWordGUI(self.master, self.wake_word_callback_END)
 
     def chat_bubble_enable_event(self):
         print(self.chat_bubble_switch_var.get())
@@ -718,7 +718,7 @@ class ChatBotGUI:
             try:
                 # pass
                 if type(self.recognize_thread) != type(Thread):
-                 self.recognize_thread = Thread(target=self.voiceMedium, daemon=True).start()
+                    self.recognize_thread = Thread(target=self.voiceMedium, daemon=True).start()
             except:
                 pass
 
