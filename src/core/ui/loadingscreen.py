@@ -9,6 +9,7 @@ class SplashScreen(CTkToplevel):
             parent: The parent widget.
         """
         super().__init__(parent)
+        self.parent = parent
         self.title("Splash Screen")
         self.geometry("300x200")
         self.configure(background="#2c3e50")
@@ -61,17 +62,13 @@ class SplashScreen(CTkToplevel):
             value (int): The new progress value (0-100).
         """
         try:
-            for i in range(value):
+            for _ in range(value):
                 self.progressbar.step()
             self.update()
         except Exception as e:
             # Add code here to handle the error
-            pass
+            print("Error:" + str(e))
 
     def cancel(self):
-        """
-        Handle the cancel button click event.
-
-        Add code here to cancel the loading process.
-        """
-        pass
+        """Handle the cancel button click event."""
+        self.parent.destroy()
