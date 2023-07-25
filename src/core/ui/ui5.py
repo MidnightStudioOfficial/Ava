@@ -328,7 +328,7 @@ class ChatBotGUI:
         self.micImg = PhotoImage(file="Data/images/mic.png")
         self.micImg = self.micImg.subsample(2, 2)
         self.micBtn = ctk.CTkButton(self.TextModeFrame, text='', image=self.micImg, height=30,
-                                    width=30, fg_color="transparent", command=self.changeChatMode)  # , bg_color='#dfdfdf'
+                                    width=30, fg_color="transparent", command=self.changeChatMode)
         self.micBtn.place(relx=1.0, y=30, x=-20, anchor="ne")
 
         # Text Field
