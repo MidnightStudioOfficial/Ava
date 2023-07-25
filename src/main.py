@@ -8,7 +8,7 @@ import customtkinter as ctk
 from os.path import join, dirname, realpath
 
 print("Importing loadingscreen")
-from core.ui.loadingscreen2 import SplashScreen
+from core.ui.loadingscreen import SplashScreen
 
 if __name__ == '__main__':
     """
