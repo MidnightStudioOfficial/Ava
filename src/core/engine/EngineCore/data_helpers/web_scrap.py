@@ -191,7 +191,30 @@ class TextSummarizer:
 
 class WebScrap:
     def __init__(self) -> None:
-        pass
-    
-    def process(self, text):
-        pass
+        self.text_summarizer = TextSummarizer()
+
+    def check_if_requested(self, text: str):
+        # Define the regular expression pattern
+        pattern = r'(?:google\s+search|search\s+google)\s+for\s+(.+)'
+
+        # Use re.search() to find the pattern in the text
+        match = re.search(pattern, text, re.IGNORECASE)
+
+        # If a match is found, return the search request, otherwise return None
+        return match.group(1) if match else "none"
+
+    def process(self, input_text: str):
+        search_request = self.check_if_requested(input_text)
+        if search_request != "none":
+            search_results = self.text_summarizer.search_bing(search_request)
+            extracted_results = self.text_summarizer.scrape_results(search_results)
+            for result in extracted_results:
+                print("Title:", result['title'])
+                print("URL:", result['url'])
+
+            combined_snippets = ' '.join(result['snippet'] for result in extracted_results)
+
+            summary = self.text_summarizer.summarize_text(combined_snippets)
+            return summary
+        return "none"
+            

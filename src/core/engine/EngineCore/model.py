@@ -35,10 +35,30 @@ from sklearn.model_selection import train_test_split  # train_test_split for spl
 # Local import
 from core.skill.bulitin_skills import BuiltinSkills  # Custom built-in skills for the conversational engine
 from .utils.preprocessing import TextPreprocessor
+from .data_helpers.web_scrap import WebScrap
 
 # This class defines a conversational engine that can predict the intent of an utterance using a neural network.
 class Model:
+    """
+    A conversational engine that can predict the intent of an utterance using a neural network.
+
+    This engine uses deep learning techniques to classify user input into predefined intents, enabling it to respond
+    with appropriate actions or responses. It leverages libraries such as TensorFlow, Keras, NLTK, and spaCy for NLP
+    functionalities and model training.
+
+    The Model class includes methods for intent prediction, data preprocessing, model training, and skill management.
+    It utilizes labeled training data with corresponding intents to train a neural network and uses a Tokenizer for text
+    preprocessing. The engine also incorporates built-in skills for handling various user requests.
+    """
+
     def __init__(self) -> None:
+        """
+        Initialize the conversational engine.
+
+        This method initializes various components and loads the pre-trained model if it exists, else it sets up data
+        preprocessing and trains a new model.
+        """
+        # Initialize text preprocessor
         self.preprocessor = TextPreprocessor()
         # Define parameters
         self.max_len = 25
@@ -51,14 +71,29 @@ class Model:
 
         # Load the pre-trained model and associated objects if they exist
         self.load_model_and_data()
+        
+        self.WebScrap = WebScrap()
 
     def load_model_and_data(self):
+        """
+        Load the pre-trained model and associated data (tokenizer, label encoder).
+
+        If the necessary files exist, this method loads the pre-trained model and associated objects like tokenizer
+        and label encoder. Otherwise, it calls the setup_data_preprocessing_and_train() method to prepare and train a
+        new model.
+        """
         if os.path.exists('Data/sir-bot-a-lot.brain') and os.path.exists('Data/tokenizer.pickle') and os.path.exists('Data/label_encoder.pickle'):
             self.load_pretrained_model()
         else:
             self.setup_data_preprocessing_and_train()
 
     def load_pretrained_model(self):
+        """
+        Load the pre-trained model and associated data (tokenizer, label encoder).
+
+        This method loads the pre-trained model and associated objects like tokenizer and label encoder from the
+        respective pickle files.
+        """
         # Load the pre-trained model and associated objects
         self.model = keras.models.load_model('Data/sir-bot-a-lot.brain')
         with open('Data/tokenizer.pickle', 'rb') as handle:
@@ -78,6 +113,14 @@ class Model:
                   'intent' (str): The predicted intent.
                   'probability' (float): The probability score for the predicted intent.
         """
+        webscrap =self.WebScrap.process(input_text=text)
+        if webscrap != "none":
+            return {
+            'intent': webscrap,
+            'probability': 1
+            }
+        del webscrap
+
         # Predict the intent using the neural network model
         result = self.model.predict(
             keras.preprocessing.sequence.pad_sequences(self.tokenizer.texts_to_sequences([text]),
@@ -107,6 +150,11 @@ class Model:
         }
 
     def setup_data_preprocessing_and_train(self):
+        """
+        Set up data preprocessing and train the neural network model.
+
+        This method prepares data, including lemmatization, encoding labels, and training the model with early stopping.
+        """
         # Set up data preprocessing and train the model
         self.testing2 = [
             "what do you want to do?",
