@@ -1,5 +1,6 @@
 # Ava
-Meet Ava, the chatbot designed to bring a smile to your face! Help us improve Ava by filling out this form: https://forms.office.com/r/Ar1heNra7i
+Ava is a conversational AI chatbot and viural assistant It uses a number of different natural language processing techniques to generate a responses.
+Help us improve Ava by filling out this form: https://forms.office.com/r/Ar1heNra7i
 
 ## Requirements
 

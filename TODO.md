@@ -1,1 +1,2 @@
 - Incorporate Visuals and Images: Enable the chatbot to process and respond to image inputs or provide visual outputs where relevant.
+- Depending on the application's use case, speech recognition can potentially raise privacy concerns if sensitive or personal information is processed without consent or proper security measures.

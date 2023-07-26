@@ -98,6 +98,14 @@ class MessagesController:
             chat.pack(anchor='e', padx=2, pady=2)
 
     def show_image(self, image, direction='w'):
+        """
+        Displays an image in the chat frame.
+
+        Args:
+            image: The image to be displayed (Tkinter PhotoImage or PIL ImageTk).
+            direction (str, optional): The anchor direction for the image. Defaults to 'w'.
+                                    'w' for left (bot), 'e' for right (user).
+        """
         chat = ctk.CTkLabel(
                 self.chat_frame,
                 text='',

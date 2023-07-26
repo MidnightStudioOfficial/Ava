@@ -226,7 +226,6 @@ class Animator:
 
 
 import customtkinter
-import time
 
 
 class smooth_frame(customtkinter.CTk):
@@ -266,6 +265,4 @@ class smooth_frame(customtkinter.CTk):
 
 if __name__ == "__main__":
     app = smooth_frame()
-    #app.overrideredirect(False)
-    #app.attributes('-topmost', True)
     app.mainloop()

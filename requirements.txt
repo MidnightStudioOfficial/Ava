@@ -6,3 +6,7 @@ customtkinter
 pandas
 nltk
 sklearn
+tensorflow
+pygame
+pyaudio
+mutagen

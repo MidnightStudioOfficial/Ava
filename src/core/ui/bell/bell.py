@@ -48,7 +48,7 @@ class Bell:
         self.notifications = default_data
         self.save_notifications()
 
-    def add_notification(self, notification_id, name, details, notification_type, tags):
+    def add_notification(self, notification_id: str, name: str, details: str, notification_type: str, tags):
         """Adds a new notification to the list"""
         self.notifications[str(notification_id)] = {
                 "value": str(name),
