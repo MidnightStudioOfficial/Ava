@@ -1,84 +1,59 @@
-from queue import Queue, Empty
-from threading import Thread, Condition
-import speech_recognition as sr
+import spacy
+nlp = spacy.load('en_core_web_sm')
 
-class SpeechRecognizer:
-    def __init__(self, wake_words=("ava", "eva", "hangover"), callback_function=None):
-        self.wake_words = wake_words
-        self.r = sr.Recognizer()
-        self.words_queue = []
-        self.audio_queue = Queue()
-        self.callback = callback_function
-        self.condition = Condition()  # Condition for synchronization
+def compare(statement_a, statement_b):
+        """
+        Compare the two input statements.
 
-    def check_for_wakeword(self, text):
-        if any(wake_word in text for wake_word in self.wake_words):
-            print("I can hear you")
-            self.callback(text)
+        :return: The percent of similarity between the closest synset distance.
+        :rtype: float
+        """
+        document_a = nlp(statement_a)
+        document_b = nlp(statement_b)
 
-    def recognize_worker(self):
-        # This runs in a background thread
-        while True:
-            with self.condition:
-                self.condition.wait(timeout=1)  # Wait for signal or timeout
-                if self.audio_queue.empty():
-                    continue
+        return document_a.similarity(document_b)
 
-            audio_chunks = []
-            try:
-                while True:
-                    audio = self.audio_queue.get_nowait()
-                    if audio is None:
-                        break  # Stop processing if the main thread is done
-                    audio_chunks.append(audio)
-            except Empty:
-                pass
-
-            # Batch audio chunks and process them together
-            if audio_chunks:
-                audio_batch = sr.AudioData(b''.join(audio_chunks), self.r.SAMPLE_RATE, self.r.SAMPLE_WIDTH)
-                try:
-                    text = self.r.recognize_google(audio_batch)
-                    self.check_for_wakeword(text.lower())
-                    print("Recognized speech: " + str(text))
-                    self.words_queue.append(text)
-                except sr.UnknownValueError:
-                    print("Speech recognition could not understand audio")
-                except sr.RequestError as e:
-                    print("Error requesting results from the recognition service: {0}".format(e))
-
-    def _start_listening(self):
-        # Start a new thread to recognize audio while this thread focuses on listening
-        self.recognize_thread = Thread(target=self.recognize_worker)
-        self.recognize_thread.daemon = True
-        self.recognize_thread.start()
-        print("Starting")
-        with sr.Microphone() as source:
-            try:
-                while True:
-                    with self.condition:
-                        audio = self.r.listen(source)
-                        self.audio_queue.put(audio)
-                        self.condition.notify_all()  # Notify the worker thread
-            except KeyboardInterrupt:  # Allow Ctrl + C to shut down the program gracefully
-                pass
-
-            self.audio_queue.put(None)  # Tell the recognize_thread to stop
-            self.recognize_thread.join()  # Wait for the recognize_thread to actually stop
-
-    def stop_listening(self):
-        self.condition.acquire()
-        self.audio_queue.put(None)
-        self.condition.notify_all()
-        self.condition.release()
-
-    def start_listening(self):
-        self._start_listening()
+s1 = "google search for what are cats"
+s2 = "search google for that are cats"
+import spacy
+from spacy.matcher import Matcher
 
 
-if __name__ == "__main__":
-    def callback_function(text):
-        print("Callback triggered with text:", text)
+# Define keywords for web search trigger
+web_search_keywords = ["what", "who", "when", "where", "why", "how"]
 
-    recognizer = SpeechRecognizer(wake_words=("ava", "eva", "hangover"), callback_function=callback_function)
-    recognizer.start_listening()
+# Initialize the Matcher
+matcher = Matcher(nlp.vocab)
+
+# Pattern to match questions for web search
+web_search_pattern = [{"LOWER": {"IN": web_search_keywords}}]
+
+# Add the pattern to the matcher
+matcher.add("WebSearch", [web_search_pattern])
+
+# Function to determine if a query should trigger a web search or get a chatbot response
+def process_query(query):
+    doc = nlp(query.lower())
+    
+    # Check if the query matches the web search pattern
+    matches = matcher(doc)
+    if matches:
+        return "WEB_SEARCH"
+    
+    # If not a web search, use the chatbot to generate a response
+    return get_chatbot_response(query)
+
+# Function for the chatbot's response (using spacy as an example)
+def get_chatbot_response(query):
+    # Replace this with your actual chatbot response generation logic
+    response = "Chatbot: I'm sorry, I can't answer that question right now."
+    return response
+while True:
+    # Example usage
+    user_input = input("You: ")
+    result = process_query(user_input)
+    if result == "WEB_SEARCH":
+        print("Assistant: Performing a web search for '{}'".format(user_input))
+        # Implement the code to perform a Google search here
+    else:
+        print(result)
