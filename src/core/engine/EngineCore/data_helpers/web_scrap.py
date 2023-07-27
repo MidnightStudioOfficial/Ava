@@ -194,6 +194,15 @@ class WebScrap:
         self.text_summarizer = TextSummarizer()
 
     def check_if_requested(self, text: str):
+        """
+        Checks if a Google search request is present in the given text.
+
+        Args:
+            text (str): The input text to check for search requests.
+
+        Returns:
+            str: The search request if found, otherwise returns "none".
+        """
         # Define the regular expression pattern
         pattern = r'(?:google\s+search|search\s+google)\s+for\s+(.+)'
 
@@ -204,17 +213,31 @@ class WebScrap:
         return match.group(1) if match else "none"
 
     def process(self, input_text: str):
+        """
+        Processes the input text, searches Bing for the specified query,
+        extracts search results, and provides a summary of the results.
+
+        Args:
+            input_text (str): The input text containing the Google search request.
+
+        Returns:
+            str: The summary of the search results, or "none" if no search request is found.
+        """
         search_request = self.check_if_requested(input_text)
         if search_request != "none":
+            # Search Bing for the specified query
             search_results = self.text_summarizer.search_bing(search_request)
+
+            # Extract search result data
             extracted_results = self.text_summarizer.scrape_results(search_results)
             for result in extracted_results:
                 print("Title:", result['title'])
                 print("URL:", result['url'])
 
+            # Combine snippets from all search results
             combined_snippets = ' '.join(result['snippet'] for result in extracted_results)
 
+            # Summarize the combined snippets
             summary = self.text_summarizer.summarize_text(combined_snippets)
             return summary
         return "none"
-            
