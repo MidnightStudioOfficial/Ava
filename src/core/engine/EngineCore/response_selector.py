@@ -1,10 +1,11 @@
 from .data_helpers.web_scrap import WebScrap
 
+
 class ResponseMatcher:
     def __init__(self):
         """
         ResponseMatcher class for intent determination based on different modules.
-        
+
         Each module provides a specific functionality for intent determination.
 
         Attributes:
@@ -34,7 +35,7 @@ class ResponseMatcher:
         Returns:
             dict: A dictionary containing the intent and its probability.
         """
-        for module_key, module_instance in self.modules.items():
+        for _, module_instance in self.modules.items():
             result = module_instance.process(input_text)
             if result != "none":
                 return {

@@ -1,6 +1,7 @@
 import wikipedia
 import re
 
+
 class WikipediaScrap:
     def __init__(self) -> None:
         pass

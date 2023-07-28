@@ -4,6 +4,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
+
 class ReferencingClassifier:
     """A classifier that predicts whether a user is referring to themselves or the chatbot."""
 

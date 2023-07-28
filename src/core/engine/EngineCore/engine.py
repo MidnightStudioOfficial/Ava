@@ -1,5 +1,6 @@
 from .model import Model
 
+
 class MainEngine:
     def __init__(self) -> None:
         self.model = Model()
