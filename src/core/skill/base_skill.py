@@ -10,6 +10,7 @@ class BaseSkill():
     samples = []    # some samples that can be used for training
     entities = {}   # the spacey entities that are parsed for optional parameters and their defaults
     responses = []  # the responses that the skill can take
+    
 
     def getSamples(self) -> list:
         return {"intent": self.intent, "samples": self.samples}

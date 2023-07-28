@@ -113,7 +113,7 @@ class Model:
                   'intent' (str): The predicted intent.
                   'probability' (float): The probability score for the predicted intent.
         """
-        webscrap =self.WebScrap.process(input_text=text)
+        webscrap = self.WebScrap.process(input_text=text)
         if webscrap != "none":
             return {
             'intent': webscrap,
