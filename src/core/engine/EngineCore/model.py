@@ -113,13 +113,13 @@ class Model:
                   'intent' (str): The predicted intent.
                   'probability' (float): The probability score for the predicted intent.
         """
-        webscrap = self.WebScrap.process(input_text=text)
-        if webscrap != "none":
-            return {
-            'intent': webscrap,
-            'probability': 1
-            }
-        del webscrap
+        # webscrap = self.WebScrap.process(input_text=text)
+        # if webscrap != "none":
+        #     return {
+        #     'intent': webscrap,
+        #     'probability': 1
+        #     }
+        # del webscrap
 
         # Predict the intent using the neural network model
         result = self.model.predict(

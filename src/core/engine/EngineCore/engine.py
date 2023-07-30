@@ -1,9 +1,12 @@
-from .model import Model
+from .conversation import Conversation
+import logging
 
+logging.basicConfig(level=logging.NOTSET)
+logger = logging.getLogger("tensorflow").disabled = True
 
 class MainEngine:
     def __init__(self) -> None:
-        self.model = Model()
+        self.conversation = Conversation()
 
     def getIntent(self, input_text: str):
-        return self.model.predict(text=input_text)
+        return self.conversation.interact(input_text)
