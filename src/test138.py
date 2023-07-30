@@ -1,75 +1,63 @@
-from nltk.tokenize import word_tokenize
+import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from nltk.tokenize import word_tokenize
+import random
 
-class ReferencingClassifier:
-    """A classifier that predicts whether a user is referring to themselves or the chatbot."""
+nltk.download('punkt')
 
-    def __init__(self) -> None:
-        """
-        Initializes the classifier.
+def paraphrase_sentence(input_sentence, num_paraphrases=5):
+    # Sample paraphrases will be stored here
+    paraphrases = []
+    
+    # Tokenize the input sentence
+    input_tokens = word_tokenize(input_sentence)
+    input_text = " ".join(input_tokens)
+    
+    # Create the TfidfVectorizer
+    vectorizer = TfidfVectorizer()
+    
+    # Calculate the TF-IDF matrix
+    tfidf_matrix = vectorizer.fit_transform([input_text])
+    
+    # Get feature names (words)
+    feature_names = vectorizer.get_feature_names_out()
+    
+    # Get the TF-IDF scores for the input sentence
+    tfidf_scores = dict(zip(feature_names, tfidf_matrix.toarray()[0]))
+    
+    # Sort words based on their TF-IDF scores in descending order
+    sorted_words = sorted(tfidf_scores.items(), key=lambda x: x[1], reverse=True)
+    
+    # Generate paraphrases by replacing high-TF-IDF words with synonyms
+    for _ in range(num_paraphrases):
+        paraphrase_tokens = input_tokens.copy()
+        
+        # Randomly select a word with a high TF-IDF score to replace
+        word_to_replace = random.choice(sorted_words[:int(len(sorted_words) * 0.3)])[0]
+        
+        # Get synonyms for the selected word
+        synonyms = set()
+        for synset in nltk.corpus.wordnet.synsets(word_to_replace):
+            for lemma in synset.lemmas():
+                synonyms.add(lemma.name().replace('_', ' '))
+        
+        # If synonyms exist, replace the word in the paraphrased version
+        if synonyms:
+            new_word = random.choice(list(synonyms))
+            paraphrase_tokens = [new_word if word == word_to_replace else word for word in paraphrase_tokens]
+        
+        # Add the paraphrased sentence to the list
+        paraphrases.append(" ".join(paraphrase_tokens))
+    
+    return paraphrases
 
-        Creates a dataset of labeled data and splits it into training and testing sets.
-        Also creates a TF-IDF vectorizer and a MultinomialNB classifier.
-        """
-        # Sample labeled data for training the classifier
-        self.labeled_data = [
-            ("I need your help", "user"),
-            ("What can you do for me?", "user"),
-            ("How are you?", "chatbot"),
-            ("Tell me a joke", "user"),
-            ("You are very helpful", "chatbot"),
-            ("I am feeling happy", "user"),
-            ("Can you provide some information?", "user"),
-            ("You are doing a great job!", "chatbot"),
-        ]
-        # Separate the input (X) and labels (y)
-        self.X, self.y = zip(*self.labeled_data)
-
-        # Convert the input text to TF-IDF features
-        self.tfidf_vectorizer = TfidfVectorizer(tokenizer=word_tokenize, lowercase=True) #, sublinear_tf=True
-        self.classifier = MultinomialNB()
-
-    def train(self) -> None:
-        """Trains the classifier on a dataset of labeled data."""
-        self.X_tfidf = self.tfidf_vectorizer.fit_transform(self.X)
-
-        # Split the data into training and testing sets
-        X_train, X_test, y_train, y_test = train_test_split(self.X_tfidf, self.y, test_size=0.2, random_state=42)
-
-        self.classifier.fit(X_train, y_train)
-
-        # Make predictions on the test set
-        self.y_pred = self.classifier.predict(X_test)
-
-        # Calculate accuracy on the test set
-        self.accuracy = accuracy_score(y_test, self.y_pred)
-        print("Classifier accuracy:", self.accuracy)
-
-    def predict(self, input_text: str):
-        """Makes a prediction on a new input text.
-
-        Args:
-            input_text (str): The input text to be classified.
-
-        Returns:
-            str: The predicted label.
-        """
-        if not input_text.strip():
-            raise ValueError("Input text is empty.")
-
-        user_input_tfidf = self.tfidf_vectorizer.transform([input_text])
-        prediction = self.classifier.predict(user_input_tfidf)[0]
-        return prediction
-
-
-
-m = ReferencingClassifier()
-m.train()
-while True:
-    input_text = input("Enter a message: ")
-    print("The message is", m.predict(input_text))
-    if input_text == "exit":
-        break
+if __name__ == "__main__":
+    input_sentence = "The quick brown fox jumps over the lazy dog."
+    num_paraphrases = 5
+    
+    paraphrases = paraphrase_sentence(input_sentence, num_paraphrases)
+    
+    print("Original Sentence: ", input_sentence)
+    print("\nParaphrases:")
+    for idx, paraphrase in enumerate(paraphrases, 1):
+        print(f"{idx}. {paraphrase}")

@@ -74,7 +74,7 @@ class Model:
         
         self.WebScrap = WebScrap()
 
-    def load_model_and_data(self):
+    def load_model_and_data(self) -> None:
         """
         Load the pre-trained model and associated data (tokenizer, label encoder).
 
@@ -87,7 +87,7 @@ class Model:
         else:
             self.setup_data_preprocessing_and_train()
 
-    def load_pretrained_model(self):
+    def load_pretrained_model(self) -> None:
         """
         Load the pre-trained model and associated data (tokenizer, label encoder).
 
@@ -149,7 +149,7 @@ class Model:
             'probability': np_max(result)
         }
 
-    def setup_data_preprocessing_and_train(self):
+    def setup_data_preprocessing_and_train(self) -> None:
         """
         Set up data preprocessing and train the neural network model.
 

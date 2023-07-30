@@ -2,7 +2,7 @@ from .data_helpers.web_scrap import WebScrap
 
 
 class ResponseMatcher:
-    def __init__(self):
+    def __init__(self) -> None:
         """
         ResponseMatcher class for intent determination based on different modules.
 
@@ -18,11 +18,9 @@ class ResponseMatcher:
         self.modules = {
             'web_scrap': WebScrap(),
             'another': AnotherModule()
-            # Add more modules here with unique keys and corresponding instances
-            # for different functionalities as needed
         }
 
-    def determine_intent(self, input_text: str):
+    def determine_intent(self, input_text: str) -> dict:
         """
         Determine the intent of the input text using different modules.
 
