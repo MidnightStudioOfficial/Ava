@@ -16,7 +16,7 @@ class TextPreprocessor:
         # Stopwords are words like "the", "and", "is", "are", etc., that do not contribute much to the meaning of the text.
         self.stop_words_eng = set(stopwords.words('english'))
         self.stop_words_eng.remove("what")
-    
+
     def preprocess_sentence(self, sentence: str):
         sentence = sentence.lower()
         punctuations = "?:!.,;'`´"

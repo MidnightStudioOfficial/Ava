@@ -35,7 +35,7 @@ from sklearn.model_selection import train_test_split  # train_test_split for spl
 # Local import
 from core.skill.bulitin_skills import BuiltinSkills  # Custom built-in skills for the conversational engine
 from .utils.preprocessing import TextPreprocessor
-from .data_helpers.web_scrap import WebScrap
+
 
 # This class defines a conversational engine that can predict the intent of an utterance using a neural network.
 class Model:
@@ -71,8 +71,6 @@ class Model:
 
         # Load the pre-trained model and associated objects if they exist
         self.load_model_and_data()
-        
-        self.WebScrap = WebScrap()
 
     def load_model_and_data(self) -> None:
         """
@@ -113,14 +111,6 @@ class Model:
                   'intent' (str): The predicted intent.
                   'probability' (float): The probability score for the predicted intent.
         """
-        # webscrap = self.WebScrap.process(input_text=text)
-        # if webscrap != "none":
-        #     return {
-        #     'intent': webscrap,
-        #     'probability': 1
-        #     }
-        # del webscrap
-
         # Predict the intent using the neural network model
         result = self.model.predict(
             keras.preprocessing.sequence.pad_sequences(self.tokenizer.texts_to_sequences([text]),

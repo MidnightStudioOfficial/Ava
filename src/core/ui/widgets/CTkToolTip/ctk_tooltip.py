@@ -8,6 +8,7 @@ import sys
 import customtkinter
 from tkinter import Toplevel, Frame
 
+
 class CTkToolTip(Toplevel):
     """Creates a ToolTip (pop-up) widget for customtkinter."""
 

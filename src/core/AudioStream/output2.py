@@ -4,14 +4,23 @@ import wave
 
 #ffmpeg -i song.mp3 -acodec pcm_u8 -ar 22050 song.wav
 
+
 class AudioPlayer:
     def __init__(self, filename):
+        """
+        Constructor for the AudioPlayer class.
+
+        Args:
+            filename (str): The path to the audio file to play.
+
+        """
         self.filename = filename
         self.playing = False
         self.thread = None
         self.p = pyaudio.PyAudio()
 
     def play(self):
+        """Start playing the audio file"""
         if self.playing:
             print("Audio is already playing.")
             return
@@ -21,6 +30,7 @@ class AudioPlayer:
         self.thread.start()
 
     def set_file(self, new_filename):
+        """Set the audio file to play"""
         if self.playing:
             print("Audio is already playing. Cant set new filename")
             return
@@ -30,6 +40,7 @@ class AudioPlayer:
         pass
 
     def play_audio(self):
+        """Play the audio file"""
         chunk = 1024
         wf = wave.open(self.filename, 'rb')
 
@@ -51,6 +62,7 @@ class AudioPlayer:
         self.playing = False
 
     def stop(self):
+        """Stop playing the audio file"""
         if not self.playing:
             print("Audio is not playing.")
             return

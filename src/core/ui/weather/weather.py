@@ -7,6 +7,7 @@ from tkinter import messagebox
 # Global variable for current dat, used inside the class
 today = str(date.today())
 
+
 class WeatherGUI(ctk.CTkFrame):
     def __init__(self, parent) -> None:
         super().__init__(parent)
@@ -100,7 +101,7 @@ class WeatherGUI(ctk.CTkFrame):
         self.weatherLbl = ctk.CTkLabel(self.left_frame, textvariable=self.weather_var, font=('Arial', 22)).place(relx=0.5, rely=0.9, anchor=ctk.CENTER)
 
         self.right_frame = ctk.CTkFrame(parent, width=300, height=300, corner_radius=5)
-        self.right_frame.grid(row=0, column=0, sticky="nsew",padx=(355, 15), pady=(200, 350))
+        self.right_frame.grid(row=0, column=0, sticky="nsew", padx=(355, 15), pady=(200, 350))
         self.right_frame.grid_rowconfigure(1, weight=1)
         self.right_frame.place(x=365, y=150)
 

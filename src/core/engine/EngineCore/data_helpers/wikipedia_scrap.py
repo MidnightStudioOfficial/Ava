@@ -37,6 +37,7 @@ class WikipediaScrap:
             str: The summary of the search results, or "none" if no search request is found.
         """
         search_request = self.check_if_requested(input_text)
+        # If a search request is found, search Wikipedia for the specified query
         if search_request != "none":
             # Search Wikipedia for the specified query
             try:
@@ -45,4 +46,5 @@ class WikipediaScrap:
             except wikipedia.exceptions.PageError:
                 print("Sorry, I couldn't find a Wikipedia article for that.")
                 return "none"
+        # If no search request is found, return "none"
         return "none"

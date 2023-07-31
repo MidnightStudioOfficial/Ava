@@ -175,7 +175,7 @@ class App(ctk.CTk):
 
 
 if __name__ == '__main__':
- app = App()
- app.mainloop()
- debug = Debug()
- debug_gui = DebugGUI(debug)
+    app = App()
+    app.mainloop()
+    debug = Debug()
+    debug_gui = DebugGUI(debug)

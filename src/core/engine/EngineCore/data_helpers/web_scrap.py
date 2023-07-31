@@ -189,6 +189,7 @@ class TextSummarizer:
         print("\nSummary:")
         print(summary)
 
+
 class WebScrap:
     def __init__(self) -> None:
         self.text_summarizer = TextSummarizer()

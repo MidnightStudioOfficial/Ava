@@ -3,6 +3,7 @@ import tkinter as tk
 
 from core.skill.skill import Skills
 
+
 class skill:
     def __init__(self) -> None:
         self.debug_info = {}

@@ -1,5 +1,6 @@
 from customtkinter import CTkLabel, CTkProgressBar, CTkToplevel, CTkButton
 
+
 class SplashScreen(CTkToplevel):
     def __init__(self, parent):
         """

@@ -1,6 +1,7 @@
 from .data_helpers.web_scrap import WebScrap
 from .data_helpers.wikipedia_scrap import WikipediaScrap
 
+
 class ResponseMatcher:
     def __init__(self) -> None:
         """
