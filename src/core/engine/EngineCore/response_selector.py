@@ -42,6 +42,7 @@ class ResponseMatcher:
                     'probability': 1
                 }
 
+        # If no matching intent is found, return an unknown intent
         return {
             'intent': 'unknown_intent',
             'probability': 0
