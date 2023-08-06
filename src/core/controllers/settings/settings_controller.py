@@ -12,8 +12,17 @@ class SettingsController:
                 settings_data = json.load(file)
                 return settings_data
         except (FileNotFoundError, json.JSONDecodeError):
-            # If the file doesn't exist or has invalid JSON, return an empty dictionary
-            return {}
+            # If the file doesn't exist or has invalid JSON, create a new file with default settings
+            settings_data = {
+                "chat_bubble_enable": "on",
+                "theme": "light",
+                "dark_mode": False,
+                "notification_sound": "default",
+                "save_chat_history": True
+            }
+            with open(self.settings_file, 'w') as file:
+                json.dump(settings_data, file, indent=4)
+            return settings_data
 
     def save_settings(self):
         with open(self.settings_file, 'w') as file:

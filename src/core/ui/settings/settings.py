@@ -26,7 +26,8 @@ class SettingsUI(ctk.CTkFrame):
         self.parent = parent
         self.top_buttons_var = ctk.StringVar(value="Chat")
         self.chat_bubble_switch_var = ctk.StringVar(value="off")
-        self.controller = SettingsController()
+        self.controller = SettingsController(settings_file="Data/settings.json")
+        self.controller.load_settings()
         self.frames = [
             ("frame_1", "Chat"),
             ("frame_2", "Model"),
@@ -64,10 +65,11 @@ class SettingsUI(ctk.CTkFrame):
         self.chat_bubble_enable.pack() # ipady=10
 
         # Initialize a StringVar to hold the state of the segmented button
-        self.segemented_button_var = ctk.StringVar(value="blue")
+        self.segemented_button_var = ctk.StringVar(value=self.controller.get_setting(key="theme", default="blue"))
 
         # Create a segmented button widget with three values: "blue", "green", "dark-blue"
         self.segemented_button = ctk.CTkSegmentedButton(self.frame_3, values=["blue", "green", "dark-blue"],
+                                                     command=self.theme_segmented_button_callback,
                                                      variable=self.segemented_button_var)
         self.segemented_button.pack()  # Pack the segmented button onto the frame
 
@@ -102,6 +104,9 @@ class SettingsUI(ctk.CTkFrame):
 
     def chat_bubble_enable_event(self):
         pass
+
+    def theme_segmented_button_callback(self, value):
+        self.controller.set_setting(key="theme", value=value)
 
     def style_dropdown_click(self):
         pass
