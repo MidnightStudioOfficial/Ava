@@ -6,6 +6,7 @@ from os.path import isfile
 import logging
 from chatterbot2 import ChatBot as CHATBOT
 from chatterbot2.trainers import ChatterBotCorpusTrainer
+from .chatbot.chatbot import Chatbot
 
 
 class Conversation():
@@ -24,6 +25,8 @@ class Conversation():
         self.user_refering = ""
         self.bot_emoji = ""
 
+        self.use_gpt = True
+
         # Initialize and train the ReferencingClassifier to be used for reference identification.
         self.referencingclassifier = ReferencingClassifier()
         self.referencingclassifier.train()
@@ -34,6 +37,7 @@ class Conversation():
         self.sentiment_analyzer = SentimentAnalyzer()
 
         self.model = Model()
+        self.gpt_chatbot = Chatbot()
 
         # Check if the chatbot database exists
         self.chatbot_exists = None
@@ -100,8 +104,9 @@ class Conversation():
                 return resalt['intent'] + str(" " + self.bot_emoji)
 
             # If not a skill, get a response from the chatbot.
-            bot = self.chatBot.get_response(text=utterance, search_text=utterance)
-            return bot.text + str(" " + self.bot_emoji)
+            #bot = self.chatBot.get_response(text=utterance, search_text=utterance)
+            bot = self.gpt_chatbot.get_response(utterance)
+            return bot + str(" " + self.bot_emoji) #.text
         else:
             # If the intent is known, return the response.
             logging.debug("virtual_assistant_data: " + str(virtual_assistant_data["intent"]))

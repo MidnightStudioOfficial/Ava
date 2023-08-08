@@ -47,7 +47,7 @@ class Chatbot:
 
         openai.api_key = config["openai_api_key"]
 
-    def __chat_with_gpt3(messages):
+    def __chat_with_gpt3(self, messages):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-16k", #gpt-3.5-turbo
             messages=messages,
