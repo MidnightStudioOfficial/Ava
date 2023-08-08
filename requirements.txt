@@ -10,3 +10,4 @@ tensorflow
 pygame
 pyaudio
 mutagen
+openai

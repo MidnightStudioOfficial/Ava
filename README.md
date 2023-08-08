@@ -5,6 +5,7 @@ Help us improve Ava by filling out this form: https://forms.office.com/r/Ar1heNr
 ## Requirements
 
  - Python 3.11.4
+ - OpenAI account
 
 ## Getting Started
 To get started with Ava, you can clone the repository to your local machine using the following command:
