@@ -1,3 +1,4 @@
 src/Data
 build
 bin/main
+src/config.json

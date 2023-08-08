@@ -5,7 +5,6 @@ from core.ui.widgets.CTkToolTip.ctk_tooltip import CTkToolTip
 from core.controllers.settings.settings_controller import SettingsController
 
 
-
 # self.root1 = ctk.CTkFrame(parent, fg_color="transparent")
 # self.root2 = ctk.CTkFrame(parent)
 # self.root3 = ctk.CTkFrame(parent)
@@ -94,10 +93,10 @@ class SettingsUI(ctk.CTkFrame):
 
         self.slider_1.pack(padx=10) # pady=10,
 
-        self.bottomFrame1 = ctk.CTkFrame(self.main_settings_frame, height=100, fg_color="transparent", bg_color='#dfdfdf')
+        #self.bottomFrame1 = ctk.CTkFrame(self.main_settings_frame, height=100, fg_color="transparent", bg_color='#dfdfdf')
 
         # Pack the bottomFrame1 to fill the X direction and be placed at the bottom of its parent widget
-        self.bottomFrame1.pack(fill=ctk.X, side=ctk.BOTTOM)
+        #self.bottomFrame1.pack(fill=ctk.X, side=ctk.BOTTOM)
 
         #self.top_buttons = ctk.CTkSegmentedButton(self.main_settings_frame, values=["Chat", "Model", "Theme", "Other"], variable=self.top_buttons_var)
         #self.top_buttons.pack()
