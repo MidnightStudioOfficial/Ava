@@ -1,5 +1,5 @@
 # Ava
-Ava is a conversational AI chatbot and viural assistant It uses a number of different natural language processing techniques to generate a responses.
+Ava is a conversational AI chatbot and virtual assistant It uses several different natural language processing techniques to generate a response.
 Help us improve Ava by filling out this form: https://forms.office.com/r/Ar1heNra7i
 
 ## Requirements
