@@ -3,6 +3,7 @@ class TaskManager:
         self.actions = {
             "turn up the volume": self.turn_up_volume,
             "turn down the volume": self.turn_down_volume,
+            "(?:set|change)\s+(?:the\s+)?volume\s+(?:to\s+|at\s+)?(\d+)\b": self.turn_up_volume,
             "open notepad": self.open_notepad,
             # Add more actions here
         }
