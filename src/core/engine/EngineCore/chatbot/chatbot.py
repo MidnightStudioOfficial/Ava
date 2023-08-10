@@ -1,14 +1,19 @@
 import os
 import json
 import openai
+from .gpt_config import SYSTEM_PROMPT
 
 
 class Chatbot:
+    """
+    A chatbot class that uses OpenAI's GPT-3 model to generate responses to user input.
+    """
+
     def __init__(self) -> None:
         self.messages = [
         {
             "role": "system",
-            "content": "you are a chatbot named Ava who was created by mrmidnight and you are a chatbot that cares about the user and you can't write code or write stories, poems, you can't talk about ai, tech, programming, etc."
+            "content": SYSTEM_PROMPT
         },
         {
             "role": "user",
@@ -29,9 +34,13 @@ class Chatbot:
         ]
         self.init_openai()
 
-    def init_openai(self):
+    def init_openai(self) -> None:
+        """
+        Loads the OpenAI API key from a configuration file. 
+        If the file does not exist, it prompts the user to enter their API key and creates a new configuration file.
+        """
         # Load configuration from config.json
-        config_file_path = "config.json"
+        config_file_path: str = "config.json"
 
         if not os.path.exists(config_file_path):
             print("Configuration file not found. Let's create one.")
@@ -48,18 +57,26 @@ class Chatbot:
         openai.api_key = config["openai_api_key"]
 
     def __chat_with_gpt3(self, messages):
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-16k", #gpt-3.5-turbo
-            messages=messages,
-            temperature=1,
-            max_tokens=345,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0.05
-        )
-        return response.choices[0].message['content']
+        """Uses OpenAI's GPT-3 model to generate a response to the given messages."""
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo-16k", #gpt-3.5-turbo
+                messages=messages,
+                temperature=1,
+                max_tokens=345,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0.05
+            )
+            return response.choices[0].message['content']
+        except openai.APIError as e:
+            print(e)
+            return "Sorry, I couldn't generate a response."
 
     def get_response(self, user_input):
+        """
+        Appends the user's input to the list of messages and uses OpenAI's GPT-3 model to generate a response.
+        """
         self.messages.append({"role": "user", "content": user_input})
         response = self.__chat_with_gpt3(self.messages)
         self.messages.append({"role": "assistant", "content": response})
